@@ -1,8 +1,8 @@
 import Head from 'next/head';
-import Layout from '../components/Layout';
+import Layout from '../../components/Layout';
 import Link from 'next/link';
 
-export default function Home() {
+export default function Search() {
   return (
     <div>
       <Layout>
@@ -10,12 +10,12 @@ export default function Home() {
           <title>Welcome!</title>
         </Head>
         <main>
-          <h1>Landing Page</h1>
-          <Link href="/register">
+          <h1>Storage item</h1>
+          {/* <Link href="/dashboard">
             <a>
-              <button>Register</button>
+              <button>Delete</button>
             </a>
-          </Link>
+          </Link> */}
         </main>
       </Layout>
     </div>

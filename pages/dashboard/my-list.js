@@ -1,8 +1,7 @@
 import Head from 'next/head';
-import Layout from '../components/Layout';
-import Link from 'next/link';
+import Layout from '../../components/Layout';
 
-export default function SeeYouSoon() {
+export default function MyList() {
   return (
     <div>
       <Layout>
@@ -10,7 +9,7 @@ export default function SeeYouSoon() {
           <title>Welcome!</title>
         </Head>
         <main>
-          <h1>See you soon!</h1>
+          <h1>My List</h1>
         </main>
       </Layout>
     </div>
