@@ -1,18 +1,16 @@
 import Link from 'next/link';
-/** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { css } from '@emotion/core';
 
-const header = css`
+const headerStyles = css`
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  flex-wrap: wrap;
-  font-size: 15px;
+  justify-content: space-between;
+  padding: 30px;
+  margin-bottom: 40px;
 `;
 
-export default function Header(props) {
+export default function Header() {
   return (
-    <header css={header}>
+    <header css={headerStyles}>
       Logo/Name
       <Link href="/">
         <a>Home</a>

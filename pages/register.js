@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import Layout from '../components/Layout';
-import Link from 'next/link';
 
 export default function Register() {
   return (
@@ -11,11 +10,24 @@ export default function Register() {
         </Head>
         <main>
           <h1>Register here</h1>
-          <Link href="/dashboard/dashboard">
-            <a>
-              <button>Register</button>
-            </a>
-          </Link>
+          <form action="/dashboard/dashboard" id="person">
+            <label>
+              e-mail
+              <input type="text" name="e-mail" id="e-mail" maxlength="40" />
+            </label>
+
+            <label for="e-mail">
+              username
+              <input type="text" name="e-mail" id="e-mail" maxlength="40" />
+            </label>
+
+            <label for="password">
+              password
+              <input type="text" name="password" id="password" maxlength="40" />
+            </label>
+            <button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+          </form>
         </main>
       </Layout>
     </div>
