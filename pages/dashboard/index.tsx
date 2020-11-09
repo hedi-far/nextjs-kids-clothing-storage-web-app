@@ -44,14 +44,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { session: token } = nextCookies(context);
   const loggedIn = await isSessionTokenValid(token);
 
-  // if (await isSessionTokenValid(token)) {
-  //   return {
-  //     redirect: {
-  //       destination: '/login?returnTo=/dashboard',
-  //       permanent: false,
-  //     },
-  //   };
-  // }
+  if (!(await isSessionTokenValid(token))) {
+    return {
+      redirect: {
+        destination: '/login?returnTo=/dashboard',
+        permanent: false,
+      },
+    };
+  }
 
   return {
     props: {

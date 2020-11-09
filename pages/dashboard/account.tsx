@@ -37,17 +37,15 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { session: token } = nextCookies(context);
   const loggedIn = await isSessionTokenValid(token);
 
-  // if (!(await isSessionTokenValid(token))) {
-  //   return {
-  //     redirect: {
-  //       destination: '/login?returnTo=/dashboard/account',
-  //       permanent: false,
-  //     },
-  //   };
-  // }
+  if (!(await isSessionTokenValid(token))) {
+    return {
+      redirect: {
+        destination: '/login?returnTo=/dashboard/account',
+        permanent: false,
+      },
+    };
+  }
 
-  // TODO: Actually, you could do this with one query
-  // instead of two like done here
   const user = await getUserBySessionToken(token);
 
   return {

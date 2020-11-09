@@ -18,11 +18,13 @@ export default function Home(props: Props) {
         </Head>
         <main>
           <h1>Landing Page</h1>
-          <Link href="/register">
-            <a>
-              <button>Register</button>
-            </a>
-          </Link>
+          {props.loggedIn ? null : (
+            <Link href="/register">
+              <a>
+                <button>Register</button>
+              </a>
+            </Link>
+          )}
         </main>
       </Layout>
     </div>
@@ -33,19 +35,5 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { session: token } = nextCookies(context);
   const loggedIn = await isSessionTokenValid(token);
 
-  // console.log(loggedIn);
-
-  // const redirectDestination = context?.query?.returnTo ?? '/dashboard';
-
-  // if (await isSessionTokenValid(token)) {
-  //   return {
-  //     redirect: {
-  //       destination: redirectDestination,
-  //       permanent: false,
-  //     },
-  //   };
-  // }
-
   return { props: { loggedIn } };
-  // redirectDestination: redirectDestination,
 }
