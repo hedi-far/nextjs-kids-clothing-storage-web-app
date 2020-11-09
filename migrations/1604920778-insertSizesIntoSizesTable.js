@@ -54,18 +54,9 @@ exports.up = async (sql) => {
 };
 
 exports.down = async (sql) => {
-  for (let i = 0; i < sizes.length; i++) {
+  for (const sizeObj of sizes) {
     await sql`
-	DELETE FROM clothing_items_sizes WHERE size = ${sizes.size};
+	DELETE FROM clothing_items_sizes WHERE size = ${sizeObj.size};
 `;
   }
 };
-
-// exports.down = async (sql) => {
-//   for (const user in users) {
-//     await sql`
-//       DELETE FROM users WHERE
-//         first_name = ${user.first_name} AND
-//         last_name = ${user.last_name};
-//     `;
-//   }
