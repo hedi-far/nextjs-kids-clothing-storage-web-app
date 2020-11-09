@@ -1,11 +1,11 @@
-// import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from 'next';
 import argon2 from 'argon2';
 import Tokens from 'csrf';
 import { getUserByUsername, registerUser } from '../../util/database';
 
 const tokens = new Tokens();
 
-export default async function handler(request, response) {
+export default async function handler(request: NextApiRequest, response: NextApiResponse) {
   // Extract the username, password and token from the request
   // body (this process is called "destructuring")
   const { email, username, password, token } = request.body;

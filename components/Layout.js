@@ -9,7 +9,7 @@ export default function Layout(props) {
       <Head>
         <html lang="eng" />
       </Head>
-      <Header />
+      <Header loggedIn={props.loggedIn} />
       <main>{props.children}</main>
       <Footer />
     </>

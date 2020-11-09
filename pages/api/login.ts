@@ -1,3 +1,4 @@
+import { NextApiRequest, NextApiResponse } from 'next';
 import crypto from 'crypto';
 import argon2 from 'argon2';
 import cookie from 'cookie';
@@ -7,7 +8,7 @@ import {
   insertSession,
 } from '../../util/database';
 
-export default async function handler(request, response) {
+export default async function handler(request: NextApiRequest, response: NextApiResponse) {
   const { username, password } = request.body;
   const user = await getUserByUsername(username);
 
@@ -31,6 +32,7 @@ export default async function handler(request, response) {
 
   const maxAge = 60 * 60 * 24; // 24 hours
 
+  //if environment is production, make it a secure cookie (tranmitted via https)
   const isProduction = process.env.NODE_ENV === 'production';
 
   const sessionCookie = cookie.serialize('session', token, {
@@ -47,6 +49,7 @@ export default async function handler(request, response) {
     // Set secure cookies on production
     secure: isProduction,
 
+    //cookie can be read on all parts of the website
     path: '/',
 
     // https://web.dev/samesite-cookies-explained/

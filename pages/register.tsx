@@ -3,8 +3,15 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useState } from 'react';
 import Layout from '../components/Layout';
+// import nextCookies from 'next-cookies';
+// import { GetServerSidePropsContext } from 'next';
+// import { isSessionTokenValid } from '../util/auth';
 
-export default function Register(props) {
+// type Props = { loggedIn: boolean; redirectDestination: string; token: string };
+
+type Props = { token: string };
+
+export default function Register(props: Props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -24,7 +31,7 @@ export default function Register(props) {
               // Prevent the default browser behavior of forms
               e.preventDefault();
 
-              // Send the username, password and token to the
+              // Send the email, username, password and token to the
               // API route
               const response = await fetch('/api/register', {
                 method: 'POST',
@@ -39,13 +46,11 @@ export default function Register(props) {
                 }),
               });
 
-              console.log(response);
-
               const { success } = await response.json();
 
               if (success) {
                 // Redirect to the homepage if successfully registered
-                router.push('/');
+                router.push('/login');
               } else {
                 // If the response status code (set using response.status()
                 // in the API route) is 409 (Conflict) then show an error

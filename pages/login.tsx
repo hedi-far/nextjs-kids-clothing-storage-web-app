@@ -4,9 +4,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import nextCookies from 'next-cookies';
+import { GetServerSidePropsContext } from 'next';
 import { isSessionTokenValid } from '../util/auth';
 
-export default function Login(props) {
+type Props = { loggedIn: boolean; redirectDestination: string };
+
+export default function Login(props: Props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -71,10 +74,11 @@ export default function Login(props) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { session: token } = nextCookies(context);
+  const loggedIn = await isSessionTokenValid(token);
 
-  const redirectDestination = context?.query?.returnTo ?? '/';
+  const redirectDestination = context?.query?.returnTo ?? '/dashboard';
 
   if (await isSessionTokenValid(token)) {
     return {
@@ -86,6 +90,6 @@ export async function getServerSideProps() {
   }
 
   return {
-    props: { loggedIn: false, redirectDestination: redirectDestination },
+    props: { loggedIn, redirectDestination },
   };
 }
