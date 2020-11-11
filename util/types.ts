@@ -15,8 +15,17 @@ export type Session = {
 export type StorageItem = {
   id: number;
   storageItemName: string;
-  storageItemLocation: string;
+  storageItemLocation?: string;
   userId: number;
 };
 
-// export type StorageItems = [];
+export type ClothingItem = {
+  id: number;
+  storageItemId: number;
+  clothingItemsTypeId: number;
+  colorId?: number;
+  sizeId: number;
+  seasonId?: number;
+  genderId?: number;
+  notes?: string;
+};

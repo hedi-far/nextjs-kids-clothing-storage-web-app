@@ -16,7 +16,7 @@ type Props = { loggedIn: boolean; user: User; storageItems: StorageItem };
 
 export default function Dashboard(props: Props) {
   // console.log(props.storageItems[0].storageItemName);
-  console.log(typeof props.storageItems);
+  // console.log(typeof props.storageItems);
   return (
     <div>
       <Layout loggedIn={props.loggedIn}>
@@ -45,14 +45,7 @@ export default function Dashboard(props: Props) {
           <br />
           <h2>Add new storage item</h2>
           <br />
-          <Link href="/dashboard/search">
-            <a>Search my clothes</a>
-          </Link>
-          <br />
-          <Link href="/dashboard/my-list">
-            <a>My list</a>
-          </Link>
-          <br />
+          <h2>My account</h2>
           <Link href="/dashboard/account">
             <a>My account</a>
           </Link>

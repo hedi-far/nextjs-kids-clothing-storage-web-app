@@ -1,7 +1,7 @@
 import camelcaseKeys from 'camelcase-keys';
 import postgres from 'postgres';
 import dotenv from 'dotenv';
-import { Session, User, StorageItem } from './types';
+import { Session, User, StorageItem, ClothingItem } from './types';
 
 dotenv.config();
 
@@ -87,7 +87,7 @@ export async function deleteSessionByToken(token: string | undefined) {
   `;
 }
 
-// o storage_items
+// storage_items
 
 export async function getStorageItemByUserId(userId: number) {
   // // Return undefined if the id is not
@@ -99,4 +99,30 @@ export async function getStorageItemByUserId(userId: number) {
   `;
 
   return storageItems.map((s) => camelcaseKeys(s));
+}
+
+//clothing_items
+
+export async function getClothingItemByStorageItemId(storageItemId: number) {
+  // // Return undefined if the id is not
+  // // in the correct format
+  // if (!/^\d+$/.test(userId)) return undefined;
+
+  const clothingItems = await sql<ClothingItem[]>`
+  SELECT * FROM clothing_items WHERE storage_item_id = ${storageItemId};
+  `;
+
+  return clothingItems.map((s) => camelcaseKeys(s));
+}
+
+export async function getClothingItemByClothingItemId(clothingItemId: number) {
+  // // Return undefined if the id is not
+  // // in the correct format
+  // if (!/^\d+$/.test(userId)) return undefined;
+
+  const clothingItems = await sql<ClothingItem[]>`
+  SELECT * FROM clothing_items WHERE id = ${clothingItemId};
+  `;
+
+  return clothingItems.map((s) => camelcaseKeys(s));
 }

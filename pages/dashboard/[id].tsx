@@ -16,11 +16,7 @@ export default function Search(props: Props) {
         </Head>
         <main>
           <h1>Storage item</h1>
-          {/* <Link href="/dashboard">
-            <a>
-              <button>Delete</button>
-            </a>
-          </Link> */}
+
           <h1>Add new clothing_item</h1>
           <br />
         </main>
@@ -36,7 +32,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if (!(await isSessionTokenValid(token))) {
     return {
       redirect: {
-        destination: '/login?returnTo=/dashboard/storage-item',
+        destination: '/login?returnTo=/dashboard/[id]',
         permanent: false,
       },
     };
