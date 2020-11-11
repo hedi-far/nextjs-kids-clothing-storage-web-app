@@ -101,6 +101,25 @@ export async function getStorageItemByUserId(userId: number) {
   return storageItems.map((s) => camelcaseKeys(s));
 }
 
+export async function getStorageItemByStorageItemId(storageItemId: number) {
+  // // Return undefined if the id is not
+  // // in the correct format
+  // if (!/^\d+$/.test(userId)) return undefined;
+
+  const storageItems = await sql<StorageItem[]>`
+  SELECT 
+  *
+  
+  FROM 
+  storage_items
+
+  WHERE 
+  storage_items.id = ${storageItemId}
+  `;
+
+  return storageItems.map((s) => camelcaseKeys(s));
+}
+
 //clothing_items
 
 export async function getClothingItemByStorageItemId(storageItemId: number) {
@@ -120,8 +139,25 @@ export async function getClothingItemByClothingItemId(clothingItemId: number) {
   // // in the correct format
   // if (!/^\d+$/.test(userId)) return undefined;
 
+  //FIXME
   const clothingItems = await sql<ClothingItem[]>`
-  SELECT * FROM clothing_items WHERE id = ${clothingItemId};
+  SELECT 
+  ci.id,
+  clothing_items_type,
+  color
+  
+  FROM clothing_items AS ci
+  
+  FULL JOIN
+  clothing_items_types AS cit
+  ON cit.id = ci.clothing_items_type_id
+
+  FULL JOIN
+  clothing_items_colors AS cic
+  ON
+  cic.id = ci.clothing_items_color.id
+  
+  
   `;
 
   return clothingItems.map((s) => camelcaseKeys(s));
