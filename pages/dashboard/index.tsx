@@ -2,38 +2,61 @@ import Head from 'next/head';
 import Layout from '../../components/Layout';
 import Link from 'next/link';
 import nextCookies from 'next-cookies';
+// import { useState } from 'react';
+import { User, StorageItem } from '../../util/types';
 import { GetServerSidePropsContext } from 'next';
+import {
+  // getUserByUserId
+  getStorageItemByUserId,
+  getUserBySessionToken,
+} from '../../util/database';
 import { isSessionTokenValid } from '../../util/auth';
 
-type Props = { loggedIn: boolean };
+type Props = { loggedIn: boolean; user: User; storageItems: StorageItem };
 
 export default function Dashboard(props: Props) {
+  // console.log(props.storageItems[0].storageItemName);
+  console.log(typeof props.storageItems);
   return (
     <div>
       <Layout loggedIn={props.loggedIn}>
         <Head>
-          <title>Welcome!</title>
+          <title>
+            Welcome <p>{props.user.username}</p>!
+          </title>
         </Head>
         <main>
-          <h1>My dashbaord</h1>
-          <Link href="/dashboard/storage-item">
-            <a>
-              <button>Storage-item</button>
-            </a>
-          </Link>
-
+          <h1>My dashboard</h1>
+          <h2>My storage items</h2>
+          <ul>
+            {props.storageItems.map((storageItem: StorageItem) => {
+              return (
+                <li key={storageItem.id}>
+                  <Link href={`/dashboard/${storageItem.id}`}>
+                    <a>
+                      Name: {storageItem.storageItemName} Location:{' '}
+                      {storageItem.storageItemLocation}
+                    </a>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+          <br />
+          <h2>Add new storage item</h2>
+          <br />
           <Link href="/dashboard/search">
-            <a>Search</a>
+            <a>Search my clothes</a>
           </Link>
+          <br />
           <Link href="/dashboard/my-list">
-            <a>List</a>
+            <a>My list</a>
           </Link>
-
+          <br />
           <Link href="/dashboard/account">
-            <a>
-              <button>Account</button>
-            </a>
+            <a>My account</a>
           </Link>
+          <br />
         </main>
       </Layout>
     </div>
@@ -53,9 +76,21 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
 
+  const user = await getUserBySessionToken(token);
+
+  const userId = user.id;
+
+  // console.log(user);
+
+  const storageItems = await getStorageItemByUserId(userId);
+
+  // console.log(storageItems);
+
   return {
     props: {
+      user,
       loggedIn,
+      storageItems,
     },
   };
 }

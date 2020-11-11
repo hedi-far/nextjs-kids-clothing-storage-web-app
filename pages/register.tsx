@@ -63,28 +63,32 @@ export default function Register(props: Props) {
               }
             }}
           >
-            <label>
+            <label htmlFor="email">
               E-mail
               <input
                 value={email}
                 onChange={(e) => setEmail(e.currentTarget.value)}
+                required
               />
             </label>
             <br />
-            <label>
+            <label htmlFor="username">
               Username
               <input
                 value={username}
+                type="email"
                 onChange={(e) => setUsername(e.currentTarget.value)}
+                required
               />
             </label>
             <br />
-            <label>
+            <label htmlFor="password">
               Password
               <input
                 value={password}
                 type="password"
                 onChange={(e) => setPassword(e.currentTarget.value)}
+                required
               />
             </label>
             <br />

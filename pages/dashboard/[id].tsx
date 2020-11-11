@@ -21,6 +21,8 @@ export default function Search(props: Props) {
               <button>Delete</button>
             </a>
           </Link> */}
+          <h1>Add new clothing_item</h1>
+          <br />
         </main>
       </Layout>
     </div>

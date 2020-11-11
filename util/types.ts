@@ -11,3 +11,12 @@ export type Session = {
   expiryTimestamp: Date;
   userId: number;
 };
+
+export type StorageItem = {
+  id: number;
+  storageItemName: string;
+  storageItemLocation: string;
+  userId: number;
+};
+
+// export type StorageItems = [];

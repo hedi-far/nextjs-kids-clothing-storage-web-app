@@ -17,6 +17,8 @@ export default function Account(props: Props) {
       </Head>
       <main>
         <h1>Account</h1>
+        <h2>user-id</h2>
+        <p>{props.user.id}</p>
         <h2>username</h2>
         <p>{props.user.username}</p>
 
@@ -47,6 +49,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 
   const user = await getUserBySessionToken(token);
+  // console.log(user);
+  // { id: 8, email: 'testuser@test.at', username: 'test' }
 
   return {
     props: {
