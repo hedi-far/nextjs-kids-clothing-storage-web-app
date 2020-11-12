@@ -25,16 +25,14 @@ export default async function handler(
 
     const clothingItem = await getClothingItemByStorageItemId(storageItemId);
 
-    const clothingItemJoin = await getClothingItemByClothingItemId(
-      clothingItem[0].id,
-    );
+    // const clothingItemJoin = await getClothingItemByClothingItemId(
+    //   clothingItemId,
+    // );
 
-    console.log(clothingItemJoin);
+    // console.log(clothingItemJoin);
 
     response.statusCode = 200;
     response.setHeader('Content-Type', 'application/json');
-    response.end(
-      JSON.stringify({ storageItem, clothingItem, clothingItemJoin }),
-    );
+    response.end(JSON.stringify({ storageItem, clothingItem }));
   }
 }

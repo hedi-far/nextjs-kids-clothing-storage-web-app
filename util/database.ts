@@ -141,23 +141,27 @@ export async function getClothingItemByClothingItemId(clothingItemId: number) {
 
   //FIXME
   const clothingItems = await sql<ClothingItem[]>`
-  SELECT 
-  ci.id,
-  clothing_items_type,
-  color
-  
-  FROM clothing_items AS ci
-  
-  FULL JOIN
-  clothing_items_types AS cit
-  ON cit.id = ci.clothing_items_type_id
+SELECT
+clothing_items_type,
+color,
+size,
+season,
+gender,
+clothing_items.id,
+notes,
 
-  FULL JOIN
-  clothing_items_colors AS cic
-  ON
-  cic.id = ci.clothing_items_color.id
-  
-  
+FROM 
+clothing_items_types
+JOIN clothing_items
+ ON clothing_items_types.id = clothing_items.clothing_items_type_id
+JOIN clothing_items_colors 
+ ON clothing_items_colors.id = clothing_items.color_id
+JOIN clothing_items_sizes
+ ON clothing_items_sizes.id = clothing_items.size_id
+JOIN clothing_items_seasons
+ ON clothing_items_seasons.id = clothing_items.season_id
+JOIN clothing_items_gender
+ ON clothing_items_gender.id = clothing_items.gender_id; 
   `;
 
   return clothingItems.map((s) => camelcaseKeys(s));
