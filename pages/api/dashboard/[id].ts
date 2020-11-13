@@ -3,7 +3,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import {
   getStorageItemByStorageItemId,
   getClothingItemByStorageItemId,
-  getClothingItemByClothingItemId,
 } from '../../../util/database';
 
 export default async function handler(
@@ -25,11 +24,7 @@ export default async function handler(
 
     const clothingItem = await getClothingItemByStorageItemId(storageItemId);
 
-    // const clothingItemJoin = await getClothingItemByClothingItemId(
-    //   clothingItemId,
-    // );
-
-    // console.log(clothingItemJoin);
+    // const clothingItemJoin = await getClothingItems();
 
     response.statusCode = 200;
     response.setHeader('Content-Type', 'application/json');

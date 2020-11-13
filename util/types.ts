@@ -29,3 +29,14 @@ export type ClothingItem = {
   genderId?: number;
   notes?: string;
 };
+
+export type ClothingItemDetail = {
+  id: number;
+  storageItemId: number;
+  clothingItemsType: string;
+  color?: string;
+  size: number;
+  season?: string;
+  gender?: string;
+  notes?: string;
+};

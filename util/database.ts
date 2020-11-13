@@ -128,39 +128,61 @@ export async function getClothingItemByStorageItemId(storageItemId: number) {
   // if (!/^\d+$/.test(userId)) return undefined;
 
   const clothingItems = await sql<ClothingItem[]>`
-  SELECT * FROM clothing_items WHERE storage_item_id = ${storageItemId};
-  `;
+  SELECT 
+  clothing_items.id,
+  storage_item_id,
+  clothing_items_type,
+  color,
+  size,
+  season,
+  gender,
+  notes
+
+  FROM clothing_items_types
+  INNER JOIN clothing_items
+  ON clothing_items_types.id = clothing_items.clothing_items_type_id AND storage_item_id = ${storageItemId} 
+INNER JOIN clothing_items_colors 
+  ON clothing_items_colors.id = clothing_items.color_id
+INNER JOIN clothing_items_sizes
+  ON clothing_items_sizes.id = clothing_items.size_id
+INNER JOIN clothing_items_seasons
+  ON clothing_items_seasons.id = clothing_items.season_id
+INNER JOIN clothing_items_gender
+ ON clothing_items_gender.id = clothing_items.gender_id; 
+
+ `;
 
   return clothingItems.map((s) => camelcaseKeys(s));
 }
 
-export async function getClothingItemByClothingItemId(clothingItemId: number) {
+//list of ALL clothing_items in db - to check
+export async function getClothingItems() {
   // // Return undefined if the id is not
   // // in the correct format
   // if (!/^\d+$/.test(userId)) return undefined;
 
-  //FIXME
   const clothingItems = await sql<ClothingItem[]>`
 SELECT
+clothing_items.id,
 clothing_items_type,
 color,
 size,
 season,
 gender,
-clothing_items.id,
-notes,
+notes
+
 
 FROM 
 clothing_items_types
-JOIN clothing_items
- ON clothing_items_types.id = clothing_items.clothing_items_type_id
-JOIN clothing_items_colors 
- ON clothing_items_colors.id = clothing_items.color_id
-JOIN clothing_items_sizes
- ON clothing_items_sizes.id = clothing_items.size_id
-JOIN clothing_items_seasons
- ON clothing_items_seasons.id = clothing_items.season_id
-JOIN clothing_items_gender
+ INNER JOIN clothing_items
+  ON clothing_items_types.id = clothing_items.clothing_items_type_id 
+INNER JOIN clothing_items_colors 
+  ON clothing_items_colors.id = clothing_items.color_id
+INNER JOIN clothing_items_sizes
+  ON clothing_items_sizes.id = clothing_items.size_id
+INNER JOIN clothing_items_seasons
+  ON clothing_items_seasons.id = clothing_items.season_id
+INNER JOIN clothing_items_gender
  ON clothing_items_gender.id = clothing_items.gender_id; 
   `;
 

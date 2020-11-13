@@ -32,12 +32,14 @@ export default function Dashboard(props: Props) {
             {props.storageItems.map((storageItem: StorageItem) => {
               return (
                 <li key={storageItem.id}>
-                  <Link href={`/dashboard/${storageItem.id}`}>
-                    <a>
-                      Name: {storageItem.storageItemName} Location:{' '}
-                      {storageItem.storageItemLocation}
-                    </a>
-                  </Link>
+                  <ul>
+                    <Link href={`/dashboard/${storageItem.id}`}>
+                      <a>
+                        Name: {storageItem.storageItemName} Location:
+                        {storageItem.storageItemLocation}
+                      </a>
+                    </Link>
+                  </ul>
                 </li>
               );
             })}
