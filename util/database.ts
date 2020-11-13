@@ -1,7 +1,14 @@
 import camelcaseKeys from 'camelcase-keys';
 import postgres from 'postgres';
 import dotenv from 'dotenv';
-import { Session, User, StorageItem, ClothingItem } from './types';
+import {
+  Session,
+  User,
+  StorageItem,
+  ClothingItem,
+  ClothingItemsType,
+  ClothingItemsColor,
+} from './types';
 
 dotenv.config();
 
@@ -89,6 +96,22 @@ export async function deleteSessionByToken(token: string | undefined) {
 
 // storage_items
 
+export async function insertStorageItem(
+  storageItemName: string,
+  userId: number,
+  storageItemLocation: string,
+) {
+  const sessions = await sql<StorageItem[]>`
+    INSERT INTO storage_items
+      (storage_item_name, storage_item_location, user_id)
+    VALUES
+      (${storageItemName}, ${userId}, ${storageItemLocation})
+    RETURNING *;
+  `;
+
+  return sessions.map((s) => camelcaseKeys(s))[0];
+}
+
 export async function getStorageItemByUserId(userId: number) {
   // // Return undefined if the id is not
   // // in the correct format
@@ -121,6 +144,34 @@ export async function getStorageItemByStorageItemId(storageItemId: number) {
 }
 
 //clothing_items
+
+export async function insertClothingItem(
+  storageItemId: number,
+  clothingItemsTypeId: number,
+  colorId: number,
+  sizeId: number,
+  seasonId: number,
+  genderId: number,
+  notes: string,
+) {
+  const sessions = await sql<ClothingItem[]>`
+    INSERT INTO clothing_items
+      (
+        storage_item_id,
+        clothing_items_type_id,
+        color_id,
+        size_id,
+        season_id,
+        gender_id,
+        notes
+      )
+    VALUES
+      (${storageItemId}, ${clothingItemsTypeId}, ${colorId}, ${seasonId}, ${genderId}, ${notes})
+    RETURNING *;
+  `;
+
+  return sessions.map((s) => camelcaseKeys(s))[0];
+}
 
 export async function getClothingItemByStorageItemId(storageItemId: number) {
   // // Return undefined if the id is not
@@ -187,4 +238,38 @@ INNER JOIN clothing_items_gender
   `;
 
   return clothingItems.map((s) => camelcaseKeys(s));
+}
+
+//clothing_item_types
+
+export async function getClothingItemTypes() {
+  // // Return undefined if the id is not
+  // // in the correct format
+  // if (!/^\d+$/.test(userId)) return undefined;
+
+  const clothingItemsTypes = await sql<ClothingItemsType[]>`
+SELECT
+*
+FROM 
+clothing_items_types;
+ `;
+
+  return clothingItemsTypes.map((s) => camelcaseKeys(s));
+}
+
+//color
+
+export async function getClothingItemColors() {
+  // // Return undefined if the id is not
+  // // in the correct format
+  // if (!/^\d+$/.test(userId)) return undefined;
+
+  const clothingItemsColors = await sql<ClothingItemsColor[]>`
+SELECT
+*
+FROM 
+clothing_items_colors;
+ `;
+
+  return clothingItemsColors.map((s) => camelcaseKeys(s));
 }

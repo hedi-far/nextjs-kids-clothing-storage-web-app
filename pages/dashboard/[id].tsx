@@ -3,12 +3,18 @@ import Layout from '../../components/Layout';
 // import Link from 'next/link';
 import nextCookies from 'next-cookies';
 import { GetServerSidePropsContext } from 'next';
-import { StorageItem, ClothingItemDetail } from '../../util/types';
 import {
-  // getUserByUserId
+  StorageItem,
+  ClothingItemDetail,
+  ClothingItemsType,
+  ClothingItemsColor,
+} from '../../util/types';
+import {
+  getClothingItemTypes,
   getStorageItemByUserId,
   getUserBySessionToken,
   getClothingItemByStorageItemId,
+  getClothingItemColors,
 } from '../../util/database';
 import { isSessionTokenValid } from '../../util/auth';
 
@@ -16,9 +22,12 @@ type Props = {
   loggedIn: boolean;
   storageItem: StorageItem;
   clothingItems: ClothingItemDetail[];
+  clothingItemsTypes: ClothingItemsType[];
+  clothingItemsColors: ClothingItemsColor[];
 };
 
 export default function Search(props: Props) {
+  // console.log(props.clothingItemTypes);
   return (
     <div>
       <Layout loggedIn={props.loggedIn}>
@@ -67,6 +76,36 @@ export default function Search(props: Props) {
           </table>
           <h1>Add new clothing_item</h1>
           <br />
+          <form>
+            <label htmlFor="type">
+              {' '}
+              Type:
+              <select id="type" required>
+                {props.clothingItemsTypes.map((type: ClothingItemsType) => {
+                  return (
+                    <option key={type.id} value={type.id}>
+                      {type.clothingItemsType}
+                    </option>
+                  );
+                })}
+              </select>
+            </label>
+            <label htmlFor="color">
+              {' '}
+              Color:
+              <select id="color" required>
+                {props.clothingItemsColors.map((color: ClothingItemsColor) => {
+                  return (
+                    <option key={color.id} value={color.id}>
+                      {color.color}
+                    </option>
+                  );
+                })}
+              </select>
+            </label>
+            <br />
+            <button>Add storage item</button>
+          </form>
         </main>
       </Layout>
     </div>
@@ -98,11 +137,19 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   const storageItem = storageItems.find((element) => element.id === currentId);
 
-  console.log(storageItem);
+  // console.log(storageItem);
 
   const clothingItems = await getClothingItemByStorageItemId(storageItem.id);
 
-  console.log(clothingItems);
+  // console.log(clothingItems);
+
+  const clothingItemsTypes = await getClothingItemTypes();
+
+  // console.log(clothingItemTypes);
+
+  const clothingItemsColors = await getClothingItemColors();
+
+  console.log(clothingItemsColors);
 
   return {
     props: {
@@ -110,6 +157,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       loggedIn,
       storageItem,
       clothingItems,
+      clothingItemsTypes,
+      clothingItemsColors,
     },
   };
 }
