@@ -35,7 +35,7 @@ export type ClothingItemDetail = {
   storageItemId: number;
   clothingItemsType: string;
   color?: string;
-  size: number;
+  size: string;
   season?: string;
   gender?: string;
   notes?: string;
@@ -49,4 +49,19 @@ export type ClothingItemsType = {
 export type ClothingItemsColor = {
   id: number;
   color: string;
+};
+
+export type ClothingItemsSize = {
+  id: number;
+  size: string;
+};
+
+export type ClothingItemsSeason = {
+  id: number;
+  season: string;
+};
+
+export type ClothingItemsGender = {
+  id: number;
+  gender: string;
 };

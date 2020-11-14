@@ -8,6 +8,9 @@ import {
   ClothingItemDetail,
   ClothingItemsType,
   ClothingItemsColor,
+  ClothingItemsSize,
+  ClothingItemsSeason,
+  ClothingItemsGender,
 } from '../../util/types';
 import {
   getClothingItemTypes,
@@ -15,6 +18,9 @@ import {
   getUserBySessionToken,
   getClothingItemByStorageItemId,
   getClothingItemColors,
+  getClothingItemSizes,
+  getClothingItemSeasons,
+  getClothingItemGender,
 } from '../../util/database';
 import { isSessionTokenValid } from '../../util/auth';
 
@@ -24,6 +30,9 @@ type Props = {
   clothingItems: ClothingItemDetail[];
   clothingItemsTypes: ClothingItemsType[];
   clothingItemsColors: ClothingItemsColor[];
+  clothingItemsSizes: ClothingItemsSize[];
+  clothingItemsSeasons: ClothingItemsSeason[];
+  clothingItemsGender: ClothingItemsGender[];
 };
 
 export default function Search(props: Props) {
@@ -79,7 +88,7 @@ export default function Search(props: Props) {
           <form>
             <label htmlFor="type">
               {' '}
-              Type:
+              Type (required):
               <select id="type" required>
                 {props.clothingItemsTypes.map((type: ClothingItemsType) => {
                   return (
@@ -93,7 +102,8 @@ export default function Search(props: Props) {
             <label htmlFor="color">
               {' '}
               Color:
-              <select id="color" required>
+              <select id="color">
+                <option label=" " />
                 {props.clothingItemsColors.map((color: ClothingItemsColor) => {
                   return (
                     <option key={color.id} value={color.id}>
@@ -102,6 +112,61 @@ export default function Search(props: Props) {
                   );
                 })}
               </select>
+            </label>
+            <label htmlFor="size">
+              {' '}
+              Size (required):
+              <select id="size" required>
+                {props.clothingItemsSizes.map((size: ClothingItemsSize) => {
+                  return (
+                    <option key={size.id} value={size.id}>
+                      {size.size}
+                    </option>
+                  );
+                })}
+              </select>
+            </label>
+            <label htmlFor="season">
+              {' '}
+              Season:
+              <select id="season">
+                <option label=" " />
+                {props.clothingItemsSeasons.map(
+                  (season: ClothingItemsSeason) => {
+                    return (
+                      <option key={season.id} value={season.id}>
+                        {season.season}
+                      </option>
+                    );
+                  },
+                )}
+              </select>
+            </label>
+            <label htmlFor="gender">
+              {' '}
+              Gender:
+              <select id="gender">
+                <option label=" " />
+                {props.clothingItemsGender.map(
+                  (gender: ClothingItemsGender) => {
+                    return (
+                      <option key={gender.id} value={gender.id}>
+                        {gender.gender}
+                      </option>
+                    );
+                  },
+                )}
+              </select>
+            </label>
+            <label htmlFor="notes">
+              Notes:
+              <input
+                type="text"
+                id="note"
+                // value="clothingItemNotes"
+                minLength={0}
+                maxLength={100}
+              />
             </label>
             <br />
             <button>Add storage item</button>
@@ -149,7 +214,19 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   const clothingItemsColors = await getClothingItemColors();
 
-  console.log(clothingItemsColors);
+  // console.log(clothingItemsColors);
+
+  const clothingItemsSizes = await getClothingItemSizes();
+
+  // console.log(clothingItemsSizes);
+
+  const clothingItemsSeasons = await getClothingItemSeasons();
+
+  // console.log(clothingItemsSeasons);
+
+  const clothingItemsGender = await getClothingItemGender();
+
+  // console.log(clothingItemsGender);
 
   return {
     props: {
@@ -159,6 +236,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       clothingItems,
       clothingItemsTypes,
       clothingItemsColors,
+      clothingItemsSizes,
+      clothingItemsSeasons,
+      clothingItemsGender,
     },
   };
 }

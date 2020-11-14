@@ -8,6 +8,9 @@ import {
   ClothingItem,
   ClothingItemsType,
   ClothingItemsColor,
+  ClothingItemsSize,
+  ClothingItemsSeason,
+  ClothingItemsGender,
 } from './types';
 
 dotenv.config();
@@ -272,4 +275,55 @@ clothing_items_colors;
  `;
 
   return clothingItemsColors.map((s) => camelcaseKeys(s));
+}
+
+//size
+
+export async function getClothingItemSizes() {
+  // // Return undefined if the id is not
+  // // in the correct format
+  // if (!/^\d+$/.test(userId)) return undefined;
+
+  const clothingItemsSizes = await sql<ClothingItemsSize[]>`
+SELECT
+*
+FROM 
+clothing_items_sizes;
+ `;
+
+  return clothingItemsSizes.map((s) => camelcaseKeys(s));
+}
+
+//season
+
+export async function getClothingItemSeasons() {
+  // // Return undefined if the id is not
+  // // in the correct format
+  // if (!/^\d+$/.test(userId)) return undefined;
+
+  const clothingItemsSeasons = await sql<ClothingItemsSeason[]>`
+SELECT
+*
+FROM 
+clothing_items_seasons;
+ `;
+
+  return clothingItemsSeasons.map((s) => camelcaseKeys(s));
+}
+
+//gender
+
+export async function getClothingItemGender() {
+  // // Return undefined if the id is not
+  // // in the correct format
+  // if (!/^\d+$/.test(userId)) return undefined;
+
+  const clothingItemsGender = await sql<ClothingItemsGender[]>`
+SELECT
+*
+FROM 
+clothing_items_gender;
+ `;
+
+  return clothingItemsGender.map((s) => camelcaseKeys(s));
 }
