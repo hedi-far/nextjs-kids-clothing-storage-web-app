@@ -16,6 +16,7 @@ export default function Search(props: Props) {
         </Head>
         <main>
           <h1>Search</h1>
+
           {/* <Link href="/dashboard">
             <a>
               <button>Register</button>

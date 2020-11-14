@@ -65,3 +65,16 @@ export type ClothingItemsGender = {
   id: number;
   gender: string;
 };
+
+export type MyList = {
+  id: number;
+  storageItemId: number;
+  clothingItemsType: string;
+  color?: string;
+  size: string;
+  season?: string;
+  gender?: string;
+  notes?: string;
+  storageItemName: string;
+  storageItemLocation?: string;
+};

@@ -1,8 +1,12 @@
 import Head from 'next/head';
 import Layout from '../../components/Layout';
+import AddToListButton from '../../components/AddToListButton';
 // import Link from 'next/link';
-import nextCookies from 'next-cookies';
 import { GetServerSidePropsContext } from 'next';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import nextCookies from 'next-cookies';
+import Cookies from 'js-cookie';
 import {
   StorageItem,
   ClothingItemDetail,
@@ -11,6 +15,7 @@ import {
   ClothingItemsSize,
   ClothingItemsSeason,
   ClothingItemsGender,
+  MyList,
 } from '../../util/types';
 import {
   getClothingItemTypes,
@@ -21,8 +26,10 @@ import {
   getClothingItemSizes,
   getClothingItemSeasons,
   getClothingItemGender,
+  getInfoForMyList,
 } from '../../util/database';
 import { isSessionTokenValid } from '../../util/auth';
+// import { handleAddToList } from '../../util/my-list';
 
 type Props = {
   loggedIn: boolean;
@@ -33,10 +40,30 @@ type Props = {
   clothingItemsSizes: ClothingItemsSize[];
   clothingItemsSeasons: ClothingItemsSeason[];
   clothingItemsGender: ClothingItemsGender[];
+  myList: MyList;
+  listInfo: MyList[];
 };
 
 export default function Search(props: Props) {
-  // console.log(props.clothingItemTypes);
+  const [clothingItemTypeId, setClothingItemTypeId] = useState('');
+  const [clothingItemSizeId, setClothingItemSizeId] = useState('');
+  const [clothingItemColorId, setClothingItemColorId] = useState('');
+  const [clothingItemSeasonId, setClothingItemSeasonId] = useState('');
+  const [clothingItemGenderId, setClothingItemGenderId] = useState('');
+  const [clothingItemNotesId, setClothingItemNotes] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const router = useRouter();
+  const [myList, setMyList] = useState(props.myList);
+
+  //sets cookie for personal clothing items list
+  useEffect(() => {
+    Cookies.set('myList', myList);
+  }, [myList]);
+
+  // // console.log(myList);
+  // console.log(props.myList);
+  // console.log(props.listInfo);
+
   return (
     <div>
       <Layout loggedIn={props.loggedIn}>
@@ -44,52 +71,119 @@ export default function Search(props: Props) {
           <title>Welcome!</title>
         </Head>
         <main>
+          {/* user sees current list of clothing items in respective storage item */}
           <h1>Storage item</h1>
           Name: {props.storageItem.storageItemName} <br />
           Location: {props.storageItem.storageItemLocation}
           <table>
-            <tr>
-              <th>type</th>
-              <th>color</th>
-              <th>size</th>
-              <th>season</th>
-              <th>gender</th>
-              <th>notes</th>
-              <th />
-              <th />
-              <th />
-            </tr>
-            {props.clothingItems.map((clothingItem: ClothingItemDetail) => {
+            <thead>
+              <tr>
+                <th>type</th>
+                <th>color</th>
+                <th>size</th>
+                <th>season</th>
+                <th>gender</th>
+                <th>notes</th>
+                <th />
+                <th />
+                <th />
+              </tr>
+            </thead>
+
+            {props.listInfo.map((clothingItem: MyList) => {
               return (
-                <tr key={clothingItem.id}>
-                  <td>{clothingItem.clothingItemsType}</td>
-                  <td>{clothingItem.color}</td>
-                  <td>{clothingItem.size}</td>
-                  <td>{clothingItem.season}</td>
-                  <td>{clothingItem.gender}</td>
-                  <td>{clothingItem.notes}</td>
-                  <td>
-                    <button>Edit</button>
-                  </td>
-                  <td>
-                    {' '}
-                    <button>Delete</button>
-                  </td>
-                  <td>
-                    {' '}
-                    <button>Add to List</button>
-                  </td>
-                </tr>
+                <tbody key={clothingItem.id}>
+                  <tr>
+                    <td>{clothingItem.clothingItemsType}</td>
+                    <td>{clothingItem.color}</td>
+                    <td>{clothingItem.size}</td>
+                    <td>{clothingItem.season}</td>
+                    <td>{clothingItem.gender}</td>
+                    <td>{clothingItem.notes}</td>
+                    <td>
+                      <button>Edit</button>
+                    </td>
+                    <td>
+                      {' '}
+                      <button>Delete</button>
+                    </td>
+                    <td>
+                      {' '}
+                      <AddToListButton
+                        myList={myList}
+                        listInfo={props.listInfo}
+                      />
+                      {/* {/* <button
+                        onClick={() =>
+                          handleAddToList(myList, props.clothingItems[0])
+                        }
+                      // > 
+                      //   Add to List
+                      // </button> */}
+                    </td>
+                  </tr>
+                </tbody>
               );
             })}
           </table>
-          <h1>Add new clothing_item</h1>
+          {/* form to add new clothing items to respective storage item */}
+          <h1>Add new clothing item</h1>
           <br />
-          <form>
+          <form
+            onSubmit={async (e) => {
+              // Prevent the default browser behavior of forms
+              e.preventDefault();
+
+              // Send the data to the
+              // API route
+              const id = props.storageItem.id;
+
+              const response = await fetch(`../api/dashboard/${id}`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  clothingItemsTypeId: clothingItemTypeId,
+                  sizeId: clothingItemSizeId,
+                  colorId: clothingItemColorId,
+                  seasonId: clothingItemSeasonId,
+                  genderId: clothingItemGenderId,
+                  notes: clothingItemNotesId,
+                  storageItemId: props.storageItem.id,
+                }),
+              });
+
+              const { success } = await response.json();
+
+              // console.log(response.body);
+
+              if (success) {
+                // Redirect so same page
+                router.push(`/dashboard/${id}`);
+              } else {
+                // If the response status code (set using response.status()
+                // in the API route) is 409 (Conflict) then show an error
+                // message that the user already exists
+                if (response.status === 409) {
+                  setErrorMessage('Already exists!');
+                } else {
+                  setErrorMessage('Failed!');
+                }
+              }
+            }}
+          >
+            {/* form fields start here */}
             <label htmlFor="type">
               {' '}
               Type (required):
-              <select id="type" required>
+              <select
+                id="type"
+                required
+                value={clothingItemTypeId}
+                onChange={(e) => setClothingItemTypeId(e.currentTarget.value)}
+              >
+                <option label=" " />
                 {props.clothingItemsTypes.map((type: ClothingItemsType) => {
                   return (
                     <option key={type.id} value={type.id}>
@@ -99,10 +193,34 @@ export default function Search(props: Props) {
                 })}
               </select>
             </label>
+            <label htmlFor="size">
+              {' '}
+              Size (required):
+              <select
+                id="size"
+                required
+                value={clothingItemSizeId}
+                onChange={(e) => setClothingItemSizeId(e.currentTarget.value)}
+              >
+                <option label=" " />
+                {props.clothingItemsSizes.map((size: ClothingItemsSize) => {
+                  return (
+                    <option key={size.id} value={size.id}>
+                      {size.size}
+                    </option>
+                  );
+                })}
+              </select>
+            </label>
+            <br />
             <label htmlFor="color">
               {' '}
               Color:
-              <select id="color">
+              <select
+                id="color"
+                value={clothingItemColorId}
+                onChange={(e) => setClothingItemColorId(e.currentTarget.value)}
+              >
                 <option label=" " />
                 {props.clothingItemsColors.map((color: ClothingItemsColor) => {
                   return (
@@ -113,23 +231,15 @@ export default function Search(props: Props) {
                 })}
               </select>
             </label>
-            <label htmlFor="size">
-              {' '}
-              Size (required):
-              <select id="size" required>
-                {props.clothingItemsSizes.map((size: ClothingItemsSize) => {
-                  return (
-                    <option key={size.id} value={size.id}>
-                      {size.size}
-                    </option>
-                  );
-                })}
-              </select>
-            </label>
+
             <label htmlFor="season">
               {' '}
               Season:
-              <select id="season">
+              <select
+                id="season"
+                value={clothingItemSeasonId}
+                onChange={(e) => setClothingItemSeasonId(e.currentTarget.value)}
+              >
                 <option label=" " />
                 {props.clothingItemsSeasons.map(
                   (season: ClothingItemsSeason) => {
@@ -145,7 +255,11 @@ export default function Search(props: Props) {
             <label htmlFor="gender">
               {' '}
               Gender:
-              <select id="gender">
+              <select
+                id="gender"
+                value={clothingItemGenderId}
+                onChange={(e) => setClothingItemGenderId(e.currentTarget.value)}
+              >
                 <option label=" " />
                 {props.clothingItemsGender.map(
                   (gender: ClothingItemsGender) => {
@@ -157,20 +271,24 @@ export default function Search(props: Props) {
                   },
                 )}
               </select>
+              <br />
             </label>
             <label htmlFor="notes">
               Notes:
-              <input
-                type="text"
-                id="note"
-                // value="clothingItemNotes"
-                minLength={0}
+              <textarea
+                rows={3}
+                cols={20}
+                id="notes"
+                name="notes"
+                value={clothingItemNotesId}
                 maxLength={100}
+                onChange={(e) => setClothingItemNotes(e.currentTarget.value)}
               />
             </label>
             <br />
             <button>Add storage item</button>
           </form>
+          <p>{errorMessage}</p>
         </main>
       </Layout>
     </div>
@@ -189,6 +307,11 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       },
     };
   }
+
+  const allCookies = nextCookies(context);
+  const myList = allCookies.myList || [];
+
+  // console.log(myList);
 
   const user = await getUserBySessionToken(token);
 
@@ -228,6 +351,10 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   // console.log(clothingItemsGender);
 
+  const listInfo = await getInfoForMyList(storageItem.id);
+
+  // console.log(listInfo);
+
   return {
     props: {
       user,
@@ -239,6 +366,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       clothingItemsSizes,
       clothingItemsSeasons,
       clothingItemsGender,
+      myList,
+      listInfo,
     },
   };
 }

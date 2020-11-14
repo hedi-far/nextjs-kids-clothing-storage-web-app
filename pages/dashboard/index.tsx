@@ -114,6 +114,7 @@ export default function Dashboard(props: Props) {
             <br />
             <button>Add storage item</button>
           </form>
+          <p>{errorMessage}</p>
           <h2>My account</h2>
           <Link href="/dashboard/account">
             <a>My account</a>

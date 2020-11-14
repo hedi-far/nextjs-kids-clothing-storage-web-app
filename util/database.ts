@@ -11,6 +11,7 @@ import {
   ClothingItemsSize,
   ClothingItemsSeason,
   ClothingItemsGender,
+  MyList,
 } from './types';
 
 dotenv.config();
@@ -157,8 +158,9 @@ export async function insertClothingItem(
   genderId: number,
   notes: string,
 ) {
-  const sessions = await sql<ClothingItem[]>`
-    INSERT INTO clothing_items
+  const newClothingItem = await sql<ClothingItem[]>`
+    
+  INSERT INTO clothing_items
       (
         storage_item_id,
         clothing_items_type_id,
@@ -169,11 +171,17 @@ export async function insertClothingItem(
         notes
       )
     VALUES
-      (${storageItemId}, ${clothingItemsTypeId}, ${colorId}, ${seasonId}, ${genderId}, ${notes})
+      (${storageItemId}, 
+       ${clothingItemsTypeId}, 
+       ${colorId}, 
+       ${sizeId}, 
+       ${seasonId} 
+       ${genderId}, 
+       ${notes})
     RETURNING *;
   `;
 
-  return sessions.map((s) => camelcaseKeys(s))[0];
+  return newClothingItem.map((s) => camelcaseKeys(s))[0];
 }
 
 export async function getClothingItemByStorageItemId(storageItemId: number) {
@@ -209,7 +217,7 @@ INNER JOIN clothing_items_gender
   return clothingItems.map((s) => camelcaseKeys(s));
 }
 
-//list of ALL clothing_items in db - to check
+//list of ALL clothing_items in db - to check - unused
 export async function getClothingItems() {
   // // Return undefined if the id is not
   // // in the correct format
@@ -326,4 +334,43 @@ clothing_items_gender;
  `;
 
   return clothingItemsGender.map((s) => camelcaseKeys(s));
+}
+
+// list
+
+export async function getInfoForMyList(storageItemId: number) {
+  // // Return undefined if the id is not
+  // // in the correct format
+  // if (!/^\d+$/.test(userId)) return undefined;
+
+  const listInfo = await sql<MyList[]>`
+  SELECT 
+  clothing_items.id,
+  storage_item_id,
+  clothing_items_type,
+  color,
+  size,
+  season,
+  gender,
+  notes,
+  storage_item_name,
+  storage_item_location
+
+  FROM clothing_items_types
+  INNER JOIN clothing_items
+  ON clothing_items_types.id = clothing_items.clothing_items_type_id AND storage_item_id = ${storageItemId} 
+INNER JOIN clothing_items_colors 
+  ON clothing_items_colors.id = clothing_items.color_id
+INNER JOIN clothing_items_sizes
+  ON clothing_items_sizes.id = clothing_items.size_id
+INNER JOIN clothing_items_seasons
+  ON clothing_items_seasons.id = clothing_items.season_id
+INNER JOIN clothing_items_gender
+ ON clothing_items_gender.id = clothing_items.gender_id
+ INNER JOIN storage_items
+  ON storage_items.id=${storageItemId};
+
+ `;
+
+  return listInfo.map((s) => camelcaseKeys(s));
 }

@@ -14,7 +14,7 @@ export default async function handler(
   const { storageItemName, storageItemLocation, userId } = request.body;
 
   // // Check if there's a storage item matching this storage item name
-  // const storageItemeAlreadyTaken =
+  // const storageIteme AlreadyTaken =
   //   typeof (await getUserByUsername(username)) !== 'undefined';
 
   // if (usernameAlreadyTaken) {
