@@ -15,7 +15,6 @@ import {
   ClothingItemsSize,
   ClothingItemsSeason,
   ClothingItemsGender,
-  MyList,
 } from '../../util/types';
 import {
   getClothingItemTypes,
@@ -26,10 +25,8 @@ import {
   getClothingItemSizes,
   getClothingItemSeasons,
   getClothingItemGender,
-  getInfoForMyList,
 } from '../../util/database';
 import { isSessionTokenValid } from '../../util/auth';
-// import { handleAddToList } from '../../util/my-list';
 
 type Props = {
   loggedIn: boolean;
@@ -40,8 +37,7 @@ type Props = {
   clothingItemsSizes: ClothingItemsSize[];
   clothingItemsSeasons: ClothingItemsSeason[];
   clothingItemsGender: ClothingItemsGender[];
-  myList: MyList;
-  listInfo: MyList[];
+  myList: ClothingItemDetail[];
 };
 
 export default function Search(props: Props) {
@@ -60,9 +56,9 @@ export default function Search(props: Props) {
     Cookies.set('myList', myList);
   }, [myList]);
 
-  // // console.log(myList);
+  // console.log(myList);
   // console.log(props.myList);
-  // console.log(props.listInfo);
+  // console.log(clothingItem);
 
   return (
     <div>
@@ -90,7 +86,7 @@ export default function Search(props: Props) {
               </tr>
             </thead>
 
-            {props.listInfo.map((clothingItem: MyList) => {
+            {props.clothingItems.map((clothingItem: ClothingItemDetail) => {
               return (
                 <tbody key={clothingItem.id}>
                   <tr>
@@ -111,15 +107,8 @@ export default function Search(props: Props) {
                       {' '}
                       <AddToListButton
                         myList={myList}
-                        listInfo={props.listInfo}
+                        clothingItem={clothingItem}
                       />
-                      {/* {/* <button
-                        onClick={() =>
-                          handleAddToList(myList, props.clothingItems[0])
-                        }
-                      // > 
-                      //   Add to List
-                      // </button> */}
                     </td>
                   </tr>
                 </tbody>
@@ -351,7 +340,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   // console.log(clothingItemsGender);
 
-  const listInfo = await getInfoForMyList(storageItem.id);
+  // const listInfo = await getInfoForMyList(storageItem.id);
 
   // console.log(listInfo);
 
@@ -367,7 +356,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       clothingItemsSeasons,
       clothingItemsGender,
       myList,
-      listInfo,
+      // listInfo,
     },
   };
 }

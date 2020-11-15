@@ -5,20 +5,27 @@ import Cookies from 'js-cookie';
 import { GetServerSidePropsContext } from 'next';
 import Layout from '../../components/Layout';
 import { isSessionTokenValid } from '../../util/auth';
-import { MyList } from '../../util/types';
+import { ClothingItemDetail } from '../../util/types';
 
-type Props = { loggedIn: boolean; myList: MyList[] };
+type Props = { loggedIn: boolean; myList: ClothingItemDetail[] };
 
 export default function MyListPage(props: Props) {
   const [myList, setMyList] = useState(props.myList);
 
-  //sets cookie for personal clothing items list
-  useEffect(() => {
-    Cookies.set('myList', myList);
-  }, [myList]);
+  // //sets cookie for personal clothing items list
+  // useEffect(() => {
+  //   Cookies.set('myList', myList);
+  // }, []);
 
-  // console.log(myList);
-  console.log(props.myList);
+  //when delete button is clicked
+  const handleDeleteFromList = (listItemId: number) => {
+    const newList = myList.filter((item) => item.id !== listItemId);
+    setMyList(newList);
+    Cookies.set('myList', newList);
+  };
+
+  console.log(myList);
+  // console.log(props.myList);
   // console.log(props.listInfo);
 
   return (
@@ -30,10 +37,10 @@ export default function MyListPage(props: Props) {
         <main>
           <h1>My List</h1>
           <table>
-            {props.myList.map((listItem: MyList) => {
+            {props.myList.map((listItem: ClothingItemDetail) => {
               return (
-                <tbody key={listItem.id}>
-                  <tr>
+                <tbody>
+                  <tr key={listItem.id}>
                     <td>{listItem.clothingItemsType}</td>
                     <td>{listItem.color}</td>
                     <td>{listItem.size}</td>
@@ -44,7 +51,9 @@ export default function MyListPage(props: Props) {
                     <td>{listItem.storageItemLocation}</td>
                     <td>
                       {' '}
-                      <button>Delete from List</button>
+                      <button onClick={() => handleDeleteFromList(listItem.id)}>
+                        Delete from List
+                      </button>
                     </td>
                   </tr>
                 </tbody>

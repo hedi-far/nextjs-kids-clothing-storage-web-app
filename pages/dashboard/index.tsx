@@ -7,13 +7,16 @@ import { useRouter } from 'next/router';
 import { User, StorageItem } from '../../util/types';
 import { GetServerSidePropsContext } from 'next';
 import {
-  // getUserByUserId
   getStorageItemByUserId,
   getUserBySessionToken,
 } from '../../util/database';
 import { isSessionTokenValid } from '../../util/auth';
 
-type Props = { loggedIn: boolean; user: User; storageItems: StorageItem };
+type Props = {
+  loggedIn: boolean;
+  user: User;
+  storageItems: StorageItem[];
+};
 
 export default function Dashboard(props: Props) {
   const [storageItemName, setStorageItemName] = useState('');
@@ -66,19 +69,18 @@ export default function Dashboard(props: Props) {
                   storageItemName: storageItemName,
                   storageItemLocation: storageItemLocation,
                   userId: props.user.id,
-                  // token: props.token,
                 }),
               });
 
               const { success } = await response.json();
 
               if (success) {
-                // Redirect to the homepage if successfully registered
+                // Redirect to dashboard if successfully inserted
                 router.push('/dashboard');
               } else {
                 // If the response status code (set using response.status()
                 // in the API route) is 409 (Conflict) then show an error
-                // message that the user already exists
+                // message
                 if (response.status === 409) {
                   setErrorMessage('Already exists!');
                 } else {
@@ -144,8 +146,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const userId = user.id;
 
   const storageItems = await getStorageItemByUserId(userId);
-
-  // console.log(storageItems);
 
   return {
     props: {

@@ -6,12 +6,12 @@ import {
   User,
   StorageItem,
   ClothingItem,
+  ClothingItemDetail,
   ClothingItemsType,
   ClothingItemsColor,
   ClothingItemsSize,
   ClothingItemsSeason,
   ClothingItemsGender,
-  MyList,
 } from './types';
 
 dotenv.config();
@@ -175,7 +175,7 @@ export async function insertClothingItem(
        ${clothingItemsTypeId}, 
        ${colorId}, 
        ${sizeId}, 
-       ${seasonId} 
+       ${seasonId}, 
        ${genderId}, 
        ${notes})
     RETURNING *;
@@ -189,8 +189,8 @@ export async function getClothingItemByStorageItemId(storageItemId: number) {
   // // in the correct format
   // if (!/^\d+$/.test(userId)) return undefined;
 
-  const clothingItems = await sql<ClothingItem[]>`
-  SELECT 
+  const clothingItems = await sql<ClothingItemDetail[]>`
+  SELECT
   clothing_items.id,
   storage_item_id,
   clothing_items_type,
@@ -198,58 +198,61 @@ export async function getClothingItemByStorageItemId(storageItemId: number) {
   size,
   season,
   gender,
-  notes
+  notes,
+  storage_item_name,
+  storage_item_location
 
   FROM clothing_items_types
   INNER JOIN clothing_items
-  ON clothing_items_types.id = clothing_items.clothing_items_type_id AND storage_item_id = ${storageItemId} 
-INNER JOIN clothing_items_colors 
+  ON clothing_items_types.id = clothing_items.clothing_items_type_id AND storage_item_id = ${storageItemId}
+INNER JOIN clothing_items_colors
   ON clothing_items_colors.id = clothing_items.color_id
 INNER JOIN clothing_items_sizes
   ON clothing_items_sizes.id = clothing_items.size_id
 INNER JOIN clothing_items_seasons
   ON clothing_items_seasons.id = clothing_items.season_id
 INNER JOIN clothing_items_gender
- ON clothing_items_gender.id = clothing_items.gender_id; 
+ ON clothing_items_gender.id = clothing_items.gender_id
+ INNER JOIN storage_items
+  ON storage_items.id=${storageItemId};
 
  `;
 
   return clothingItems.map((s) => camelcaseKeys(s));
 }
 
-//list of ALL clothing_items in db - to check - unused
-export async function getClothingItems() {
-  // // Return undefined if the id is not
-  // // in the correct format
-  // if (!/^\d+$/.test(userId)) return undefined;
+// //list of ALL clothing_items in db - to check - unused
+// export async function getClothingItems() {
+//   // // Return undefined if the id is not
+//   // // in the correct format
+//   // if (!/^\d+$/.test(userId)) return undefined;
 
-  const clothingItems = await sql<ClothingItem[]>`
-SELECT
-clothing_items.id,
-clothing_items_type,
-color,
-size,
-season,
-gender,
-notes
+//   const clothingItems = await sql<ClothingItem[]>`
+// SELECT
+// clothing_items.id,
+// clothing_items_type,
+// color,
+// size,
+// season,
+// gender,
+// notes
 
+// FROM
+// clothing_items_types
+//  INNER JOIN clothing_items
+//   ON clothing_items_types.id = clothing_items.clothing_items_type_id
+// INNER JOIN clothing_items_colors
+//   ON clothing_items_colors.id = clothing_items.color_id
+// INNER JOIN clothing_items_sizes
+//   ON clothing_items_sizes.id = clothing_items.size_id
+// INNER JOIN clothing_items_seasons
+//   ON clothing_items_seasons.id = clothing_items.season_id
+// INNER JOIN clothing_items_gender
+//  ON clothing_items_gender.id = clothing_items.gender_id;
+//   `;
 
-FROM 
-clothing_items_types
- INNER JOIN clothing_items
-  ON clothing_items_types.id = clothing_items.clothing_items_type_id 
-INNER JOIN clothing_items_colors 
-  ON clothing_items_colors.id = clothing_items.color_id
-INNER JOIN clothing_items_sizes
-  ON clothing_items_sizes.id = clothing_items.size_id
-INNER JOIN clothing_items_seasons
-  ON clothing_items_seasons.id = clothing_items.season_id
-INNER JOIN clothing_items_gender
- ON clothing_items_gender.id = clothing_items.gender_id; 
-  `;
-
-  return clothingItems.map((s) => camelcaseKeys(s));
-}
+//   return clothingItems.map((s) => camelcaseKeys(s));
+// }
 
 //clothing_item_types
 
@@ -336,41 +339,39 @@ clothing_items_gender;
   return clothingItemsGender.map((s) => camelcaseKeys(s));
 }
 
-// list
+// export async function getInfoForMyList(storageItemId: number) {
+//   // // Return undefined if the id is not
+//   // // in the correct format
+//   // if (!/^\d+$/.test(userId)) return undefined;
 
-export async function getInfoForMyList(storageItemId: number) {
-  // // Return undefined if the id is not
-  // // in the correct format
-  // if (!/^\d+$/.test(userId)) return undefined;
+//   const listInfo = await sql<ClothingItemDetail[]>`
+//   SELECT
+//   clothing_items.id,
+//   storage_item_id,
+//   clothing_items_type,
+//   color,
+//   size,
+//   season,
+//   gender,
+//   notes,
+//   storage_item_name,
+//   storage_item_location
 
-  const listInfo = await sql<MyList[]>`
-  SELECT 
-  clothing_items.id,
-  storage_item_id,
-  clothing_items_type,
-  color,
-  size,
-  season,
-  gender,
-  notes,
-  storage_item_name,
-  storage_item_location
+//   FROM clothing_items_types
+//   INNER JOIN clothing_items
+//   ON clothing_items_types.id = clothing_items.clothing_items_type_id AND storage_item_id = ${storageItemId}
+// INNER JOIN clothing_items_colors
+//   ON clothing_items_colors.id = clothing_items.color_id
+// INNER JOIN clothing_items_sizes
+//   ON clothing_items_sizes.id = clothing_items.size_id
+// INNER JOIN clothing_items_seasons
+//   ON clothing_items_seasons.id = clothing_items.season_id
+// INNER JOIN clothing_items_gender
+//  ON clothing_items_gender.id = clothing_items.gender_id
+//  INNER JOIN storage_items
+//   ON storage_items.id=${storageItemId};
 
-  FROM clothing_items_types
-  INNER JOIN clothing_items
-  ON clothing_items_types.id = clothing_items.clothing_items_type_id AND storage_item_id = ${storageItemId} 
-INNER JOIN clothing_items_colors 
-  ON clothing_items_colors.id = clothing_items.color_id
-INNER JOIN clothing_items_sizes
-  ON clothing_items_sizes.id = clothing_items.size_id
-INNER JOIN clothing_items_seasons
-  ON clothing_items_seasons.id = clothing_items.season_id
-INNER JOIN clothing_items_gender
- ON clothing_items_gender.id = clothing_items.gender_id
- INNER JOIN storage_items
-  ON storage_items.id=${storageItemId};
+//  `;
 
- `;
-
-  return listInfo.map((s) => camelcaseKeys(s));
-}
+//   return listInfo.map((s) => camelcaseKeys(s));
+// }

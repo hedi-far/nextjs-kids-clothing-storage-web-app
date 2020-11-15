@@ -39,6 +39,8 @@ export type ClothingItemDetail = {
   season?: string;
   gender?: string;
   notes?: string;
+  storageItemName: string;
+  storageItemLocation?: string;
 };
 
 export type ClothingItemsType = {
@@ -66,15 +68,15 @@ export type ClothingItemsGender = {
   gender: string;
 };
 
-export type MyList = {
-  id: number;
-  storageItemId: number;
-  clothingItemsType: string;
-  color?: string;
-  size: string;
-  season?: string;
-  gender?: string;
-  notes?: string;
-  storageItemName: string;
-  storageItemLocation?: string;
-};
+// export type MyList = {
+//   id: number;
+//   storageItemId: number;
+//   clothingItemsType: string;
+//   color?: string;
+//   size: string;
+//   season?: string;
+//   gender?: string;
+//   notes?: string;
+//   storageItemName: string;
+//   storageItemLocation?: string;
+// };
