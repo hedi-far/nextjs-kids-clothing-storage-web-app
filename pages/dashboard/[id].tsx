@@ -56,10 +56,6 @@ export default function Search(props: Props) {
     Cookies.set('myList', myList);
   }, [myList]);
 
-  // console.log(myList);
-  // console.log(props.myList);
-  // console.log(clothingItem);
-
   return (
     <div>
       <Layout loggedIn={props.loggedIn}>
@@ -68,9 +64,11 @@ export default function Search(props: Props) {
         </Head>
         <main>
           {/* user sees current list of clothing items in respective storage item */}
-          <h1>Storage item</h1>
-          Name: {props.storageItem.storageItemName} <br />
-          Location: {props.storageItem.storageItemLocation}
+          <h1> Name: {props.storageItem.storageItemName}</h1>
+
+          <h2>Location: {props.storageItem.storageItemLocation}</h2>
+          <h2>Content:</h2>
+          {/* //table for clothing items */}
           <table>
             <thead>
               <tr>
@@ -101,13 +99,53 @@ export default function Search(props: Props) {
                     </td>
                     <td>
                       {' '}
-                      <button>Delete</button>
+                      <button
+                        onClick={async () => {
+                          const answer = window.confirm(`Really delete? ?`);
+
+                          if (answer === true) {
+                            // Send the data to the
+                            // API route
+                            const id = props.storageItem.id;
+
+                            const response = await fetch(
+                              `../api/dashboard/${id}`,
+                              {
+                                method: 'DELETE',
+                                headers: {
+                                  'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                  clothingItemId: clothingItem.id,
+                                }),
+                              },
+                            );
+
+                            const { success } = await response.json();
+
+                            if (success) {
+                              // Redirect so same page
+                              router.push(`/dashboard/${id}`);
+                            } else {
+                              // If the response status code (set using response.status()
+                              // in the API route) is 409 (Conflict) then show an error
+                              // message that the user already exists
+
+                              setErrorMessage('Failed!');
+                            }
+                          }
+                        }}
+                      >
+                        Delete
+                      </button>
                     </td>
                     <td>
                       {' '}
                       <AddToListButton
                         myList={myList}
+                        setMyList={setMyList}
                         clothingItem={clothingItem}
+                        clothingItemId={clothingItem.id}
                       />
                     </td>
                   </tr>
@@ -144,8 +182,6 @@ export default function Search(props: Props) {
               });
 
               const { success } = await response.json();
-
-              // console.log(response.body);
 
               if (success) {
                 // Redirect so same page
@@ -300,13 +336,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const allCookies = nextCookies(context);
   const myList = allCookies.myList || [];
 
-  // console.log(myList);
-
   const user = await getUserBySessionToken(token);
 
   const userId = user.id;
-
-  // console.log(user, userId);
 
   const storageItems = await getStorageItemByUserId(userId);
 
@@ -314,35 +346,17 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   const storageItem = storageItems.find((element) => element.id === currentId);
 
-  // console.log(storageItem);
-
   const clothingItems = await getClothingItemByStorageItemId(storageItem.id);
-
-  // console.log(clothingItems);
 
   const clothingItemsTypes = await getClothingItemTypes();
 
-  // console.log(clothingItemTypes);
-
   const clothingItemsColors = await getClothingItemColors();
-
-  // console.log(clothingItemsColors);
 
   const clothingItemsSizes = await getClothingItemSizes();
 
-  // console.log(clothingItemsSizes);
-
   const clothingItemsSeasons = await getClothingItemSeasons();
 
-  // console.log(clothingItemsSeasons);
-
   const clothingItemsGender = await getClothingItemGender();
-
-  // console.log(clothingItemsGender);
-
-  // const listInfo = await getInfoForMyList(storageItem.id);
-
-  // console.log(listInfo);
 
   return {
     props: {

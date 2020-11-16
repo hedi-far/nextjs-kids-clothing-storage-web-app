@@ -1,36 +1,28 @@
-import { useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { ClothingItemDetail } from '../util/types';
-import Cookies from 'js-cookie';
+import { handleAddToList } from '../util/my-list';
 
 type Props = {
+  clothingItemId: number;
   myList: ClothingItemDetail[];
   clothingItem: ClothingItemDetail;
+  setMyList: Dispatch<SetStateAction<ClothingItemDetail[]>>;
 };
 
 export default function AddToListButton(props: Props) {
-  const [myList, setMyList] = useState(props.myList);
-
-  const handleAddToList = (clothingItem: ClothingItemDetail) => {
-    //FIX ME - why is myList always empty???
-    if (!myList.includes(clothingItem)) {
-      const newList = myList.concat(clothingItem);
-      setMyList(newList);
-      console.log(newList);
-      Cookies.set('myList', newList);
-    } else {
-      alert('Already on list');
-    }
-
-    console.log(clothingItem.id);
-    console.log(myList.includes(clothingItem));
-    console.log(props.myList);
-    console.log(props.myList.length);
-    console.log(myList);
-    console.log(myList.length);
-  };
-
+  console.log(props.clothingItemId);
   return (
-    <button onClick={() => handleAddToList(props.clothingItem)}>
+    <button
+      onClick={() =>
+        props.setMyList(
+          handleAddToList(
+            props.clothingItemId,
+            props.clothingItem,
+            props.myList,
+          ),
+        )
+      }
+    >
       Add to List
     </button>
   );

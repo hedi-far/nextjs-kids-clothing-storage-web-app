@@ -184,6 +184,19 @@ export async function insertClothingItem(
   return newClothingItem.map((s) => camelcaseKeys(s))[0];
 }
 
+export async function deleteClothingItemByStorageItemId(
+  clothingItemId: number,
+) {
+  const clothingItem = await sql<ClothingItem>`
+  DELETE FROM clothing_items
+
+  WHERE id = ${clothingItemId};
+
+ `;
+
+  return clothingItem.map((s) => camelcaseKeys(s))[0];
+}
+
 export async function getClothingItemByStorageItemId(storageItemId: number) {
   // // Return undefined if the id is not
   // // in the correct format

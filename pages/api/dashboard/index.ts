@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import {
-  getUserByUsername,
-  registerUser,
+  // getUserByUsername,
+  // registerUser,
   insertStorageItem,
 } from '../../../util/database';
 

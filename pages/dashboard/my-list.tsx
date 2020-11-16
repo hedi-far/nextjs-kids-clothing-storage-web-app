@@ -6,27 +6,20 @@ import { GetServerSidePropsContext } from 'next';
 import Layout from '../../components/Layout';
 import { isSessionTokenValid } from '../../util/auth';
 import { ClothingItemDetail } from '../../util/types';
+import { handleDeleteFromList } from '../../util/my-list';
 
 type Props = { loggedIn: boolean; myList: ClothingItemDetail[] };
 
 export default function MyListPage(props: Props) {
   const [myList, setMyList] = useState(props.myList);
 
-  // //sets cookie for personal clothing items list
-  // useEffect(() => {
-  //   Cookies.set('myList', myList);
-  // }, []);
-
-  //when delete button is clicked
-  const handleDeleteFromList = (listItemId: number) => {
-    const newList = myList.filter((item) => item.id !== listItemId);
-    setMyList(newList);
-    Cookies.set('myList', newList);
-  };
-
-  console.log(myList);
-  // console.log(props.myList);
-  // console.log(props.listInfo);
+  // //when delete button is clicked
+  // const handleDeleteFromList = (listItemId: number) => {
+  //   const newList = myList.filter((item) => item.id !== listItemId);
+  //   setMyList(newList);
+  //   Cookies.set('myList', newList);
+  //   window.location.reload();
+  // };
 
   return (
     <div>
@@ -39,7 +32,7 @@ export default function MyListPage(props: Props) {
           <table>
             {props.myList.map((listItem: ClothingItemDetail) => {
               return (
-                <tbody>
+                <tbody key={listItem.id}>
                   <tr key={listItem.id}>
                     <td>{listItem.clothingItemsType}</td>
                     <td>{listItem.color}</td>
@@ -51,7 +44,11 @@ export default function MyListPage(props: Props) {
                     <td>{listItem.storageItemLocation}</td>
                     <td>
                       {' '}
-                      <button onClick={() => handleDeleteFromList(listItem.id)}>
+                      <button
+                        onClick={() =>
+                          setMyList(handleDeleteFromList(myList, listItem.id))
+                        }
+                      >
                         Delete from List
                       </button>
                     </td>
@@ -80,8 +77,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
   const allCookies = nextCookies(context);
   const myList = allCookies.myList || [];
-
-  // console.log(myList);
 
   return {
     props: {
