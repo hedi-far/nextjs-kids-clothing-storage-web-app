@@ -16,7 +16,7 @@ type Props = {
 export default function Header(props: Props) {
   return (
     <header css={headerStyles}>
-      Logo/Name
+      Keep!
       <Link href="/">
         <a>Home</a>
       </Link>

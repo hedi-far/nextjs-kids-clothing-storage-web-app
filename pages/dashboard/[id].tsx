@@ -170,6 +170,7 @@ export default function Search(props: Props) {
                 headers: {
                   'Content-Type': 'application/json',
                 },
+
                 body: JSON.stringify({
                   clothingItemsTypeId: clothingItemTypeId,
                   sizeId: clothingItemSizeId,
@@ -208,7 +209,7 @@ export default function Search(props: Props) {
                 value={clothingItemTypeId}
                 onChange={(e) => setClothingItemTypeId(e.currentTarget.value)}
               >
-                <option label=" " />
+                <option label=" " value=" " />
                 {props.clothingItemsTypes.map((type: ClothingItemsType) => {
                   return (
                     <option key={type.id} value={type.id}>
@@ -227,7 +228,7 @@ export default function Search(props: Props) {
                 value={clothingItemSizeId}
                 onChange={(e) => setClothingItemSizeId(e.currentTarget.value)}
               >
-                <option label=" " />
+                <option label=" " value=" " />
                 {props.clothingItemsSizes.map((size: ClothingItemsSize) => {
                   return (
                     <option key={size.id} value={size.id}>
@@ -246,7 +247,7 @@ export default function Search(props: Props) {
                 value={clothingItemColorId}
                 onChange={(e) => setClothingItemColorId(e.currentTarget.value)}
               >
-                <option label=" " />
+                <option label=" " value=" " />
                 {props.clothingItemsColors.map((color: ClothingItemsColor) => {
                   return (
                     <option key={color.id} value={color.id}>

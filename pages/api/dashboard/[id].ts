@@ -19,6 +19,19 @@ export default async function handler(
       storageItemId,
     } = request.body;
 
+    // console.log(typeof request.body.seasonId);
+    // console.log(typeof null);
+
+    // if (!request.body.colorId) {
+    //   request.body.colorId = '1';
+    // }
+
+    // if (request.body.notes === undefined) {
+    //   request.body.notes = 'empty!!!!';
+    // }
+
+    // console.log(request.body.clothingItemsTypeId);
+
     try {
       await insertClothingItem(
         storageItemId,
