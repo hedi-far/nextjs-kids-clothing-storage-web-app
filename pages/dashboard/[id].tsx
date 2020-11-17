@@ -247,7 +247,7 @@ export default function Search(props: Props) {
                 value={clothingItemColorId}
                 onChange={(e) => setClothingItemColorId(e.currentTarget.value)}
               >
-                <option />
+                <option value="none">none</option>
                 {props.clothingItemsColors.map((color: ClothingItemsColor) => {
                   return (
                     <option key={color.id} value={color.id}>

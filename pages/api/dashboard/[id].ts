@@ -19,7 +19,6 @@ export default async function handler(
       storageItemId,
     } = request.body;
 
-    // if (!colorId)
     try {
       await insertClothingItem(
         storageItemId,

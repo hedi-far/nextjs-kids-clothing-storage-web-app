@@ -158,7 +158,60 @@ export async function insertClothingItem(
   genderId: number,
   notes: string,
 ) {
-  const newClothingItem = await sql<ClothingItem[]>`
+  if (!colorId) {
+    const newClothingItem = await sql<ClothingItem[]>`
+    
+  INSERT INTO clothing_items
+      (
+        storage_item_id,
+        clothing_items_type_id,
+        color_id,
+        size_id,
+        season_id,
+        gender_id,
+        notes
+      )
+    VALUES
+      (${storageItemId}, 
+       ${clothingItemsTypeId}, 
+       ${null}, 
+       ${sizeId}, 
+       ${seasonId}, 
+       ${genderId}, 
+       ${notes})
+    RETURNING *;
+  `;
+
+    return newClothingItem.map((s) => camelcaseKeys(s))[0];
+  } else {
+    if(!seasonId) {
+      const newClothingItem = await sql<ClothingItem[]>`
+      
+    INSERT INTO clothing_items
+        (
+          storage_item_id,
+          clothing_items_type_id,
+          color_id,
+          size_id,
+          season_id,
+          gender_id,
+          notes
+        )
+      VALUES
+        (${storageItemId}, 
+         ${clothingItemsTypeId}, 
+         ${colorId}, 
+         ${sizeId}, 
+         ${null}, 
+         ${genderId}, 
+         ${notes})
+      RETURNING *;
+    `;
+  
+      return newClothingItem.map((s) => camelcaseKeys(s))[0];
+    
+  } else {
+    const newClothingItem = await sql<ClothingItem[]>`
     
   INSERT INTO clothing_items
       (
@@ -181,8 +234,9 @@ export async function insertClothingItem(
     RETURNING *;
   `;
 
-  return newClothingItem.map((s) => camelcaseKeys(s))[0];
-}
+    return newClothingItem.map((s) => camelcaseKeys(s))[0];
+  }
+};
 
 export async function deleteClothingItemByStorageItemId(
   clothingItemId: number,
@@ -216,7 +270,7 @@ export async function getClothingItemByStorageItemId(storageItemId: number) {
   storage_item_location
 
   FROM clothing_items_types
-  INNER JOIN clothing_items
+INNER JOIN clothing_items
   ON clothing_items_types.id = clothing_items.clothing_items_type_id AND storage_item_id = ${storageItemId}
 INNER JOIN clothing_items_colors
   ON clothing_items_colors.id = clothing_items.color_id
@@ -226,7 +280,7 @@ INNER JOIN clothing_items_seasons
   ON clothing_items_seasons.id = clothing_items.season_id
 INNER JOIN clothing_items_gender
  ON clothing_items_gender.id = clothing_items.gender_id
- INNER JOIN storage_items
+INNER JOIN storage_items
   ON storage_items.id=${storageItemId};
 
  `;
