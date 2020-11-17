@@ -209,7 +209,7 @@ export default function Search(props: Props) {
                 value={clothingItemTypeId}
                 onChange={(e) => setClothingItemTypeId(e.currentTarget.value)}
               >
-                <option label=" " value=" " />
+                <option />
                 {props.clothingItemsTypes.map((type: ClothingItemsType) => {
                   return (
                     <option key={type.id} value={type.id}>
@@ -228,7 +228,7 @@ export default function Search(props: Props) {
                 value={clothingItemSizeId}
                 onChange={(e) => setClothingItemSizeId(e.currentTarget.value)}
               >
-                <option label=" " value=" " />
+                <option />
                 {props.clothingItemsSizes.map((size: ClothingItemsSize) => {
                   return (
                     <option key={size.id} value={size.id}>
@@ -247,7 +247,7 @@ export default function Search(props: Props) {
                 value={clothingItemColorId}
                 onChange={(e) => setClothingItemColorId(e.currentTarget.value)}
               >
-                <option label=" " value=" " />
+                <option />
                 {props.clothingItemsColors.map((color: ClothingItemsColor) => {
                   return (
                     <option key={color.id} value={color.id}>
@@ -266,7 +266,7 @@ export default function Search(props: Props) {
                 value={clothingItemSeasonId}
                 onChange={(e) => setClothingItemSeasonId(e.currentTarget.value)}
               >
-                <option label=" " />
+                <option />
                 {props.clothingItemsSeasons.map(
                   (season: ClothingItemsSeason) => {
                     return (
@@ -286,7 +286,7 @@ export default function Search(props: Props) {
                 value={clothingItemGenderId}
                 onChange={(e) => setClothingItemGenderId(e.currentTarget.value)}
               >
-                <option label=" " />
+                <option />
                 {props.clothingItemsGender.map(
                   (gender: ClothingItemsGender) => {
                     return (
@@ -371,7 +371,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       clothingItemsSeasons,
       clothingItemsGender,
       myList,
-      // listInfo,
     },
   };
 }

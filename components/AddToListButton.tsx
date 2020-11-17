@@ -10,7 +10,6 @@ type Props = {
 };
 
 export default function AddToListButton(props: Props) {
-  console.log(props.clothingItemId);
   return (
     <button
       onClick={() =>
