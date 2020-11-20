@@ -14,7 +14,6 @@ type Props = { token: string };
 export default function Register(props: Props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
 
@@ -39,7 +38,6 @@ export default function Register(props: Props) {
                   'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                  email: email,
                   username: username,
                   password: password,
                   token: props.token,
@@ -63,14 +61,6 @@ export default function Register(props: Props) {
               }
             }}
           >
-            <label htmlFor="email">
-              E-mail
-              <input
-                value={email}
-                onChange={(e) => setEmail(e.currentTarget.value)}
-                required
-              />
-            </label>
             <br />
             <label htmlFor="username">
               Username

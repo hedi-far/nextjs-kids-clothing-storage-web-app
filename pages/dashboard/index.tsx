@@ -22,6 +22,7 @@ export default function Dashboard(props: Props) {
   const [storageItemName, setStorageItemName] = useState('');
   const [storageItemLocation, setStorageItemLocation] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+
   const router = useRouter();
 
   return (
@@ -41,11 +42,9 @@ export default function Dashboard(props: Props) {
                 <li key={storageItem.id}>
                   <ul>
                     <Link href={`/dashboard/${storageItem.id}`}>
-                      <a>
-                        Name: {storageItem.storageItemName} Location:
-                        {storageItem.storageItemLocation}
-                      </a>
+                      <a>{storageItem.storageItemName}</a>
                     </Link>
+                    Location: {storageItem.storageItemLocation}
                     <button
                       onClick={async () => {
                         const answer = window.confirm(`Really delete?`);
@@ -55,18 +54,15 @@ export default function Dashboard(props: Props) {
                           // API route
                           const id = storageItem.id;
 
-                          const response = await fetch(
-                            `../api/dashboard/${id}`,
-                            {
-                              method: 'DELETE',
-                              headers: {
-                                'Content-Type': 'application/json',
-                              },
-                              body: JSON.stringify({
-                                storageItemId: id,
-                              }),
+                          const response = await fetch(`../api/dashboard`, {
+                            method: 'DELETE',
+                            headers: {
+                              'Content-Type': 'application/json',
                             },
-                          );
+                            body: JSON.stringify({
+                              storageItemId: id,
+                            }),
+                          });
 
                           const { success } = await response.json();
 

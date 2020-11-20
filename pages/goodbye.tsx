@@ -29,17 +29,17 @@ export default function Goodbye(props: Props) {
   );
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const { session: token } = nextCookies(context);
+// export async function getServerSideProps(context: GetServerSidePropsContext) {
+//   const { session: token } = nextCookies(context);
 
-  await deleteSessionByToken(token);
+//   await deleteSessionByToken(token);
 
-  // Remove the session cookie
-  context.res.setHeader(
-    'Set-Cookie',
-    cookie.serialize('session', '', {
-      maxAge: -1,
-      path: '/',
-    }),
-  );
-}
+//   // Remove the session cookie
+//   context.res.setHeader(
+//     'Set-Cookie',
+//     cookie.serialize('session', '', {
+//       maxAge: -1,
+//       path: '/',
+//     }),
+//   );
+// }

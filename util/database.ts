@@ -27,9 +27,9 @@ export async function registerUser(
 ) {
   const users = await sql<User[]>`
     INSERT INTO users
-      (email, username, password_hash)
+      (username, password_hash)
     VALUES
-      (${email}, ${username}, ${passwordHash})
+      (${username}, ${passwordHash})
     RETURNING *;
   `;
 
@@ -50,7 +50,6 @@ export async function getUserBySessionToken(token: string | undefined) {
   const users = await sql<User[]>`
     SELECT
       users.id,
-      users.email,
       users.username
     FROM
       users,
@@ -61,6 +60,18 @@ export async function getUserBySessionToken(token: string | undefined) {
   `;
 
   return users.map((u) => camelcaseKeys(u))[0];
+}
+
+export async function deleteUserByUserId(userId: number) {
+  const user = await sql<User>`
+  
+  DELETE FROM 
+  users
+
+  WHERE users.id = ${userId}
+ `;
+
+  return user.map((s) => camelcaseKeys(s))[0];
 }
 
 //Session-related
@@ -147,14 +158,36 @@ export async function getStorageItemByStorageItemId(storageItemId: number) {
   return storageItems.map((s) => camelcaseKeys(s));
 }
 
+export async function updateStorageItemByStorageItemId(
+  storageItemId: number,
+  storageItemLocation: string,
+) {
+  // // Return undefined if the id is not
+  // // in the correct format
+  // if (!/^\d+$/.test(userId)) return undefined;
+
+  const storageItems = await sql<StorageItem[]>`
+  UPDATE
+  storage_items
+
+  SET 
+  storage_item_location = ${storageItemLocation}
+
+  WHERE 
+  storage_items.id = ${storageItemId}
+  RETURNING *;
+  `;
+
+  return storageItems.map((s) => camelcaseKeys(s));
+}
+
 export async function deleteStorageItemByStorageItemId(storageItemId: number) {
   const storageItem = await sql<StorageItem>`
   
   DELETE FROM 
   storage_items
 
-  WHERE storage_items.id = ${storageItemId};
-
+  WHERE storage_items.id = ${storageItemId}
  `;
 
   return storageItem.map((s) => camelcaseKeys(s))[0];

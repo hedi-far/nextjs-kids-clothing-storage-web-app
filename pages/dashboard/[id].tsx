@@ -95,9 +95,6 @@ export default function Search(props: Props) {
                     <td>{clothingItem.gender}</td>
                     <td>{clothingItem.notes}</td>
                     <td>
-                      <button>Edit</button>
-                    </td>
-                    <td>
                       {' '}
                       <button
                         onClick={async () => {

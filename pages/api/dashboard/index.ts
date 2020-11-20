@@ -4,6 +4,7 @@ import {
   // registerUser,
   insertStorageItem,
   deleteStorageItemByStorageItemId,
+  updateStorageItemByStorageItemId,
 } from '../../../util/database';
 
 export default async function handler(
@@ -36,10 +37,13 @@ export default async function handler(
   } else if (request.method === 'DELETE') {
     const { storageItemId } = request.body;
 
-    console.log(storageItemId);
-
     await deleteStorageItemByStorageItemId(storageItemId);
-  }
+  } else if (request.method === 'PATCH') {
+    const { storageItemId, storageItemLocation } = request.body;
+
+  //   await updateStorageItemByStorageItemId(storageItemId, storageItemLocation);
+  // }
+
   response.statusCode = 200;
   response.send({ success: true });
 }

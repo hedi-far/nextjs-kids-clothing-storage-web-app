@@ -1,15 +1,17 @@
 import Head from 'next/head';
 import Layout from '../../components/Layout';
-import Link from 'next/link';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import nextCookies from 'next-cookies';
 import { User } from '../../util/types';
 import { getUserBySessionToken } from '../../util/database';
 import { GetServerSidePropsContext } from 'next';
-import nextCookies from 'next-cookies';
 import { isSessionTokenValid } from '../../util/auth';
-
 type Props = { loggedIn: boolean; user: User };
 
 export default function Account(props: Props) {
+  const [errorMessage, setErrorMessage] = useState('');
+  const router = useRouter();
   return (
     <Layout loggedIn={props.loggedIn}>
       <Head>
@@ -22,14 +24,42 @@ export default function Account(props: Props) {
         <h2>username</h2>
         <p>{props.user.username}</p>
 
-        <h2>Email</h2>
-        <p>{props.user.email}</p>
+        <button
+          onClick={async () => {
+            const answer = window.confirm(`Really delete?`);
 
-        <Link href="/goodbye">
-          <a>
-            <button>Delete account</button>
-          </a>
-        </Link>
+            if (answer === true) {
+              // Send the data to the
+              // API route
+
+              const response = await fetch(`../api/dashboard/account`, {
+                method: 'DELETE',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  userId: props.user.id,
+                }),
+              });
+
+              const { success } = await response.json();
+
+              if (success) {
+                // Redirect so same page
+                router.push(`/goodbye  `);
+                // window.location.reload();
+              } else {
+                // If the response status code (set using response.status()
+                // in the API route) is 409 (Conflict) then show an error
+                // message that the user already exists
+
+                setErrorMessage('Failed!');
+              }
+            }
+          }}
+        >
+          Delete account
+        </button>
       </main>
     </Layout>
   );
