@@ -62,6 +62,7 @@ export default function Login(props: Props) {
             />
           </label>
           <button>Log in</button>
+          <button onClick={() => router.reload()}>Reset</button>
         </form>
 
         <p style={{ color: 'red' }}>{errorMessage}</p>

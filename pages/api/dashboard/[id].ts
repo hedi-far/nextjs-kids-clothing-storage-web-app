@@ -1,8 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import {
-  deleteClothingItemByStorageItemId,
-  insertClothingItem,
-} from '../../../util/database';
+import { deleteClothingItemByStorageItemId } from '../../../util/database';
+import { insertClothingItem } from '../../../util/database';
 
 export default async function handler(
   request: NextApiRequest,
@@ -19,18 +17,21 @@ export default async function handler(
       storageItemId,
     } = request.body;
 
+    // console.log(genderId);
+    // console.log(typeof genderId);
+
     try {
       await insertClothingItem(
         storageItemId,
         clothingItemsTypeId,
-        colorId,
+        colorId || null,
         sizeId,
-        seasonId,
-        genderId,
+        seasonId || null,
+        genderId || null,
         notes,
       );
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       return response.status(500).send({ success: false });
     }
   } else if (request.method === 'DELETE') {

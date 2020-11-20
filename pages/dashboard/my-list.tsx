@@ -57,6 +57,7 @@ export default function MyListPage(props: Props) {
               );
             })}
           </table>
+          <button onClick={window.print}>Print</button>
         </main>
       </Layout>
     </div>

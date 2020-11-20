@@ -101,7 +101,7 @@ export default function Search(props: Props) {
                       {' '}
                       <button
                         onClick={async () => {
-                          const answer = window.confirm(`Really delete? ?`);
+                          const answer = window.confirm(`Really delete?`);
 
                           if (answer === true) {
                             // Send the data to the
@@ -125,7 +125,8 @@ export default function Search(props: Props) {
 
                             if (success) {
                               // Redirect so same page
-                              router.push(`/dashboard/${id}`);
+                              // router.push(`/dashboard/${id}`);
+                              // window.location.reload();
                             } else {
                               // If the response status code (set using response.status()
                               // in the API route) is 409 (Conflict) then show an error
@@ -187,6 +188,7 @@ export default function Search(props: Props) {
               if (success) {
                 // Redirect so same page
                 router.push(`/dashboard/${id}`);
+                window.alert('Success!');
               } else {
                 // If the response status code (set using response.status()
                 // in the API route) is 409 (Conflict) then show an error
@@ -247,7 +249,7 @@ export default function Search(props: Props) {
                 value={clothingItemColorId}
                 onChange={(e) => setClothingItemColorId(e.currentTarget.value)}
               >
-                <option value="none">none</option>
+                <option value=" ">none</option>
                 {props.clothingItemsColors.map((color: ClothingItemsColor) => {
                   return (
                     <option key={color.id} value={color.id}>
@@ -266,7 +268,7 @@ export default function Search(props: Props) {
                 value={clothingItemSeasonId}
                 onChange={(e) => setClothingItemSeasonId(e.currentTarget.value)}
               >
-                <option />
+                <option value=" ">none</option>
                 {props.clothingItemsSeasons.map(
                   (season: ClothingItemsSeason) => {
                     return (
@@ -286,7 +288,7 @@ export default function Search(props: Props) {
                 value={clothingItemGenderId}
                 onChange={(e) => setClothingItemGenderId(e.currentTarget.value)}
               >
-                <option />
+                <option value=" ">none</option>
                 {props.clothingItemsGender.map(
                   (gender: ClothingItemsGender) => {
                     return (
@@ -313,6 +315,7 @@ export default function Search(props: Props) {
             </label>
             <br />
             <button>Add storage item</button>
+            <button onClick={() => router.reload()}>Reset</button>
           </form>
           <p>{errorMessage}</p>
         </main>

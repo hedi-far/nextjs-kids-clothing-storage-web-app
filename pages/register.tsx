@@ -93,6 +93,7 @@ export default function Register(props: Props) {
             </label>
             <br />
             <button>Register</button>
+            <button onClick={() => router.reload()}>Reset</button>
           </form>
 
           <p>{errorMessage}</p>

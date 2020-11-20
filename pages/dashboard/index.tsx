@@ -46,6 +46,46 @@ export default function Dashboard(props: Props) {
                         {storageItem.storageItemLocation}
                       </a>
                     </Link>
+                    <button
+                      onClick={async () => {
+                        const answer = window.confirm(`Really delete?`);
+
+                        if (answer === true) {
+                          // Send the data to the
+                          // API route
+                          const id = storageItem.id;
+
+                          const response = await fetch(
+                            `../api/dashboard/${id}`,
+                            {
+                              method: 'DELETE',
+                              headers: {
+                                'Content-Type': 'application/json',
+                              },
+                              body: JSON.stringify({
+                                storageItemId: id,
+                              }),
+                            },
+                          );
+
+                          const { success } = await response.json();
+
+                          if (success) {
+                            // Redirect so same page
+                            router.push(`/dashboard/`);
+                            // window.location.reload();
+                          } else {
+                            // If the response status code (set using response.status()
+                            // in the API route) is 409 (Conflict) then show an error
+                            // message that the user already exists
+
+                            setErrorMessage('Failed!');
+                          }
+                        }
+                      }}
+                    >
+                      Delete
+                    </button>
                   </ul>
                 </li>
               );
@@ -90,7 +130,7 @@ export default function Dashboard(props: Props) {
             }}
           >
             <label htmlFor="name">
-              Name of storage item:
+              Name of storage item (required):
               <input
                 type="text"
                 id="name"
@@ -115,6 +155,7 @@ export default function Dashboard(props: Props) {
             </label>
             <br />
             <button>Add storage item</button>
+            <button onClick={() => router.reload()}>Reset</button>
           </form>
           <p>{errorMessage}</p>
           <h2>My account</h2>
