@@ -300,11 +300,11 @@ export async function getClothingItemByUserId(userId: number) {
   notes,
   storage_item_name,
   storage_item_location,
-  storage_item.user_id
+  storage_items.user_id
 
   FROM clothing_items_types
 INNER JOIN clothing_items
-  ON clothing_items_types.id = clothing_items.clothing_items_type_id AND storage_item_id = storage_items.id
+  ON clothing_items_types.id = clothing_items.clothing_items_type_id 
 LEFT OUTER JOIN clothing_items_colors
   ON clothing_items_colors.id = clothing_items.color_id
 INNER JOIN clothing_items_sizes
@@ -314,44 +314,43 @@ LEFT OUTER JOIN clothing_items_seasons
 LEFT OUTER JOIN clothing_items_gender
  ON clothing_items_gender.id = clothing_items.gender_id
 INNER JOIN storage_items
-  ON storage_items.id=storage_items.id AND storage_item.user_id = ${userId}
+  ON clothing_items.storage_item_id = storage_items.id AND storage_items.user_id = ${userId};
 
  `;
 
   return clothingItems.map((s) => camelcaseKeys(s));
 }
-
+//FIXME
 export async function searchClothingItems(
-  // storageItemId: number,
   clothingItemsTypeId: number,
   colorId: number,
   sizeId: number,
   seasonId: number,
   genderId: number,
   notes: string,
-  // userId: number,
 ) {
-  const clothingItems = await sql<ClothingItemDetailByUser[]>`
-    
- SELECT FROM clothing_items
-      (
+  const clothingItems = await sql<ClothingItem[]>`
+    SELECT 
+ 
         storage_item_id,
         clothing_items_type_id,
         color_id,
         size_id,
         season_id,
         gender_id,
-        notes)
+        notes
+ 
+      FROM 
+      clothing_items
       
       WHERE 
-      clothing_items_type_id = ${clothingItemsTypeId},
-      color_id =  ${colorId},
-      size_id = ${sizeId},
-      season_id = ${seasonId},
-      gender_id = ${genderId},
-      notes = ${notes}
+      clothing_items_type_id = ${clothingItemsTypeId} AND
+      color_id =  ${colorId} AND
+      size_id = ${sizeId} AND
+      season_id = ${seasonId} AND
+      gender_id = ${genderId} AND
+      notes = ${notes};
 
-    RETURNING *;
   `;
 
   return clothingItems.map((s) => camelcaseKeys(s))[0];

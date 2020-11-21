@@ -23,22 +23,24 @@ export default async function handler(
 
     console.log(request.body);
     // console.log(typeof genderId);
+    //FIXME
     try {
-      const found = await searchClothingItems(
+      const searchResult = await searchClothingItems(
         // storageItemId,
         clothingItemsTypeId,
-        colorId || null,
         sizeId,
+        colorId || null,
         seasonId || null,
         genderId || null,
         notes,
       );
-
-      console.log(found);
+      console.log(`Result: ${searchResult}`);
+      return response.status(200).send({ searchResult });
     } catch (err) {
       console.log(err);
       return response.status(500).send({ success: false });
     }
+  } else {
     // } else if (request.method === 'DELETE') {
     //   const { clothingItemId } = request.body;
 

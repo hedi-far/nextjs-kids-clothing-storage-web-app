@@ -13,10 +13,13 @@ import {
   getClothingItemSeasons,
   getClothingItemSizes,
   getClothingItemTypes,
+  // getStorageItemByUserId,
+  getClothingItemByUserId,
   getUserBySessionToken,
 } from '../../util/database';
 import {
   ClothingItemDetail,
+  ClothingItemDetailByUser,
   ClothingItemsColor,
   ClothingItemsGender,
   ClothingItemsSeason,
@@ -28,7 +31,7 @@ import {
 type Props = {
   loggedIn: boolean;
   storageItem: StorageItem;
-  clothingItems: ClothingItemDetail[];
+  clothingItems: ClothingItemDetailByUser[];
   clothingItemsTypes: ClothingItemsType[];
   clothingItemsColors: ClothingItemsColor[];
   clothingItemsSizes: ClothingItemsSize[];
@@ -87,6 +90,7 @@ export default function Search(props: Props) {
                 // Redirect so same page
                 // router.push(`/dashboard/${id}`);
                 window.alert('Success!');
+                console.log(response);
               } else {
                 // If the response status code (set using response.status()
                 // in the API route) is 409 (Conflict) then show an error
@@ -217,8 +221,9 @@ export default function Search(props: Props) {
           </form>
           <p>{errorMessage}</p>
 
-          <h1>Results</h1>
-          {/* <table>
+          {/* complete list of logged in user */}
+          <h1>Entire list of clothing items</h1>
+          <table>
             <thead>
               <tr>
                 <th>type</th>
@@ -227,6 +232,8 @@ export default function Search(props: Props) {
                 <th>season</th>
                 <th>gender</th>
                 <th>notes</th>
+                <th>storage item name</th>
+                <th>storage item location</th>
                 <th />
                 <th />
                 <th />
@@ -243,6 +250,8 @@ export default function Search(props: Props) {
                     <td>{clothingItem.season}</td>
                     <td>{clothingItem.gender}</td>
                     <td>{clothingItem.notes}</td>
+                    <td>{clothingItem.storageItemName}</td>
+                    <td>{clothingItem.storageItemLocation}</td>
 
                     <td>
                       <AddToListButton
@@ -256,7 +265,7 @@ export default function Search(props: Props) {
                 </tbody>
               );
             })}
-          </table> */}
+          </table>
         </main>
       </Layout>
     </div>
@@ -281,15 +290,21 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   const user = await getUserBySessionToken(token);
 
-  // const userId = user.id;
+  const userId = user.id;
+
+  // console.log(userId);
 
   // const storageItems = await getStorageItemByUserId(userId);
+
+  // console.log(storageItems);
 
   // const currentId = Number(context.query.id);
 
   // const storageItem = storageItems.find((element) => element.id === currentId);
 
-  // const clothingItems = await getClothingItemByStorageItemId(storageItem.id);
+  const clothingItems = await getClothingItemByUserId(userId);
+
+  // console.log(clothingItems);
 
   const clothingItemsTypes = await getClothingItemTypes();
 
@@ -306,7 +321,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       user,
       loggedIn,
       // storageItem,
-      // clothingItems,
+      clothingItems,
       clothingItemsTypes,
       clothingItemsColors,
       clothingItemsSizes,
