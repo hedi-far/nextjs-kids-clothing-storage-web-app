@@ -160,6 +160,7 @@ export async function getStorageItemByStorageItemId(storageItemId: number) {
 
 export async function updateStorageItemByStorageItemId(
   storageItemId: number,
+  storageItemName: string,
   storageItemLocation: string,
 ) {
   // // Return undefined if the id is not
@@ -171,7 +172,8 @@ export async function updateStorageItemByStorageItemId(
   storage_items
 
   SET 
-  storage_item_location = ${storageItemLocation}
+  storage_item_location = ${storageItemLocation},
+  storage_item_name = ${storageItemName}
 
   WHERE 
   storage_items.id = ${storageItemId}

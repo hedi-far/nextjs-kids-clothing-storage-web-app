@@ -1,5 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { deleteClothingItemByStorageItemId } from '../../../util/database';
+import {
+  deleteClothingItemByStorageItemId,
+  updateStorageItemByStorageItemId,
+} from '../../../util/database';
 import { insertClothingItem } from '../../../util/database';
 
 export default async function handler(
@@ -38,7 +41,20 @@ export default async function handler(
     const { clothingItemId } = request.body;
 
     await deleteClothingItemByStorageItemId(clothingItemId);
+  } else if (request.method === 'PATCH') {
+    const {
+      storageItemId,
+      storageItemName,
+      storageItemLocation,
+    } = request.body;
+
+    await updateStorageItemByStorageItemId(
+      storageItemId,
+      storageItemName,
+      storageItemLocation,
+    );
   }
+
   response.statusCode = 200;
   response.send({ success: true });
 }

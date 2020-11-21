@@ -1,3 +1,4 @@
+import React from 'react';
 import Head from 'next/head';
 import Layout from '../../components/Layout';
 import AddToListButton from '../../components/AddToListButton';
@@ -41,6 +42,7 @@ type Props = {
 };
 
 export default function Search(props: Props) {
+  const router = useRouter();
   const [clothingItemTypeId, setClothingItemTypeId] = useState('');
   const [clothingItemSizeId, setClothingItemSizeId] = useState('');
   const [clothingItemColorId, setClothingItemColorId] = useState('');
@@ -48,8 +50,17 @@ export default function Search(props: Props) {
   const [clothingItemGenderId, setClothingItemGenderId] = useState('');
   const [clothingItemNotesId, setClothingItemNotes] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const router = useRouter();
   const [myList, setMyList] = useState(props.myList);
+  const [editingKey, setEditingKey] = useState<string | null>(null);
+  const [storageItemName, setStorageItemName] = useState(
+    props.storageItem.storageItemName,
+  );
+  const [storageItemLocation, setStorageItemLocation] = useState(
+    props.storageItem.storageItemLocation,
+  );
+
+  console.log(`editingKey ${editingKey}`);
+  console.log(props.storageItem.storageItemName);
 
   //sets cookie for personal clothing items list
   useEffect(() => {
@@ -64,9 +75,106 @@ export default function Search(props: Props) {
         </Head>
         <main>
           {/* user sees current list of clothing items in respective storage item */}
-          <h1> Name: {props.storageItem.storageItemName}</h1>
+          <h1> Name: </h1>
+          {editingKey === 'Name' ? (
+            <input
+              value={storageItemName}
+              onChange={(event) =>
+                setStorageItemName(event.currentTarget.value)
+              }
+            />
+          ) : (
+            storageItemName
+          )}
+          {editingKey !== 'Name' ? (
+            <button
+              onClick={() => {
+                setEditingKey('Name');
+              }}
+            >
+              edit
+            </button>
+          ) : (
+            <>
+              <button
+                onClick={async () => {
+                  await fetch(`/api/dashboard/${props.storageItem.id}`, {
+                    method: 'PATCH',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                      storageItemId: props.storageItem.id,
+                      storageItemName: storageItemName,
+                      storageItemLocation: storageItemLocation,
+                    }),
+                  });
+                  setEditingKey(null);
+                }}
+              >
+                save
+              </button>
+              <button
+                onClick={() => {
+                  setEditingKey(null);
+                  setStorageItemName(props.storageItem.storageItemName);
+                }}
+              >
+                cancel
+              </button>
+            </>
+          )}
 
-          <h2>Location: {props.storageItem.storageItemLocation}</h2>
+          <h2>Location: </h2>
+          {editingKey === 'Location' ? (
+            <input
+              value={storageItemLocation}
+              onChange={(event) =>
+                setStorageItemLocation(event.currentTarget.value)
+              }
+            />
+          ) : (
+            storageItemLocation
+          )}
+          {editingKey !== 'Location' ? (
+            <button
+              onClick={() => {
+                setEditingKey('Location');
+              }}
+            >
+              edit
+            </button>
+          ) : (
+            <>
+              <button
+                onClick={async () => {
+                  await fetch(`/api/dashboard/${props.storageItem.id}`, {
+                    method: 'PATCH',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                      storageItemId: props.storageItem.id,
+                      storageItemName: storageItemName,
+                      storageItemLocation: storageItemLocation,
+                    }),
+                  });
+                  setEditingKey(null);
+                }}
+              >
+                save
+              </button>
+              <button
+                onClick={() => {
+                  setEditingKey(null);
+                  setStorageItemLocation(props.storageItem.storageItemLocation);
+                }}
+              >
+                cancel
+              </button>
+            </>
+          )}
+
           <h2>Content:</h2>
           {/* //table for clothing items */}
           <table>
