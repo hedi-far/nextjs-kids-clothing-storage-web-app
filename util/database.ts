@@ -12,6 +12,7 @@ import {
   ClothingItemsSize,
   ClothingItemsSeason,
   ClothingItemsGender,
+  ClothingItemDetailByUser,
 } from './types';
 
 dotenv.config();
@@ -280,6 +281,80 @@ INNER JOIN storage_items
  `;
 
   return clothingItems.map((s) => camelcaseKeys(s));
+}
+
+export async function getClothingItemByUserId(userId: number) {
+  // // Return undefined if the id is not
+  // // in the correct format
+  // if (!/^\d+$/.test(userId)) return undefined;
+
+  const clothingItems = await sql<ClothingItemDetailByUser[]>`
+  SELECT
+  clothing_items.id,
+  storage_item_id,
+  clothing_items_type,
+  color,
+  size,
+  season,
+  gender,
+  notes,
+  storage_item_name,
+  storage_item_location,
+  storage_item.user_id
+
+  FROM clothing_items_types
+INNER JOIN clothing_items
+  ON clothing_items_types.id = clothing_items.clothing_items_type_id AND storage_item_id = storage_items.id
+LEFT OUTER JOIN clothing_items_colors
+  ON clothing_items_colors.id = clothing_items.color_id
+INNER JOIN clothing_items_sizes
+  ON clothing_items_sizes.id = clothing_items.size_id
+LEFT OUTER JOIN clothing_items_seasons
+  ON clothing_items_seasons.id = clothing_items.season_id
+LEFT OUTER JOIN clothing_items_gender
+ ON clothing_items_gender.id = clothing_items.gender_id
+INNER JOIN storage_items
+  ON storage_items.id=storage_items.id AND storage_item.user_id = ${userId}
+
+ `;
+
+  return clothingItems.map((s) => camelcaseKeys(s));
+}
+
+export async function searchClothingItems(
+  // storageItemId: number,
+  clothingItemsTypeId: number,
+  colorId: number,
+  sizeId: number,
+  seasonId: number,
+  genderId: number,
+  notes: string,
+  // userId: number,
+) {
+  const clothingItems = await sql<ClothingItemDetailByUser[]>`
+    
+ SELECT FROM clothing_items
+      (
+        storage_item_id,
+        clothing_items_type_id,
+        color_id,
+        size_id,
+        season_id,
+        gender_id,
+        notes)
+      
+      WHERE 
+      clothing_items_type_id = ${clothingItemsTypeId},
+      color_id =  ${colorId},
+      size_id = ${sizeId},
+      season_id = ${seasonId},
+      gender_id = ${genderId},
+      notes = ${notes}
+
+    RETURNING *;
+  `;
+
+  return clothingItems.map((s) => camelcaseKeys(s))[0];
 }
 
 // //list of ALL clothing_items in db - to check - unused

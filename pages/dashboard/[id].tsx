@@ -51,6 +51,7 @@ export default function Search(props: Props) {
   const [clothingItemNotesId, setClothingItemNotes] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [myList, setMyList] = useState(props.myList);
+  //editing key to edit storageItem
   const [editingKey, setEditingKey] = useState<string | null>(null);
   const [storageItemName, setStorageItemName] = useState(
     props.storageItem.storageItemName,
@@ -58,9 +59,6 @@ export default function Search(props: Props) {
   const [storageItemLocation, setStorageItemLocation] = useState(
     props.storageItem.storageItemLocation,
   );
-
-  console.log(`editingKey ${editingKey}`);
-  console.log(props.storageItem.storageItemName);
 
   //sets cookie for personal clothing items list
   useEffect(() => {

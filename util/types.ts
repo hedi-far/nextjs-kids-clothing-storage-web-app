@@ -42,6 +42,20 @@ export type ClothingItemDetail = {
   storageItemLocation?: string;
 };
 
+export type ClothingItemDetailByUser = {
+  id: number;
+  storageItemId: number;
+  clothingItemsType: string;
+  color?: string;
+  size: string;
+  season?: string;
+  gender?: string;
+  notes?: string;
+  storageItemName: string;
+  storageItemLocation?: string;
+  userId: number;
+};
+
 export type ClothingItemsType = {
   id: number;
   clothingItemsType: string;
