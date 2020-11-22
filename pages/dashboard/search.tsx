@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import Layout from '../../components/Layout';
 // import Link from 'next/link';
 import AddToListButton from '../../components/AddToListButton';
@@ -25,10 +26,10 @@ import {
   ClothingItemsSeason,
   ClothingItemsSize,
   ClothingItemsType,
-  SearchTerms,
+  Filter,
   StorageItem,
 } from '../../util/types';
-import { getSearchResults } from '../../util/get-search-results';
+import { getFilterResults, searchInNotes } from '../../util/get-search-results';
 
 type Props = {
   loggedIn: boolean;
@@ -40,8 +41,8 @@ type Props = {
   clothingItemsSeasons: ClothingItemsSeason[];
   clothingItemsGender: ClothingItemsGender[];
   myList: ClothingItemDetail[];
-  searchTerms: SearchTerms;
-  newSearchTerms: SearchTerms;
+  Filter: Filter;
+  newFilter: Filter;
   filteredClothingItems: ClothingItemDetailByUser[];
 };
 
@@ -52,17 +53,20 @@ export default function Search(props: Props) {
   const [clothingItemColor, setClothingItemColor] = useState('');
   const [clothingItemSeason, setClothingItemSeason] = useState('');
   const [clothingItemGender, setClothingItemGender] = useState('');
-  const [clothingItemNotes, setClothingItemNotes] = useState('');
+
   const [clothingItems, setClothingItems] = useState(props.clothingItems || []);
   const [errorMessage, setErrorMessage] = useState('');
   const [myList, setMyList] = useState(props.myList);
-  const [searchTerms, setSearchTerms] = useState([]);
 
-  //When Submit button is clicked:
-  const handleSubmit = (e: React.FormEvent) => {
+  const [clothesFilter, setClothesFilter] = useState([]);
+  const [searchNotes, setSearchNotes] = useState('');
+  console.log(searchNotes);
+
+  //When filter button is clicked:
+  const handleFilter = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const newSearchTerms = {
+    const newClothesFilter = {
       clothingItemType,
       clothingItemSize,
       clothingItemColor,
@@ -70,19 +74,59 @@ export default function Search(props: Props) {
       clothingItemGender,
     };
 
-    setSearchTerms(newSearchTerms);
+    setClothesFilter(newClothesFilter);
 
-    console.log(searchTerms);
+    console.log(typeof newClothesFilter.clothingItemSize);
+    console.log(typeof newClothesFilter.clothingItemType);
+    console.log(newClothesFilter);
+    console.log(newClothesFilter.clothingItemSeason);
 
-    const filteredClothingItems = getSearchResults(
+    const filteredClothingItems = getFilterResults(
       clothingItems,
-      newSearchTerms,
+      newClothesFilter,
     );
 
     console.log(filteredClothingItems);
 
     setClothingItems(filteredClothingItems);
   };
+
+  //When search button is clicked:
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    //     var name = 'abc';
+    // new RegExp(name, 'i');
+
+    //makes search terms case insensitive
+    const newSearchNotes = new RegExp(searchNotes, 'i');
+
+    const filteredClothingItems = searchInNotes(newSearchNotes, clothingItems);
+
+    setClothingItems(filteredClothingItems);
+  };
+
+  // //When search button is clicked:
+  // const handleSearch = (e: React.FormEvent) => {
+  //   e.preventDefault();
+
+  //   const newSearchNotes = {
+  //     searchNotes,
+  //   };
+
+  //   setSearchNotes(newSearchNotes);
+
+  //   console.log(newSearchNotes);
+
+  // const filteredClothingItems = getSearchResults(
+  //   clothingItems,
+  //   newClothesFilter,
+  // );
+
+  // console.log(filteredClothingItems);
+
+  // setClothingItems(filteredClothingItems);
+  // };
 
   return (
     <div>
@@ -93,7 +137,7 @@ export default function Search(props: Props) {
         <main>
           <h1>Filter</h1>
           <p>Please select a filter.</p>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleFilter}>
             {/* form fields start here */}
             <label htmlFor="type">
               {' '}
@@ -206,7 +250,17 @@ export default function Search(props: Props) {
             </label> */}
             <br />
             <button>Filter</button>
-            <button onClick={() => router.reload()}>Reset filters</button>
+            <button onClick={() => router.reload()}>Reset your filters</button>
+            <br />
+            <label htmlFor="notes">
+              <input
+                value={searchNotes}
+                type="text"
+                onChange={(e) => setSearchNotes(e.currentTarget.value)}
+              />
+              <button onClick={handleSearch}>Search your notes</button>
+            </label>
+            <button onClick={() => router.reload()}>Reset your search</button>
           </form>
           <p>{errorMessage}</p>
 
@@ -221,8 +275,7 @@ export default function Search(props: Props) {
                 <th>season</th>
                 <th>gender</th>
                 <th>notes</th>
-                <th>storage item name</th>
-                <th>storage item location</th>
+                <th>storage unit</th>
                 <th />
                 <th />
                 <th />
@@ -239,9 +292,11 @@ export default function Search(props: Props) {
                     <td>{clothingItem.season}</td>
                     <td>{clothingItem.gender}</td>
                     <td>{clothingItem.notes}</td>
-                    <td>{clothingItem.storageItemName}</td>
-                    <td>{clothingItem.storageItemLocation}</td>
-
+                    <td>
+                      <Link href={`/dashboard/${clothingItem.storageItemId}`}>
+                        <a>{clothingItem.storageItemName}</a>
+                      </Link>
+                    </td>
                     <td>
                       <AddToListButton
                         myList={myList}
