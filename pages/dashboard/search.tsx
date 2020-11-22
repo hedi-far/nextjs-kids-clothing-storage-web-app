@@ -25,8 +25,10 @@ import {
   ClothingItemsSeason,
   ClothingItemsSize,
   ClothingItemsType,
+  SearchTerms,
   StorageItem,
 } from '../../util/types';
+import { getSearchResults } from '../../util/get-search-results';
 
 type Props = {
   loggedIn: boolean;
@@ -38,18 +40,50 @@ type Props = {
   clothingItemsSeasons: ClothingItemsSeason[];
   clothingItemsGender: ClothingItemsGender[];
   myList: ClothingItemDetail[];
+  searchTerms: SearchTerms;
+  newSearchTerms: SearchTerms;
+  filteredClothingItems: ClothingItemDetailByUser[];
 };
 
 export default function Search(props: Props) {
   const router = useRouter();
-  const [clothingItemTypeId, setClothingItemTypeId] = useState('');
-  const [clothingItemSizeId, setClothingItemSizeId] = useState('');
-  const [clothingItemColorId, setClothingItemColorId] = useState('');
-  const [clothingItemSeasonId, setClothingItemSeasonId] = useState('');
-  const [clothingItemGenderId, setClothingItemGenderId] = useState('');
-  const [clothingItemNotesId, setClothingItemNotes] = useState('');
+  const [clothingItemType, setClothingItemType] = useState('');
+  const [clothingItemSize, setClothingItemSize] = useState('');
+  const [clothingItemColor, setClothingItemColor] = useState('');
+  const [clothingItemSeason, setClothingItemSeason] = useState('');
+  const [clothingItemGender, setClothingItemGender] = useState('');
+  const [clothingItemNotes, setClothingItemNotes] = useState('');
+  const [clothingItems, setClothingItems] = useState(props.clothingItems || []);
   const [errorMessage, setErrorMessage] = useState('');
   const [myList, setMyList] = useState(props.myList);
+  const [searchTerms, setSearchTerms] = useState([]);
+
+  //When Submit button is clicked:
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const newSearchTerms = {
+      clothingItemType,
+      clothingItemSize,
+      clothingItemColor,
+      clothingItemSeason,
+      clothingItemGender,
+    };
+
+    setSearchTerms(newSearchTerms);
+
+    console.log(searchTerms);
+
+    const filteredClothingItems = getSearchResults(
+      clothingItems,
+      newSearchTerms,
+    );
+
+    console.log(filteredClothingItems);
+
+    setClothingItems(filteredClothingItems);
+  };
+
   return (
     <div>
       <Layout loggedIn={props.loggedIn}>
@@ -57,66 +91,22 @@ export default function Search(props: Props) {
           <title>Welcome!</title>
         </Head>
         <main>
-          <h1>Search</h1>
-          <form
-            onSubmit={async (e) => {
-              // Prevent the default browser behavior of forms
-              e.preventDefault();
-
-              // Send the data to the
-              // API route
-              // const id = props.storageItem.id;
-
-              const response = await fetch(`../api/dashboard/search`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-
-                body: JSON.stringify({
-                  clothingItemsTypeId: clothingItemTypeId,
-                  sizeId: clothingItemSizeId,
-                  colorId: clothingItemColorId,
-                  seasonId: clothingItemSeasonId,
-                  genderId: clothingItemGenderId,
-                  notes: clothingItemNotesId,
-                  // storageItemId: props.storageItem.id,
-                }),
-              });
-
-              const { success } = await response.json();
-
-              if (success) {
-                // Redirect so same page
-                // router.push(`/dashboard/${id}`);
-                window.alert('Success!');
-                console.log(response);
-              } else {
-                // If the response status code (set using response.status()
-                // in the API route) is 409 (Conflict) then show an error
-                // message that the user already exists
-                if (response.status === 409) {
-                  setErrorMessage('No results!');
-                } else {
-                  setErrorMessage('Failed!');
-                }
-              }
-            }}
-          >
+          <h1>Filter</h1>
+          <p>Please select a filter.</p>
+          <form onSubmit={handleSubmit}>
             {/* form fields start here */}
             <label htmlFor="type">
               {' '}
-              Type (required):
+              Type:
               <select
                 id="type"
-                required
-                value={clothingItemTypeId}
-                onChange={(e) => setClothingItemTypeId(e.currentTarget.value)}
+                value={clothingItemType}
+                onChange={(e) => setClothingItemType(e.currentTarget.value)}
               >
-                <option />
+                <option value=" ">none</option>
                 {props.clothingItemsTypes.map((type: ClothingItemsType) => {
                   return (
-                    <option key={type.id} value={type.id}>
+                    <option key={type.id} value={type.clothingItemsType}>
                       {type.clothingItemsType}
                     </option>
                   );
@@ -125,17 +115,16 @@ export default function Search(props: Props) {
             </label>
             <label htmlFor="size">
               {' '}
-              Size (required):
+              Size:
               <select
                 id="size"
-                required
-                value={clothingItemSizeId}
-                onChange={(e) => setClothingItemSizeId(e.currentTarget.value)}
+                value={clothingItemSize}
+                onChange={(e) => setClothingItemSize(e.currentTarget.value)}
               >
-                <option />
+                <option value=" ">none</option>
                 {props.clothingItemsSizes.map((size: ClothingItemsSize) => {
                   return (
-                    <option key={size.id} value={size.id}>
+                    <option key={size.id} value={size.size}>
                       {size.size}
                     </option>
                   );
@@ -148,13 +137,13 @@ export default function Search(props: Props) {
               Color:
               <select
                 id="color"
-                value={clothingItemColorId}
-                onChange={(e) => setClothingItemColorId(e.currentTarget.value)}
+                value={clothingItemColor}
+                onChange={(e) => setClothingItemColor(e.currentTarget.value)}
               >
                 <option value=" ">none</option>
                 {props.clothingItemsColors.map((color: ClothingItemsColor) => {
                   return (
-                    <option key={color.id} value={color.id}>
+                    <option key={color.id} value={color.color}>
                       {color.color}
                     </option>
                   );
@@ -167,14 +156,14 @@ export default function Search(props: Props) {
               Season:
               <select
                 id="season"
-                value={clothingItemSeasonId}
-                onChange={(e) => setClothingItemSeasonId(e.currentTarget.value)}
+                value={clothingItemSeason}
+                onChange={(e) => setClothingItemSeason(e.currentTarget.value)}
               >
                 <option value=" ">none</option>
                 {props.clothingItemsSeasons.map(
                   (season: ClothingItemsSeason) => {
                     return (
-                      <option key={season.id} value={season.id}>
+                      <option key={season.id} value={season.season}>
                         {season.season}
                       </option>
                     );
@@ -187,14 +176,14 @@ export default function Search(props: Props) {
               Gender:
               <select
                 id="gender"
-                value={clothingItemGenderId}
-                onChange={(e) => setClothingItemGenderId(e.currentTarget.value)}
+                value={clothingItemGender}
+                onChange={(e) => setClothingItemGender(e.currentTarget.value)}
               >
                 <option value=" ">none</option>
                 {props.clothingItemsGender.map(
                   (gender: ClothingItemsGender) => {
                     return (
-                      <option key={gender.id} value={gender.id}>
+                      <option key={gender.id} value={gender.gender}>
                         {gender.gender}
                       </option>
                     );
@@ -203,21 +192,21 @@ export default function Search(props: Props) {
               </select>
               <br />
             </label>
-            <label htmlFor="notes">
+            {/* <label htmlFor="notes">
               Notes:
               <textarea
                 rows={3}
                 cols={20}
                 id="notes"
                 name="notes"
-                value={clothingItemNotesId}
+                value={clothingItemNotes}
                 maxLength={100}
                 onChange={(e) => setClothingItemNotes(e.currentTarget.value)}
               />
-            </label>
+            </label> */}
             <br />
-            <button>Search</button>
-            <button onClick={() => router.reload()}>Reset</button>
+            <button>Filter</button>
+            <button onClick={() => router.reload()}>Reset filters</button>
           </form>
           <p>{errorMessage}</p>
 
@@ -240,7 +229,7 @@ export default function Search(props: Props) {
               </tr>
             </thead>
 
-            {props.clothingItems.map((clothingItem: ClothingItemDetail) => {
+            {clothingItems.map((clothingItem: ClothingItemDetail) => {
               return (
                 <tbody key={clothingItem.id}>
                   <tr>

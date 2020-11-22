@@ -320,41 +320,41 @@ INNER JOIN storage_items
 
   return clothingItems.map((s) => camelcaseKeys(s));
 }
-//FIXME
-export async function searchClothingItems(
-  clothingItemsTypeId: number,
-  colorId: number,
-  sizeId: number,
-  seasonId: number,
-  genderId: number,
-  notes: string,
-) {
-  const clothingItems = await sql<ClothingItem[]>`
-    SELECT 
- 
-        storage_item_id,
-        clothing_items_type_id,
-        color_id,
-        size_id,
-        season_id,
-        gender_id,
-        notes
- 
-      FROM 
-      clothing_items
-      
-      WHERE 
-      clothing_items_type_id = ${clothingItemsTypeId} AND
-      color_id =  ${colorId} AND
-      size_id = ${sizeId} AND
-      season_id = ${seasonId} AND
-      gender_id = ${genderId} AND
-      notes = ${notes};
+// //FIXME
+// export async function searchClothingItems(
+//   clothingItemsTypeId: number,
+//   colorId: number,
+//   sizeId: number,
+//   seasonId: number,
+//   genderId: number,
+//   notes: string,
+// ) {
+//   const clothingItems = await sql<ClothingItem[]>`
+//     SELECT
 
-  `;
+//         storage_item_id,
+//         clothing_items_type_id,
+//         color_id,
+//         size_id,
+//         season_id,
+//         gender_id,
+//         notes
 
-  return clothingItems.map((s) => camelcaseKeys(s))[0];
-}
+//       FROM
+//       clothing_items
+
+//       WHERE
+//       clothing_items_type_id = ${clothingItemsTypeId} AND
+//       color_id =  ${colorId} AND
+//       size_id = ${sizeId} AND
+//       season_id = ${seasonId} AND
+//       gender_id = ${genderId} AND
+//       notes = ${notes};
+
+//   `;
+
+//   return clothingItems.map((s) => camelcaseKeys(s))[0];
+// }
 
 // //list of ALL clothing_items in db - to check - unused
 // export async function getClothingItems() {

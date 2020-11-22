@@ -81,6 +81,14 @@ export type ClothingItemsGender = {
   gender: string;
 };
 
+export type SearchTerms = {
+  clothingItemType?: string;
+  clothingItemSize?: string;
+  clothingItemColor?: string;
+  clothingItemSeason?: string;
+  clothingItemGender?: string;
+};
+
 // export type MyList = {
 //   id: number;
 //   storageItemId: number;
