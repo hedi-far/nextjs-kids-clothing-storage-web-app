@@ -81,23 +81,18 @@ export type ClothingItemsGender = {
   gender: string;
 };
 
-export type SearchTerms = {
-  clothingItemType?: string;
-  clothingItemSize?: string;
-  clothingItemColor?: string;
-  clothingItemSeason?: string;
-  clothingItemGender?: string;
-};
-
-// export type MyList = {
-//   id: number;
-//   storageItemId: number;
-//   clothingItemsType: string;
-//   color?: string;
-//   size: string;
-//   season?: string;
-//   gender?: string;
-//   notes?: string;
-//   storageItemName: string;
-//   storageItemLocation?: string;
+// export type Filter = {
+//   clothingItemType?: string;
+//   clothingItemSize?: string;
+//   clothingItemColor?: string;
+//   clothingItemSeason?: string;
+//   clothingItemGender?: string;
 // };
+
+export type Filter = {
+  clothingItemsType?: string;
+  size?: string;
+  color?: string;
+  season?: string;
+  gender?: string;
+};

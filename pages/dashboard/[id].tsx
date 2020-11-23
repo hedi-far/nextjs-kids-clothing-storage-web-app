@@ -1,13 +1,12 @@
 import React from 'react';
 import Head from 'next/head';
-import Layout from '../../components/Layout';
-import AddToListButton from '../../components/AddToListButton';
-// import Link from 'next/link';
 import { GetServerSidePropsContext } from 'next';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import nextCookies from 'next-cookies';
 import Cookies from 'js-cookie';
+import Layout from '../../components/Layout';
+import AddToListButton from '../../components/AddToListButton';
 import {
   StorageItem,
   ClothingItemDetail,
@@ -19,7 +18,7 @@ import {
 } from '../../util/types';
 import {
   getClothingItemTypes,
-  getStorageItemByUserId,
+  getStorageItemsByUserId,
   getUserBySessionToken,
   getClothingItemByStorageItemId,
   getClothingItemColors,
@@ -27,10 +26,9 @@ import {
   getClothingItemSeasons,
   getClothingItemGender,
 } from '../../util/database';
-import { isSessionTokenValid } from '../../util/auth';
 
 type Props = {
-  loggedIn: boolean;
+  // loggedIn: boolean;
   storageItem: StorageItem;
   clothingItems: ClothingItemDetail[];
   clothingItemsTypes: ClothingItemsType[];
@@ -67,7 +65,7 @@ export default function Search(props: Props) {
 
   return (
     <div>
-      <Layout loggedIn={props.loggedIn}>
+      <Layout loggedIn={true}>
         <Head>
           <title>Welcome!</title>
         </Head>
@@ -228,8 +226,7 @@ export default function Search(props: Props) {
 
                             if (success) {
                               // Redirect so same page
-                              // router.push(`/dashboard/${id}`);
-                              // window.location.reload();
+                              router.push(`/dashboard/${id}`);
                             } else {
                               // If the response status code (set using response.status()
                               // in the API route) is 409 (Conflict) then show an error
@@ -291,7 +288,6 @@ export default function Search(props: Props) {
               if (success) {
                 // Redirect so same page
                 router.push(`/dashboard/${id}`);
-                window.alert('Success!');
               } else {
                 // If the response status code (set using response.status()
                 // in the API route) is 409 (Conflict) then show an error
@@ -299,7 +295,9 @@ export default function Search(props: Props) {
                 if (response.status === 409) {
                   setErrorMessage('Already exists!');
                 } else {
-                  setErrorMessage('Failed!');
+                  setErrorMessage(
+                    'Sorry, that did not work! Please try again!',
+                  );
                 }
               }
             }}
@@ -429,9 +427,10 @@ export default function Search(props: Props) {
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { session: token } = nextCookies(context);
-  const loggedIn = await isSessionTokenValid(token);
+  // const loggedIn = await isSessionTokenValid(token);
+  const user = await getUserBySessionToken(token);
 
-  if (!(await isSessionTokenValid(token))) {
+  if (!token || !user) {
     return {
       redirect: {
         destination: '/login?returnTo=/dashboard/[id]',
@@ -443,17 +442,28 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const allCookies = nextCookies(context);
   const myList = allCookies.myList || [];
 
-  const user = await getUserBySessionToken(token);
-
   const userId = user.id;
 
-  const storageItems = await getStorageItemByUserId(userId);
+  const storageItems = await getStorageItemsByUserId(userId);
 
   const currentId = Number(context.query.id);
 
+  //function checks if logged in user id is found in storageItems that were fetched above
   const storageItem = storageItems.find((element) => element.id === currentId);
 
-  const clothingItems = await getClothingItemByStorageItemId(storageItem.id);
+  let clothingItems;
+
+  //if any invalid storage item id is entered, user is returned to dashboard
+  if (storageItem) {
+    clothingItems = await getClothingItemByStorageItemId(storageItem.id);
+  } else {
+    return {
+      redirect: {
+        destination: '/dashboard',
+        permanent: false,
+      },
+    };
+  }
 
   const clothingItemsTypes = await getClothingItemTypes();
 
@@ -468,7 +478,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {
     props: {
       user,
-      loggedIn,
+      // loggedIn,
       storageItem,
       clothingItems,
       clothingItemsTypes,

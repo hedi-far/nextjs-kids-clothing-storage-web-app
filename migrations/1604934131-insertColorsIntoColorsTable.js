@@ -23,7 +23,12 @@ const colors = [
 
 exports.up = async (sql) => {
   await sql`
- INSERT INTO clothing_items_colors ${sql(colors, 'color')};
+ INSERT INTO clothing_items_colors 
+ 
+ VALUES 
+ (
+   ${sql(colors, 'color')}
+  )
  `;
 };
 

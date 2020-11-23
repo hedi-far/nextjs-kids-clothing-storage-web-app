@@ -2,8 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import {
   deleteClothingItemByStorageItemId,
   updateStorageItemByStorageItemId,
+  insertClothingItem,
 } from '../../../util/database';
-import { insertClothingItem } from '../../../util/database';
 
 export default async function handler(
   request: NextApiRequest,
@@ -20,9 +20,6 @@ export default async function handler(
       storageItemId,
     } = request.body;
 
-    // console.log(genderId);
-    // console.log(typeof genderId);
-
     try {
       await insertClothingItem(
         storageItemId,
@@ -34,12 +31,10 @@ export default async function handler(
         notes,
       );
     } catch (err) {
-      // console.log(err);
       return response.status(500).send({ success: false });
     }
   } else if (request.method === 'DELETE') {
     const { clothingItemId } = request.body;
-
     await deleteClothingItemByStorageItemId(clothingItemId);
   } else if (request.method === 'PATCH') {
     const {

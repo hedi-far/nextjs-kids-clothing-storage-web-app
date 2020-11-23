@@ -1,17 +1,16 @@
 import Head from 'next/head';
-import Layout from '../components/Layout';
-// import Link from 'next/link';
-import nextCookies from 'next-cookies';
-import Cookies from 'js-cookie';
-import cookie from 'cookie';
 import { GetServerSidePropsContext } from 'next';
+import Cookies from 'js-cookie';
+import nextCookies from 'next-cookies';
+import cookie from 'cookie';
+import Layout from '../components/Layout';
 import { deleteSessionByToken } from '../util/database';
 
 type Props = { loggedIn: boolean };
 
 export default function Goodbye(props: Props) {
   //Remove the client-side list cookie
-  const myList = Cookies.remove('myList', {
+  Cookies.remove('myList', {
     path: './logout.tsx',
   });
 
@@ -29,17 +28,24 @@ export default function Goodbye(props: Props) {
   );
 }
 
-// export async function getServerSideProps(context: GetServerSidePropsContext) {
-//   const { session: token } = nextCookies(context);
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const { session: token } = nextCookies(context);
 
-//   await deleteSessionByToken(token);
+  await deleteSessionByToken(token);
 
-//   // Remove the session cookie
-//   context.res.setHeader(
-//     'Set-Cookie',
-//     cookie.serialize('session', '', {
-//       maxAge: -1,
-//       path: '/',
-//     }),
-//   );
-// }
+  // Remove the session cookie
+  context.res.setHeader(
+    'Set-Cookie',
+    cookie.serialize('session', '', {
+      maxAge: -1,
+      path: '/',
+    }),
+  );
+
+  return {
+    redirect: {
+      destination: '/see-you-soon',
+      permanent: false,
+    },
+  };
+}

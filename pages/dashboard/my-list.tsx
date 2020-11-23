@@ -1,8 +1,7 @@
 import Head from 'next/head';
-import nextCookies from 'next-cookies';
-import { useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
+import { useState } from 'react';
 import { GetServerSidePropsContext } from 'next';
+import nextCookies from 'next-cookies';
 import Layout from '../../components/Layout';
 import { isSessionTokenValid } from '../../util/auth';
 import { ClothingItemDetail } from '../../util/types';
@@ -12,14 +11,6 @@ type Props = { loggedIn: boolean; myList: ClothingItemDetail[] };
 
 export default function MyListPage(props: Props) {
   const [myList, setMyList] = useState(props.myList);
-
-  // //when delete button is clicked
-  // const handleDeleteFromList = (listItemId: number) => {
-  //   const newList = myList.filter((item) => item.id !== listItemId);
-  //   setMyList(newList);
-  //   Cookies.set('myList', newList);
-  //   window.location.reload();
-  // };
 
   return (
     <div>
@@ -56,8 +47,8 @@ export default function MyListPage(props: Props) {
                 </tbody>
               );
             })}
+            {/* <button onClick={window.print}>Print</button> */}
           </table>
-          <button onClick={window.print}>Print</button>
         </main>
       </Layout>
     </div>

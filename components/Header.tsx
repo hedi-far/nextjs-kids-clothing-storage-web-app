@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { css } from '@emotion/core';
 import React from 'react';
+import { css } from '@emotion/core';
 
 const headerStyles = css`
   display: flex;

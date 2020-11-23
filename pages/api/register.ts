@@ -5,10 +5,11 @@ import { getUserByUsername, registerUser } from '../../util/database';
 
 const tokens = new Tokens();
 
-export default async function handler(request: NextApiRequest, response: NextApiResponse) {
-  // Extract the username, password and token from the request
-  // body (this process is called "destructuring")
-  const { email, username, password, token } = request.body;
+export default async function handler(
+  request: NextApiRequest,
+  response: NextApiResponse,
+) {
+  const { username, password, token } = request.body;
 
   const secret = process.env.CSRF_TOKEN_SECRET;
 
@@ -30,15 +31,14 @@ export default async function handler(request: NextApiRequest, response: NextApi
     typeof (await getUserByUsername(username)) !== 'undefined';
 
   if (usernameAlreadyTaken) {
-    // TODO: Send back a full error message here
-    // HTTP status code: 409 Conflict
     return response.status(409).send({ success: false });
   }
 
   try {
     const passwordHash = await argon2.hash(password);
-    await registerUser(email, username, passwordHash);
+    await registerUser(username, passwordHash);
   } catch (err) {
+    console.log(err);
     // If hashing the password or registering the user fails
     // for any reason, then return an error status
     // HTTP status code: 500 Internal Server Error

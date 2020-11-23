@@ -10,6 +10,7 @@ import { isSessionTokenValid } from '../../util/auth';
 type Props = { loggedIn: boolean; user: User };
 
 export default function Account(props: Props) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
   return (
@@ -45,14 +46,9 @@ export default function Account(props: Props) {
               const { success } = await response.json();
 
               if (success) {
-                // Redirect so same page
+                // Redirect so goodbye page
                 router.push(`/goodbye  `);
-                // window.location.reload();
               } else {
-                // If the response status code (set using response.status()
-                // in the API route) is 409 (Conflict) then show an error
-                // message that the user already exists
-
                 setErrorMessage('Failed!');
               }
             }
@@ -79,8 +75,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 
   const user = await getUserBySessionToken(token);
-  // console.log(user);
-  // { id: 8, email: 'testuser@test.at', username: 'test' }
 
   return {
     props: {

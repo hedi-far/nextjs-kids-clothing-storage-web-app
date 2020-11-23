@@ -1,20 +1,17 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import Layout from '../../components/Layout';
-// import Link from 'next/link';
-import AddToListButton from '../../components/AddToListButton';
-import nextCookies from 'next-cookies';
 import { GetServerSidePropsContext } from 'next';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { isSessionTokenValid } from '../../util/auth';
+import nextCookies from 'next-cookies';
+import Layout from '../../components/Layout';
+import AddToListButton from '../../components/AddToListButton';
 import {
   getClothingItemColors,
   getClothingItemGender,
   getClothingItemSeasons,
   getClothingItemSizes,
   getClothingItemTypes,
-  // getStorageItemByUserId,
   getClothingItemByUserId,
   getUserBySessionToken,
 } from '../../util/database';
@@ -32,7 +29,7 @@ import {
 import { getFilterResults, searchInNotes } from '../../util/get-search-results';
 
 type Props = {
-  loggedIn: boolean;
+  // loggedIn: boolean;
   storageItem: StorageItem;
   clothingItems: ClothingItemDetailByUser[];
   clothingItemsTypes: ClothingItemsType[];
@@ -41,8 +38,7 @@ type Props = {
   clothingItemsSeasons: ClothingItemsSeason[];
   clothingItemsGender: ClothingItemsGender[];
   myList: ClothingItemDetail[];
-  Filter: Filter;
-  newFilter: Filter;
+  newClothesFilter: Filter;
   filteredClothingItems: ClothingItemDetailByUser[];
 };
 
@@ -53,50 +49,51 @@ export default function Search(props: Props) {
   const [clothingItemColor, setClothingItemColor] = useState('');
   const [clothingItemSeason, setClothingItemSeason] = useState('');
   const [clothingItemGender, setClothingItemGender] = useState('');
-
   const [clothingItems, setClothingItems] = useState(props.clothingItems || []);
   const [errorMessage, setErrorMessage] = useState('');
   const [myList, setMyList] = useState(props.myList);
-
-  const [clothesFilter, setClothesFilter] = useState([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [clothesFilter, setClothesFilter] = useState({});
   const [searchNotes, setSearchNotes] = useState('');
-  console.log(searchNotes);
 
   //When filter button is clicked:
   const handleFilter = (e: React.FormEvent) => {
     e.preventDefault();
 
+    const clothingItemsType = clothingItemType;
+    const size = clothingItemSize;
+    const color = clothingItemColor;
+    const season = clothingItemSeason;
+    const gender = clothingItemGender;
+
     const newClothesFilter = {
-      clothingItemType,
-      clothingItemSize,
-      clothingItemColor,
-      clothingItemSeason,
-      clothingItemGender,
+      clothingItemsType,
+      size,
+      color,
+      season,
+      gender,
     };
 
     setClothesFilter(newClothesFilter);
-
-    console.log(typeof newClothesFilter.clothingItemSize);
-    console.log(typeof newClothesFilter.clothingItemType);
-    console.log(newClothesFilter);
-    console.log(newClothesFilter.clothingItemSeason);
 
     const filteredClothingItems = getFilterResults(
       clothingItems,
       newClothesFilter,
     );
 
-    console.log(filteredClothingItems);
-
     setClothingItems(filteredClothingItems);
+
+    if (filteredClothingItems.length === 0) {
+      setErrorMessage('No match found!');
+    }
+
+    console.log(newClothesFilter);
+    console.log(filteredClothingItems);
   };
 
   //When search button is clicked:
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-
-    //     var name = 'abc';
-    // new RegExp(name, 'i');
 
     //makes search terms case insensitive
     const newSearchNotes = new RegExp(searchNotes, 'i');
@@ -104,33 +101,15 @@ export default function Search(props: Props) {
     const filteredClothingItems = searchInNotes(newSearchNotes, clothingItems);
 
     setClothingItems(filteredClothingItems);
+
+    if (filteredClothingItems.length === 0) {
+      setErrorMessage('No match found!');
+    }
   };
-
-  // //When search button is clicked:
-  // const handleSearch = (e: React.FormEvent) => {
-  //   e.preventDefault();
-
-  //   const newSearchNotes = {
-  //     searchNotes,
-  //   };
-
-  //   setSearchNotes(newSearchNotes);
-
-  //   console.log(newSearchNotes);
-
-  // const filteredClothingItems = getSearchResults(
-  //   clothingItems,
-  //   newClothesFilter,
-  // );
-
-  // console.log(filteredClothingItems);
-
-  // setClothingItems(filteredClothingItems);
-  // };
 
   return (
     <div>
-      <Layout loggedIn={props.loggedIn}>
+      <Layout loggedIn={true}>
         <Head>
           <title>Welcome!</title>
         </Head>
@@ -236,18 +215,6 @@ export default function Search(props: Props) {
               </select>
               <br />
             </label>
-            {/* <label htmlFor="notes">
-              Notes:
-              <textarea
-                rows={3}
-                cols={20}
-                id="notes"
-                name="notes"
-                value={clothingItemNotes}
-                maxLength={100}
-                onChange={(e) => setClothingItemNotes(e.currentTarget.value)}
-              />
-            </label> */}
             <br />
             <button>Filter</button>
             <button onClick={() => router.reload()}>Reset your filters</button>
@@ -269,6 +236,7 @@ export default function Search(props: Props) {
           <table>
             <thead>
               <tr>
+                <th>id</th>
                 <th>type</th>
                 <th>color</th>
                 <th>size</th>
@@ -286,6 +254,7 @@ export default function Search(props: Props) {
               return (
                 <tbody key={clothingItem.id}>
                   <tr>
+                    <td>{clothingItem.id}</td>
                     <td>{clothingItem.clothingItemsType}</td>
                     <td>{clothingItem.color}</td>
                     <td>{clothingItem.size}</td>
@@ -318,12 +287,13 @@ export default function Search(props: Props) {
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { session: token } = nextCookies(context);
-  const loggedIn = await isSessionTokenValid(token);
+  // const loggedIn = await isSessionTokenValid(token);
+  const user = await getUserBySessionToken(token);
 
-  if (!(await isSessionTokenValid(token))) {
+  if (!token || !user) {
     return {
       redirect: {
-        destination: '/login?returnTo=/dashboard/[id]',
+        destination: '/login?returnTo=/dashboard/search',
         permanent: false,
       },
     };
@@ -332,23 +302,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const allCookies = nextCookies(context);
   const myList = allCookies.myList || [];
 
-  const user = await getUserBySessionToken(token);
-
   const userId = user.id;
 
-  // console.log(userId);
-
-  // const storageItems = await getStorageItemByUserId(userId);
-
-  // console.log(storageItems);
-
-  // const currentId = Number(context.query.id);
-
-  // const storageItem = storageItems.find((element) => element.id === currentId);
-
   const clothingItems = await getClothingItemByUserId(userId);
-
-  // console.log(clothingItems);
 
   const clothingItemsTypes = await getClothingItemTypes();
 
@@ -363,8 +319,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {
     props: {
       user,
-      loggedIn,
-      // storageItem,
+      // loggedIn,
       clothingItems,
       clothingItemsTypes,
       clothingItemsColors,

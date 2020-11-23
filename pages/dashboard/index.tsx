@@ -1,19 +1,18 @@
 import Head from 'next/head';
-import Layout from '../../components/Layout';
 import Link from 'next/link';
-import nextCookies from 'next-cookies';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { User, StorageItem } from '../../util/types';
 import { GetServerSidePropsContext } from 'next';
+import nextCookies from 'next-cookies';
+import Layout from '../../components/Layout';
+import { User, StorageItem } from '../../util/types';
 import {
-  getStorageItemByUserId,
+  getStorageItemsByUserId,
   getUserBySessionToken,
 } from '../../util/database';
-import { isSessionTokenValid } from '../../util/auth';
 
 type Props = {
-  loggedIn: boolean;
+  // loggedIn: boolean;
   user: User;
   storageItems: StorageItem[];
 };
@@ -27,7 +26,7 @@ export default function Dashboard(props: Props) {
 
   return (
     <div>
-      <Layout loggedIn={props.loggedIn}>
+      <Layout loggedIn={true}>
         <Head>
           <title>
             Welcome <p>{props.user.username}</p>!
@@ -69,12 +68,7 @@ export default function Dashboard(props: Props) {
                           if (success) {
                             // Redirect so same page
                             router.push(`/dashboard/`);
-                            // window.location.reload();
                           } else {
-                            // If the response status code (set using response.status()
-                            // in the API route) is 409 (Conflict) then show an error
-                            // message that the user already exists
-
                             setErrorMessage('Failed!');
                           }
                         }
@@ -91,11 +85,8 @@ export default function Dashboard(props: Props) {
           <h2>Add new storage item</h2>
           <form
             onSubmit={async (e) => {
-              // Prevent the default browser behavior of forms
               e.preventDefault();
 
-              // Send the data to the
-              // API route
               const response = await fetch('/api/dashboard', {
                 method: 'POST',
                 headers: {
@@ -167,9 +158,10 @@ export default function Dashboard(props: Props) {
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { session: token } = nextCookies(context);
-  const loggedIn = await isSessionTokenValid(token);
+  // const loggedIn = await isSessionTokenValid(token);
+  const user = await getUserBySessionToken(token);
 
-  if (!(await isSessionTokenValid(token))) {
+  if (!token || !user) {
     return {
       redirect: {
         destination: '/login?returnTo=/dashboard',
@@ -178,16 +170,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
 
-  const user = await getUserBySessionToken(token);
-
   const userId = user.id;
 
-  const storageItems = await getStorageItemByUserId(userId);
+  const storageItems = await getStorageItemsByUserId(userId);
 
   return {
     props: {
       user,
-      loggedIn,
+      // loggedIn,
       storageItems,
     },
   };

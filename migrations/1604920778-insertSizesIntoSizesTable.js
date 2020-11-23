@@ -49,7 +49,13 @@ const sizes = [
 
 exports.up = async (sql) => {
   await sql`
- INSERT INTO clothing_items_sizes ${sql(sizes, 'size')};
+ INSERT INTO clothing_items_sizes 
+ 
+ VALUES
+ (
+   ${sql(sizes, 'size')}
+   
+   )
  `;
 };
 

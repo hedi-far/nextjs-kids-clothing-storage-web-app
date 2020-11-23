@@ -21,11 +21,7 @@ const sql = postgres();
 
 //User-related
 
-export async function registerUser(
-  email: string,
-  username: string,
-  passwordHash: string,
-) {
+export async function registerUser(username: string, passwordHash: string) {
   const users = await sql<User[]>`
     INSERT INTO users
       (username, password_hash)
@@ -64,6 +60,10 @@ export async function getUserBySessionToken(token: string | undefined) {
 }
 
 export async function deleteUserByUserId(userId: number) {
+  // // Return undefined if the id is not
+  // // in the correct format
+  if (!/^\d+$/.test(userId.toString())) return undefined;
+
   const user = await sql<User>`
   
   DELETE FROM 
@@ -128,10 +128,10 @@ export async function insertStorageItem(
   return sessions.map((s) => camelcaseKeys(s))[0];
 }
 
-export async function getStorageItemByUserId(userId: number) {
+export async function getStorageItemsByUserId(userId: number) {
   // // Return undefined if the id is not
   // // in the correct format
-  // if (!/^\d+$/.test(userId)) return undefined;
+  if (!/^\d+$/.test(userId.toString())) return [];
 
   const storageItems = await sql<StorageItem[]>`
   SELECT * FROM storage_items WHERE user_id = ${userId};
@@ -164,10 +164,6 @@ export async function updateStorageItemByStorageItemId(
   storageItemName: string,
   storageItemLocation: string,
 ) {
-  // // Return undefined if the id is not
-  // // in the correct format
-  // if (!/^\d+$/.test(userId)) return undefined;
-
   const storageItems = await sql<StorageItem[]>`
   UPDATE
   storage_items
@@ -249,7 +245,7 @@ export async function deleteClothingItemByStorageItemId(
 export async function getClothingItemByStorageItemId(storageItemId: number) {
   // // Return undefined if the id is not
   // // in the correct format
-  // if (!/^\d+$/.test(userId)) return undefined;
+  if (!/^\d+$/.test(storageItemId.toString())) return undefined;
 
   const clothingItems = await sql<ClothingItemDetail[]>`
   SELECT
@@ -284,9 +280,9 @@ INNER JOIN storage_items
 }
 
 export async function getClothingItemByUserId(userId: number) {
-  // // Return undefined if the id is not
+  // Return undefined if the id is not
   // // in the correct format
-  // if (!/^\d+$/.test(userId)) return undefined;
+  if (!/^\d+$/.test(userId.toString())) return undefined;
 
   const clothingItems = await sql<ClothingItemDetailByUser[]>`
   SELECT
@@ -320,82 +316,10 @@ INNER JOIN storage_items
 
   return clothingItems.map((s) => camelcaseKeys(s));
 }
-// //FIXME
-// export async function searchClothingItems(
-//   clothingItemsTypeId: number,
-//   colorId: number,
-//   sizeId: number,
-//   seasonId: number,
-//   genderId: number,
-//   notes: string,
-// ) {
-//   const clothingItems = await sql<ClothingItem[]>`
-//     SELECT
-
-//         storage_item_id,
-//         clothing_items_type_id,
-//         color_id,
-//         size_id,
-//         season_id,
-//         gender_id,
-//         notes
-
-//       FROM
-//       clothing_items
-
-//       WHERE
-//       clothing_items_type_id = ${clothingItemsTypeId} AND
-//       color_id =  ${colorId} AND
-//       size_id = ${sizeId} AND
-//       season_id = ${seasonId} AND
-//       gender_id = ${genderId} AND
-//       notes = ${notes};
-
-//   `;
-
-//   return clothingItems.map((s) => camelcaseKeys(s))[0];
-// }
-
-// //list of ALL clothing_items in db - to check - unused
-// export async function getClothingItems() {
-//   // // Return undefined if the id is not
-//   // // in the correct format
-//   // if (!/^\d+$/.test(userId)) return undefined;
-
-//   const clothingItems = await sql<ClothingItem[]>`
-// SELECT
-// clothing_items.id,
-// clothing_items_type,
-// color,
-// size,
-// season,
-// gender,
-// notes
-
-// FROM
-// clothing_items_types
-//  INNER JOIN clothing_items
-//   ON clothing_items_types.id = clothing_items.clothing_items_type_id
-// INNER JOIN clothing_items_colors
-//   ON clothing_items_colors.id = clothing_items.color_id
-// INNER JOIN clothing_items_sizes
-//   ON clothing_items_sizes.id = clothing_items.size_id
-// INNER JOIN clothing_items_seasons
-//   ON clothing_items_seasons.id = clothing_items.season_id
-// INNER JOIN clothing_items_gender
-//  ON clothing_items_gender.id = clothing_items.gender_id;
-//   `;
-
-//   return clothingItems.map((s) => camelcaseKeys(s));
-// }
 
 //clothing_item_types
 
 export async function getClothingItemTypes() {
-  // // Return undefined if the id is not
-  // // in the correct format
-  // if (!/^\d+$/.test(userId)) return undefined;
-
   const clothingItemsTypes = await sql<ClothingItemsType[]>`
 SELECT
 *
@@ -409,10 +333,6 @@ clothing_items_types;
 //color
 
 export async function getClothingItemColors() {
-  // // Return undefined if the id is not
-  // // in the correct format
-  // if (!/^\d+$/.test(userId)) return undefined;
-
   const clothingItemsColors = await sql<ClothingItemsColor[]>`
 SELECT
 *
@@ -426,10 +346,6 @@ clothing_items_colors;
 //size
 
 export async function getClothingItemSizes() {
-  // // Return undefined if the id is not
-  // // in the correct format
-  // if (!/^\d+$/.test(userId)) return undefined;
-
   const clothingItemsSizes = await sql<ClothingItemsSize[]>`
 SELECT
 *
@@ -443,10 +359,6 @@ clothing_items_sizes;
 //season
 
 export async function getClothingItemSeasons() {
-  // // Return undefined if the id is not
-  // // in the correct format
-  // if (!/^\d+$/.test(userId)) return undefined;
-
   const clothingItemsSeasons = await sql<ClothingItemsSeason[]>`
 SELECT
 *
@@ -460,10 +372,6 @@ clothing_items_seasons;
 //gender
 
 export async function getClothingItemGender() {
-  // // Return undefined if the id is not
-  // // in the correct format
-  // if (!/^\d+$/.test(userId)) return undefined;
-
   const clothingItemsGender = await sql<ClothingItemsGender[]>`
 SELECT
 *
@@ -473,40 +381,3 @@ clothing_items_gender;
 
   return clothingItemsGender.map((s) => camelcaseKeys(s));
 }
-
-// export async function getInfoForMyList(storageItemId: number) {
-//   // // Return undefined if the id is not
-//   // // in the correct format
-//   // if (!/^\d+$/.test(userId)) return undefined;
-
-//   const listInfo = await sql<ClothingItemDetail[]>`
-//   SELECT
-//   clothing_items.id,
-//   storage_item_id,
-//   clothing_items_type,
-//   color,
-//   size,
-//   season,
-//   gender,
-//   notes,
-//   storage_item_name,
-//   storage_item_location
-
-//   FROM clothing_items_types
-//   INNER JOIN clothing_items
-//   ON clothing_items_types.id = clothing_items.clothing_items_type_id AND storage_item_id = ${storageItemId}
-// INNER JOIN clothing_items_colors
-//   ON clothing_items_colors.id = clothing_items.color_id
-// INNER JOIN clothing_items_sizes
-//   ON clothing_items_sizes.id = clothing_items.size_id
-// INNER JOIN clothing_items_seasons
-//   ON clothing_items_seasons.id = clothing_items.season_id
-// INNER JOIN clothing_items_gender
-//  ON clothing_items_gender.id = clothing_items.gender_id
-//  INNER JOIN storage_items
-//   ON storage_items.id=${storageItemId};
-
-//  `;
-
-//   return listInfo.map((s) => camelcaseKeys(s));
-// }

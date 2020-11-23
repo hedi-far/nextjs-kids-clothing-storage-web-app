@@ -3,11 +3,6 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useState } from 'react';
 import Layout from '../components/Layout';
-// import nextCookies from 'next-cookies';
-// import { GetServerSidePropsContext } from 'next';
-// import { isSessionTokenValid } from '../util/auth';
-
-// type Props = { loggedIn: boolean; redirectDestination: string; token: string };
 
 type Props = { token: string };
 
@@ -27,11 +22,8 @@ export default function Register(props: Props) {
           <h1>Register here</h1>
           <form
             onSubmit={async (e) => {
-              // Prevent the default browser behavior of forms
               e.preventDefault();
 
-              // Send the email, username, password and token to the
-              // API route
               const response = await fetch('/api/register', {
                 method: 'POST',
                 headers: {
@@ -47,7 +39,6 @@ export default function Register(props: Props) {
               const { success } = await response.json();
 
               if (success) {
-                // Redirect to the homepage if successfully registered
                 router.push('/login');
               } else {
                 // If the response status code (set using response.status()
@@ -66,7 +57,7 @@ export default function Register(props: Props) {
               Username
               <input
                 value={username}
-                type="email"
+                type="text"
                 onChange={(e) => setUsername(e.currentTarget.value)}
                 required
               />

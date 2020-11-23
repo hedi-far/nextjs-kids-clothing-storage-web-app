@@ -1,16 +1,15 @@
 import Head from 'next/head';
-import Layout from '../components/Layout';
-// import Link from 'next/link';
 import nextCookies from 'next-cookies';
 import Cookies from 'js-cookie';
 import { GetServerSidePropsContext } from 'next';
+import Layout from '../components/Layout';
 import { isSessionTokenValid } from '../util/auth';
 
 type Props = { loggedIn: boolean };
 
 export default function SeeYouSoon(props: Props) {
   //Remove the client-side list cookie
-  const myList = Cookies.remove('myList', {
+  Cookies.remove('myList', {
     path: './logout',
   });
   return (

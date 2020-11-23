@@ -8,19 +8,20 @@ import {
   insertSession,
 } from '../../util/database';
 
-export default async function handler(request: NextApiRequest, response: NextApiResponse) {
+export default async function handler(
+  request: NextApiRequest,
+  response: NextApiResponse,
+) {
   const { username, password } = request.body;
   const user = await getUserByUsername(username);
 
   if (typeof user === 'undefined') {
-    // TODO: Return proper message from the server
     return response.status(401).send({ success: false });
   }
 
   const passwordVerified = await argon2.verify(user.passwordHash, password);
 
   if (!passwordVerified) {
-    // TODO: Return proper message from the server
     return response.status(401).send({ success: false });
   }
 
@@ -32,11 +33,10 @@ export default async function handler(request: NextApiRequest, response: NextApi
 
   const maxAge = 60 * 60 * 24; // 24 hours
 
-  //if environment is production, make it a secure cookie (tranmitted via https)
+  //if environment is production, make it a secure cookie (transmitted via https)
   const isProduction = process.env.NODE_ENV === 'production';
 
   const sessionCookie = cookie.serialize('session', token, {
-    // maxAge: maxAge,
     maxAge,
 
     expires: new Date(Date.now() + maxAge * 1000),
