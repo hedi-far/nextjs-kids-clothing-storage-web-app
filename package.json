@@ -21,6 +21,7 @@
     "ley": "^0.6.0",
     "next": "10.0.1",
     "next-cookies": "^2.0.3",
+    "pg-connection-string": "^2.4.0",
     "postgres": "2.0.0-beta.2",
     "react": "17.0.1",
     "react-dom": "17.0.1"
