@@ -1,9 +1,29 @@
 {
   "cSpell.words": [
+    "app",
+    "clothing",
+    "config",
     "csrf",
+    "eslint",
+    "eslint plugin flowtype",
+    "flowtype",
     "footmuff",
+    "heroku",
+    "heroku postbuild",
+    "kids",
     "neatify",
+    "nextjs",
+    "nextjs kids clothing storage web app",
     "onesie",
-    "pgdatabase"
+    "pgdatabase",
+    "pghost",
+    "pgpassword",
+    "pgusername",
+    "plugin",
+    "postbuild",
+    "storage",
+    "upleveled",
+    "upleveled eslint config",
+    "web"
   ]
 }

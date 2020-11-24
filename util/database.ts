@@ -14,10 +14,23 @@ import {
   ClothingItemsGender,
   ClothingItemDetailByUser,
 } from './types';
+import setPostgresDefaultsOnHeroku from './setPostgresDefaultsOnHeroku';
+
+//deployment mode
+setPostgresDefaultsOnHeroku();
 
 dotenv.config();
 
-const sql = postgres();
+const sql =
+  process.env.NODE_ENV === 'production'
+    ? // Heroku needs SSL connections but
+      // has an "unauthorized" certificate
+      // https://devcenter.heroku.com/changelog-items/852
+      postgres({ ssl: { rejectUnauthorized: false } })
+    : postgres();
+
+//dev mode
+// const sql = postgres();
 
 //User-related
 
