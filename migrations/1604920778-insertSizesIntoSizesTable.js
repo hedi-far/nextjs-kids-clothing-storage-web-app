@@ -55,7 +55,7 @@ exports.up = async (sql) => {
  (
    ${sql(sizes, 'size')}
    
-   )
+  )
  `;
 };
 

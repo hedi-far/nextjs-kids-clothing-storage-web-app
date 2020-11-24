@@ -65,6 +65,8 @@ export default function Search(props: Props) {
 
   return (
     <div>
+      {/* loggedIn is set to true by default, bc if no session token
+      is found in getServerSideProps, the user will be redirected to the login page! */}
       <Layout loggedIn={true}>
         <Head>
           <title>Welcome!</title>
@@ -448,7 +450,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   const currentId = Number(context.query.id);
 
-  //function checks if logged in user id is found in storageItems that were fetched above
+  //function checks if logged-in-user-id is found in storageItems that were fetched above
   const storageItem = storageItems.find((element) => element.id === currentId);
 
   let clothingItems;
@@ -478,7 +480,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {
     props: {
       user,
-      // loggedIn,
+      // loggedIn
       storageItem,
       clothingItems,
       clothingItemsTypes,

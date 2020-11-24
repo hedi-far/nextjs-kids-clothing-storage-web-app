@@ -7,6 +7,7 @@ import { User } from '../../util/types';
 import { getUserBySessionToken } from '../../util/database';
 import { GetServerSidePropsContext } from 'next';
 import { isSessionTokenValid } from '../../util/auth';
+
 type Props = { loggedIn: boolean; user: User };
 
 export default function Account(props: Props) {
@@ -47,7 +48,7 @@ export default function Account(props: Props) {
 
               if (success) {
                 // Redirect so goodbye page
-                router.push(`/goodbye  `);
+                router.push(`/goodbye`);
               } else {
                 setErrorMessage('Failed!');
               }

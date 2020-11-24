@@ -38,7 +38,6 @@ export default async function handler(
     const passwordHash = await argon2.hash(password);
     await registerUser(username, passwordHash);
   } catch (err) {
-    console.log(err);
     // If hashing the password or registering the user fails
     // for any reason, then return an error status
     // HTTP status code: 500 Internal Server Error

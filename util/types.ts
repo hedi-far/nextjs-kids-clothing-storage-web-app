@@ -81,14 +81,6 @@ export type ClothingItemsGender = {
   gender: string;
 };
 
-// export type Filter = {
-//   clothingItemType?: string;
-//   clothingItemSize?: string;
-//   clothingItemColor?: string;
-//   clothingItemSeason?: string;
-//   clothingItemGender?: string;
-// };
-
 export type Filter = {
   clothingItemsType?: string;
   size?: string;

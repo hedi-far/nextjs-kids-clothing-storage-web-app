@@ -26,6 +26,8 @@ export default function Dashboard(props: Props) {
 
   return (
     <div>
+      {/* loggedIn is set to true by default, bc if no session token
+      is found in getServerSideProps, the user will be redirected to the login page! */}
       <Layout loggedIn={true}>
         <Head>
           <title>
