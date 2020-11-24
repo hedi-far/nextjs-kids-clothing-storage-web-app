@@ -9,12 +9,7 @@ const seasons = [
 
 exports.up = async (sql) => {
   await sql`
- INSERT INTO clothing_items_seasons 
- 
- VALUES 
- (
- ${sql(seasons, 'season')}
- )
+ INSERT INTO clothing_items_seasons ${sql(seasons, 'season')}
  `;
 };
 

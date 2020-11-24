@@ -2,12 +2,7 @@ const gender = [{ gender: 'boy' }, { gender: 'girl' }, { gender: 'unisex' }];
 
 exports.up = async (sql) => {
   await sql`
- INSERT INTO clothing_items_gender 
- 
- VALUES 
- (
- ${sql(gender, 'gender')}
- )
+ INSERT INTO clothing_items_gender ${sql(gender, 'gender')}
  `;
 };
 

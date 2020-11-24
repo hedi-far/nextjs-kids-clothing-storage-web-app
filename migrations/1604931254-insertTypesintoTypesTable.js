@@ -60,12 +60,7 @@ const types = [
 
 exports.up = async (sql) => {
   await sql`
- INSERT INTO clothing_items_types 
- 
- VALUES 
- (
- ${sql(types, 'clothing_items_type')}
- )
+ INSERT INTO clothing_items_types ${sql(types, 'clothing_items_type')}
  `;
 };
 
