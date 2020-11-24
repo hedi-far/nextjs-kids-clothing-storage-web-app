@@ -86,9 +86,6 @@ export default function Search(props: Props) {
     if (filteredClothingItems.length === 0) {
       setErrorMessage('No match found!');
     }
-
-    console.log(newClothesFilter);
-    console.log(filteredClothingItems);
   };
 
   //When search button is clicked:
