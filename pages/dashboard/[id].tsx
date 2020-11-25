@@ -418,7 +418,10 @@ export default function Search(props: Props) {
             </label>
             <br />
             <button>Add storage item</button>
-            <button onClick={() => router.reload()}>Reset</button>
+            {/* button resets only select fields, reload clears input fields; when only reload, clothing_item is added to db twice  */}
+            <button type="reset" onClick={() => router.reload()}>
+              Reset
+            </button>
           </form>
           <p>{errorMessage}</p>
         </main>

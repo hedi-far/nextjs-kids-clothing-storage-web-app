@@ -4,6 +4,7 @@
     "clothing",
     "config",
     "csrf",
+    "csstype",
     "eslint",
     "eslint plugin flowtype",
     "flowtype",
@@ -22,8 +23,10 @@
     "plugin",
     "postbuild",
     "storage",
+    "textcolor",
     "upleveled",
     "upleveled eslint config",
     "web"
-  ]
+  ],
+  "typescript.tsdk": "node_modules\\typescript\\lib"
 }

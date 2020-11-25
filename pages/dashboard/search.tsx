@@ -230,12 +230,11 @@ export default function Search(props: Props) {
           </form>
           <p>{errorMessage}</p>
 
-          {/* complete list of logged in user */}
-          <h1>Entire list of clothing items</h1>
+          {/* complete list by logged-in user */}
+          <h1>Your clothing items</h1>
           <table>
             <thead>
               <tr>
-                <th>id</th>
                 <th>type</th>
                 <th>color</th>
                 <th>size</th>
