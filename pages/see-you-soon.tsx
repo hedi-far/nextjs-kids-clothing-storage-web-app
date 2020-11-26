@@ -16,7 +16,7 @@ export default function SeeYouSoon(props: Props) {
     <div>
       <Layout loggedIn={props.loggedIn}>
         <Head>
-          <title>Welcome!</title>
+          <title>See you soon!</title>
         </Head>
         <main>
           <h1>See you soon!</h1>

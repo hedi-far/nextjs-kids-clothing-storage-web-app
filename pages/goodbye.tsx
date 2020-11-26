@@ -18,7 +18,7 @@ export default function Goodbye(props: Props) {
     <div>
       <Layout loggedIn={props.loggedIn}>
         <Head>
-          <title>Welcome!</title>
+          <title>Goodbye!</title>
         </Head>
         <main>
           <h1>Goodbye forever</h1>

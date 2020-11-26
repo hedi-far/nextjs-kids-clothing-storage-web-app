@@ -69,7 +69,7 @@ export default function Search(props: Props) {
       is found in getServerSideProps, the user will be redirected to the login page! */}
       <Layout loggedIn={true}>
         <Head>
-          <title>Welcome!</title>
+          <title>{storageItemName}</title>
         </Head>
         <main>
           {/* user sees current list of clothing items in respective storage item */}

@@ -110,7 +110,7 @@ export default function Search(props: Props) {
       is found in getServerSideProps, the user will be redirected to the login page! */}
       <Layout loggedIn={true}>
         <Head>
-          <title>Welcome!</title>
+          <title>Search</title>
         </Head>
         <main>
           <h1>Filter</h1>
