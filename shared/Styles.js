@@ -3,6 +3,8 @@ import { css, Global } from '@emotion/react';
 export const globalStyles = (
   <Global
     styles={css`
+      @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300&display=swap');
+
       * {
         box-sizing: border-box;
         padding: 0;
@@ -17,7 +19,7 @@ export const globalStyles = (
         /* background-color: #c8c6c3; */
         /* textcolor */
         color: #645e49;
-        @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300&display=swap');
+
         font-family: Roboto Slab, -apple-system, BlinkMacSystemFont, Segoe UI,
           Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
           Helvetica Neue, sans-serif;
@@ -38,29 +40,31 @@ export const globalStyles = (
 
       button {
         cursor: pointer;
+        height: 50px;
+        width: 150px;
+        border-radius: 10%;
+        color: white;
+        background-color: #645e49;
+        font-size: 16px;
       }
 
-      .container {
-        max-width: 1100px;
-        margin: 0 auto;
-        overflow: auto;
-        padding: 0 40px;
+      button:hover {
+        position: relative;
+        top: 2px;
+        left: 2px;
       }
 
-      .flex {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
+      form {
+        background-color: #fff2be;
+        border-radius: 10%;
+        box-shadow: 0 px 10px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        margin: 10px;
       }
 
-      .grid {
-        display: grid;
-        grid-template-columns: repeat (2, 1fr);
-        gap: 20px;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
+      input {
+        border-radius: 10%;
+        margin: 5px;
       }
 
       //XL

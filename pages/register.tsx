@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useState } from 'react';
 import Layout from '../components/Layout';
+import { css } from '@emotion/react';
 
 type Props = { token: string };
 
@@ -12,75 +13,108 @@ export default function Register(props: Props) {
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
 
+  const registerStyles = css`
+    margin: 150px;
+    line-height: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  `;
+
+  const formButtonStyles = css`
+    background-color: white;
+    color: #645e49;
+    height: 30px;
+    width: 120px;
+    margin: 10px;
+    border: none;
+    box-shadow: 0px 4px 4px 0px #000000 25%;
+  `;
+
+  const messageStyle = css`
+    background-color: #e6e6e6;
+    color: #645e49;
+    margin: 10px;
+    padding-left: 12px;
+    padding-right: 12px;
+    border: none;
+    border-radius: 10%;
+    box-shadow: 0px 4px 4px 0px #000000 25%;
+  `;
+
   return (
     <div>
       <Layout>
         <Head>
           <title>Register</title>
         </Head>
-        <main>
+        <main css={registerStyles}>
           <h1>Register here</h1>
-          <form
-            onSubmit={async (e) => {
-              e.preventDefault();
+          <ul>
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault();
 
-              const response = await fetch('/api/register', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  username: username,
-                  password: password,
-                  token: props.token,
-                }),
-              });
+                const response = await fetch('/api/register', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    username: username,
+                    password: password,
+                    token: props.token,
+                  }),
+                });
 
-              const { success } = await response.json();
+                const { success } = await response.json();
 
-              if (success) {
-                router.push('/login');
-              } else {
-                // If the response status code (set using response.status()
-                // in the API route) is 409 (Conflict) then show an error
-                // message that the user already exists
-                if (response.status === 409) {
-                  setErrorMessage('User already exists!');
+                if (success) {
+                  setErrorMessage(
+                    'You have been registered successfully! Please login now!',
+                  );
                 } else {
-                  setErrorMessage('Failed!');
+                  // If the response status code (set using response.status()
+                  // in the API route) is 409 (Conflict) then show an error
+                  // message that the user already exists
+                  if (response.status === 409) {
+                    setErrorMessage('User already exists!');
+                  } else {
+                    setErrorMessage('Something went wrong! Please try again!');
+                  }
                 }
-              }
-            }}
-          >
-            <br />
-            <label htmlFor="username">
-              Username
-              <input
-                value={username}
-                type="text"
-                onChange={(e) => setUsername(e.currentTarget.value)}
-                required
-              />
-            </label>
-            <br />
-            <label htmlFor="password">
-              Password
-              <input
-                value={password}
-                type="password"
-                onChange={(e) => setPassword(e.currentTarget.value)}
-                required
-              />
-            </label>
-            <br />
-            <button>Register</button>
-            <button onClick={() => router.reload()}>Reset</button>
-          </form>
-
-          <p>{errorMessage}</p>
-
+              }}
+            >
+              <br />
+              <label htmlFor="username">
+                Username
+                <input
+                  value={username}
+                  type="text"
+                  onChange={(e) => setUsername(e.currentTarget.value)}
+                  required
+                />
+              </label>
+              <br />
+              <label htmlFor="password">
+                Password
+                <input
+                  value={password}
+                  type="password"
+                  onChange={(e) => setPassword(e.currentTarget.value)}
+                  required
+                />
+              </label>
+              <br />
+              <button css={formButtonStyles}>Register</button>
+              <button css={formButtonStyles} onClick={() => router.reload()}>
+                Reset
+              </button>
+            </form>
+          </ul>
+          <p css={messageStyle}>{errorMessage}</p>
           <Link href="/login">
-            <a>Already have an account? Login</a>
+            <a>Already have an account? Login!</a>
           </Link>
         </main>
       </Layout>

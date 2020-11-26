@@ -6,6 +6,7 @@ import { useState } from 'react';
 import nextCookies from 'next-cookies';
 import { GetServerSidePropsContext } from 'next';
 import { isSessionTokenValid } from '../util/auth';
+import { css } from '@emotion/react';
 
 type Props = { loggedIn: boolean; redirectDestination: string };
 
@@ -15,60 +16,94 @@ export default function Login(props: Props) {
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
 
+  const loginStyles = css`
+    margin: 150px;
+    line-height: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  `;
+
+  const formButtonStyles = css`
+    background-color: white;
+    color: #645e49;
+    height: 30px;
+    width: 120px;
+    margin: 10px;
+    border: none;
+    box-shadow: 0px 4px 4px 0px #000000 25%;
+  `;
+
+  const messageStyle = css`
+    background-color: #e6e6e6;
+    color: #645e49;
+    margin: 10px;
+    padding-left: 12px;
+    padding-right: 12px;
+    border: none;
+    border-radius: 10%;
+    box-shadow: 0px 4px 4px 0px #000000 25%;
+  `;
+
   return (
     <Layout loggedIn={props.loggedIn}>
       <Head>
         <title>Login</title>
       </Head>
-      <main>
+      <main css={loginStyles}>
         <h1>Login</h1>
-        <form
-          onSubmit={async (e) => {
-            e.preventDefault();
+        <ul>
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault();
 
-            const response = await fetch('/api/login', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ username, password }),
-            });
+              const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
+              });
 
-            const { success } = await response.json();
+              const { success } = await response.json();
 
-            if (!success) {
-              setErrorMessage('Login failed!');
-            } else {
-              setErrorMessage('');
-              router.push(props.redirectDestination);
-            }
-          }}
-        >
-          <label>
-            Username
-            <input
-              value={username}
-              onChange={(e) => setUsername(e.currentTarget.value)}
-            />
-          </label>
-          <br />
+              if (!success) {
+                setErrorMessage('Something went wrong! Please try again!');
+              } else {
+                setErrorMessage('');
+                router.push(props.redirectDestination);
+              }
+            }}
+          >
+            <label>
+              Username
+              <input
+                value={username}
+                onChange={(e) => setUsername(e.currentTarget.value)}
+                required
+              />
+            </label>
+            <br />
 
-          <label>
-            Password
-            <input
-              value={password}
-              type="password"
-              onChange={(e) => setPassword(e.currentTarget.value)}
-            />
-          </label>
-          <button>Log in</button>
-          <button onClick={() => router.reload()}>Reset</button>
-        </form>
-
-        <p style={{ color: 'red' }}>{errorMessage}</p>
-
+            <label>
+              Password
+              <input
+                value={password}
+                type="password"
+                onChange={(e) => setPassword(e.currentTarget.value)}
+                required
+              />
+            </label>
+            <br />
+            <button css={formButtonStyles}>Log in</button>
+            <button css={formButtonStyles} onClick={() => router.reload()}>
+              Reset
+            </button>
+          </form>
+        </ul>
+        <p css={messageStyle}>{errorMessage}</p>
         <Link href="/register">
-          <a>Register</a>
+          <a>No account yet? Register!</a>
         </Link>
       </main>
     </Layout>

@@ -7,10 +7,7 @@ const headerStyles = css`
   border-radius: 10px;
   background-color: #645e49;
   color: #fff;
-  & .container {
-  }
-  & .flex {
-  }
+  height: 100%;
 `;
 
 const headerLinksStylesLogout = css`
@@ -28,14 +25,13 @@ const headerLinksStylesLogin = css`
   margin: 0 10px;
   height: 60px;
 
-  & a {
-    align-items: flex-end !important;
-    /* background-color: red; */
+  @media (max-width: 800px) {
+    flex-direction: column;
+    color: #645e49;
   }
 `;
 
 const whiteLogoStyles = css`
-  /* background-color: red; */
   padding-top: 10px;
   padding-right: 1050px;
   margin-bottom: 5px;
