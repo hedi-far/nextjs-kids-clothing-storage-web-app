@@ -47,9 +47,6 @@ const sideBarStyles = css`
   grid-area: 2 / 1 / 3 / 2;
   /* background-color: green; */
   height: 200px;
-
-  
-  }
 `;
 
 //grey box
@@ -101,10 +98,10 @@ const storageItemsAreaStyles = css`
 //yellow box
 const storageItemStyles = css`
   background-color: #f3f38e;
-  height: 170px;
+  height: 200px;
   width: 300px;
   margin: 10px;
-  padding: 40px;
+  padding: 30px;
   /* flex-shrink: 4; */
   border-radius: 10%;
   font-size: 24px;
@@ -122,6 +119,7 @@ const addStorageItemStyles = css`
   flex-direction: column;
   align-items: flex-start;
   margin-top: 40px;
+  font-size: 18px;
   img {
     height: 30px;
     width: 30px;
@@ -138,6 +136,27 @@ const formButtonStyles = css`
   margin: 10px;
   border: none;
   box-shadow: 0px 4px 4px 0px #000000 25%;
+`;
+
+const deleteButtonStyles = css`
+  background-color: #f3f38e;
+  box-shadow: none;
+  margin-top: 15px;
+  & img {
+    height: 30px;
+    width: 30px;
+    float: left;
+  }
+`;
+
+const openButtonStyles = css`
+  margin-top: 5px;
+  cursor: pointer;
+  & img {
+    float: right;
+    height: 40px;
+    width: 40px;
+  }
 `;
 
 type Props = {
@@ -439,16 +458,8 @@ is found in getServerSideProps, the user will be redirected to the login page! *
               {props.storageItems.map((storageItem: StorageItem) => {
                 return (
                   <li css={storageItemStyles} key={storageItem.id}>
-                    Name: {storageItem.storageItemName}
-                    <br />
-                    Location: {storageItem.storageItemLocation}
-                    <Link href={`/dashboard/${storageItem.id}`}>
-                      <button>
-                        {' '}
-                        <a>Open</a>
-                      </button>
-                    </Link>
                     <button
+                      css={deleteButtonStyles}
                       onClick={async () => {
                         const answer = window.confirm(`Really delete?`);
 
@@ -478,8 +489,50 @@ is found in getServerSideProps, the user will be redirected to the login page! *
                         }
                       }}
                     >
-                      Delete
+                      <img src="/icons/trash.svg" alt="delete button" />
                     </button>
+                    {storageItem.storageItemName}
+                    <br />
+                    {storageItem.storageItemLocation}
+                    <Link href={`/dashboard/${storageItem.id}`}>
+                      <a css={openButtonStyles}>
+                        <img src="/icons/box.svg" alt="open button" />
+                      </a>
+                    </Link>
+                    {/* <button
+                      onClick={async () => {
+                        const answer = window.confirm(`Really delete?`);
+
+                        if (answer === true) {
+                          // Send the data to the
+                          // API route
+                          const id = storageItem.id;
+
+                          const response = await fetch(`../api/dashboard`, {
+                            method: 'DELETE',
+                            headers: {
+                              'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                              storageItemId: id,
+                            }),
+                          });
+
+                          const { success } = await response.json();
+
+                          if (success) {
+                            // Redirect so same page
+                            router.push(`/dashboard/`);
+                          } else {
+                            setErrorMessage('Failed!');
+                          }
+                        }
+                      }}
+                    >
+                      <a>
+                        <img src="/icons/trash.svg" alt="trash can" />
+                      </a>
+                    </button> */}
                   </li>
                 );
               })}

@@ -59,11 +59,7 @@ export default function Header(props: Props) {
               <a>Home</a>
             </Link>
           </li>
-          <li>
-            <Link href="/dashboard/account">
-              <a>Account</a>
-            </Link>
-          </li>
+
           <li>
             <Link href="/dashboard/">
               <a>Dashboard</a>

@@ -22,7 +22,8 @@ const accountStyles = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #e5ffbe;
+  background-color: #e6e6e6;
+  //#E5FFBE light green?
   box-shadow: -13px -9px 5px -6px rgba(135, 142, 138, 0.25);
 `;
 
@@ -48,7 +49,7 @@ export default function Account(props: Props) {
       <main css={accountStyles}>
         <ul>
           <h1>My account</h1>
-          <h2>User-id: {props.user.id}</h2>
+          <h2>User-Id: {props.user.id}</h2>
           <h2>Username: {props.user.username}</h2>
           <button
             css={formButtonStyles}
