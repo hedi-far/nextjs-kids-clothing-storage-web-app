@@ -34,6 +34,12 @@ const storageItemsHeadingStyles = css`
   /* background-color: red; */
   height: 40px;
   margin-top: 100px;
+  img {
+    height: 30px;
+    width: 30px;
+    margin-right: 5px;
+    /* background-color: blue; */
+  }
 `;
 
 //area around grey box
@@ -41,6 +47,9 @@ const sideBarStyles = css`
   grid-area: 2 / 1 / 3 / 2;
   /* background-color: green; */
   height: 200px;
+
+  
+  }
 `;
 
 //grey box
@@ -51,11 +60,16 @@ const sideBarLinkStyles = css`
   padding: 20px;
   display: flex;
   flex-direction: column;
-  align-content: center;
   justify-content: space-around;
   background-color: #e6e6e6;
   border-radius: 10%;
   box-shadow: -13px -9px 5px -6px rgba(135, 142, 138, 0.25);
+  img {
+    height: 30px;
+    width: 30px;
+    margin-right: 5px;
+    /* background-color: blue; */
+  }
 `;
 
 //area around yellow boxes
@@ -64,14 +78,25 @@ const storageItemsAreaStyles = css`
   /* background-color: blue; */
   height: 680px;
   overflow: auto;
+
+  & img {
+    height: 400px;
+    margin-bottom: 25px;
+  }
+
+  & ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
 `;
 
-//ul
-const storageItemsAreaStyles2 = css`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-`;
+// //ul
+// const storageItemsAreaStyles2 = css`
+//   display: flex;
+//   flex-wrap: wrap;
+//   justify-content: space-around;
+// `;
 
 //yellow box
 const storageItemStyles = css`
@@ -95,8 +120,14 @@ const addStorageItemStyles = css`
   line-height: 50px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   margin-top: 40px;
+  img {
+    height: 30px;
+    width: 30px;
+    margin-right: 5px;
+    /* background-color: blue; */
+  }
 `;
 
 const formButtonStyles = css`
@@ -122,6 +153,160 @@ export default function Dashboard(props: Props) {
 
   const router = useRouter();
 
+  console.log(props.storageItems);
+
+  if (props.storageItems.length === 0) {
+    return (
+      <div>
+        {/* loggedIn is set to true by default, bc if no session token
+is found in getServerSideProps, the user will be redirected to the login page! */}
+        <Layout loggedIn={true}>
+          <Head>
+            <title>Dashboard</title>
+          </Head>
+          <main css={dashboardStyles}>
+            <h1 css={headingStyles}>My dashboard</h1>
+            <div css={sideBarStyles}>
+              <ul css={sideBarLinkStyles}>
+                <li>
+                  {' '}
+                  <Link href="/dashboard/account">
+                    <a>
+                      <img src="/icons/account.svg" alt="account" />
+                      My account
+                    </a>
+                  </Link>
+                </li>
+                <li>
+                  {' '}
+                  <Link href="/dashboard/search">
+                    <a>
+                      <img src="/icons/loupe.svg" alt="loupe" />
+                      Search my storage
+                    </a>
+                  </Link>
+                </li>
+                <li>
+                  {' '}
+                  <Link href="/dashboard/my-list">
+                    <a>
+                      <img src="/icons/list.svg" alt="list " />
+                      My list
+                    </a>
+                  </Link>
+                </li>
+                <li>
+                  {' '}
+                  <Link href="/logout">
+                    <a>
+                      <img src="/icons/exit.svg" alt="exit" />
+                      Logout
+                    </a>
+                  </Link>
+                </li>
+              </ul>
+              <div css={addStorageItemStyles}>
+                <h2>
+                  <img src="/icons/add.svg" alt="plus" />
+                  Add new storage unit
+                </h2>
+                <form
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+
+                    const response = await fetch('/api/dashboard', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({
+                        storageItemName: storageItemName,
+                        storageItemLocation: storageItemLocation,
+                        userId: props.user.id,
+                      }),
+                    });
+
+                    const { success } = await response.json();
+
+                    if (success) {
+                      // Redirect to dashboard if successfully inserted
+                      router.push('/dashboard');
+                    } else {
+                      // If the response status code (set using response.status()
+                      // in the API route) is 409 (Conflict) then show an error
+                      // message
+                      if (response.status === 409) {
+                        setErrorMessage(
+                          'Something went wrong! Please try again',
+                        );
+                      } else {
+                        setErrorMessage(
+                          'Something went wrong! Please try again',
+                        );
+                      }
+                    }
+                  }}
+                >
+                  <label htmlFor="name">
+                    Name (required):
+                    <input
+                      type="text"
+                      id="name"
+                      value={storageItemName}
+                      placeholder="e.g. brown box"
+                      maxLength={50}
+                      required
+                      onChange={(e) =>
+                        setStorageItemName(e.currentTarget.value)
+                      }
+                    />
+                  </label>
+                  <br />
+                  <label htmlFor="location">
+                    Location:
+                    <input
+                      type="text"
+                      id="location"
+                      value={storageItemLocation}
+                      placeholder=".e.g. basement"
+                      maxLength={50}
+                      onChange={(e) =>
+                        setStorageItemLocation(e.currentTarget.value)
+                      }
+                    />
+                  </label>
+                  <br />
+                  <button css={formButtonStyles}>Add</button>
+                  <button
+                    css={formButtonStyles}
+                    onClick={() => router.reload()}
+                  >
+                    Reset
+                  </button>
+                </form>
+                <p>{errorMessage}</p>
+              </div>
+            </div>
+
+            <h2 css={storageItemsHeadingStyles}>
+              <img src="/icons/box.svg" alt="box" />
+              My storage units
+            </h2>
+            <div css={storageItemsAreaStyles}>
+              <img
+                src="/img/empty-storage-img.svg"
+                alt="man holding empty box"
+              />
+              <h2>
+                Your storage is empty! Please start by adding a new storage
+                unit!
+              </h2>
+            </div>
+          </main>
+        </Layout>
+      </div>
+    );
+  }
   return (
     <div>
       {/* loggedIn is set to true by default, bc if no session token
@@ -137,30 +322,45 @@ export default function Dashboard(props: Props) {
               <li>
                 {' '}
                 <Link href="/dashboard/account">
-                  <a>My account</a>
+                  <a>
+                    <img src="/icons/account.svg" alt="account" />
+                    My account
+                  </a>
                 </Link>
               </li>
               <li>
                 {' '}
                 <Link href="/dashboard/search">
-                  <a>Search my storage!</a>
+                  <a>
+                    <img src="/icons/loupe.svg" alt="loupe" />
+                    Search my storage
+                  </a>
                 </Link>
               </li>
               <li>
                 {' '}
                 <Link href="/dashboard/my-list">
-                  <a>My list</a>
+                  <a>
+                    <img src="/icons/list.svg" alt="list " />
+                    My list
+                  </a>
                 </Link>
               </li>
               <li>
                 {' '}
                 <Link href="/logout">
-                  <a>Logout</a>
+                  <a>
+                    <img src="/icons/exit.svg" alt="exit" />
+                    Logout
+                  </a>
                 </Link>
               </li>
             </ul>
             <div css={addStorageItemStyles}>
-              <h2>Add new storage unit</h2>
+              <h2>
+                <img src="/icons/add.svg" alt="plus" />
+                Add new storage unit
+              </h2>
               <form
                 onSubmit={async (e) => {
                   e.preventDefault();
@@ -195,7 +395,7 @@ export default function Dashboard(props: Props) {
                 }}
               >
                 <label htmlFor="name">
-                  Name of storage item (required):
+                  Name (required):
                   <input
                     type="text"
                     id="name"
@@ -208,7 +408,7 @@ export default function Dashboard(props: Props) {
                 </label>
                 <br />
                 <label htmlFor="location">
-                  Location of storage item:
+                  Location:
                   <input
                     type="text"
                     id="location"
@@ -221,7 +421,7 @@ export default function Dashboard(props: Props) {
                   />
                 </label>
                 <br />
-                <button css={formButtonStyles}>Add storage item</button>
+                <button css={formButtonStyles}>Add</button>
                 <button css={formButtonStyles} onClick={() => router.reload()}>
                   Reset
                 </button>
@@ -230,9 +430,12 @@ export default function Dashboard(props: Props) {
             </div>
           </div>
 
-          <h2 css={storageItemsHeadingStyles}>My storage units</h2>
+          <h2 css={storageItemsHeadingStyles}>
+            <img src="/icons/box.svg" alt="box" />
+            My storage units
+          </h2>
           <div css={storageItemsAreaStyles}>
-            <ul css={storageItemsAreaStyles2}>
+            <ul>
               {props.storageItems.map((storageItem: StorageItem) => {
                 return (
                   <li css={storageItemStyles} key={storageItem.id}>
@@ -282,76 +485,6 @@ export default function Dashboard(props: Props) {
               })}
             </ul>
           </div>
-          {/* <div css={addStorageItemStyles}>
-            <h2>Add new storage unit</h2>
-            <form
-              onSubmit={async (e) => {
-                e.preventDefault();
-
-                const response = await fetch('/api/dashboard', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify({
-                    storageItemName: storageItemName,
-                    storageItemLocation: storageItemLocation,
-                    userId: props.user.id,
-                  }),
-                });
-
-                const { success } = await response.json();
-
-                if (success) {
-                  // Redirect to dashboard if successfully inserted
-                  router.push('/dashboard');
-                } else {
-                  // If the response status code (set using response.status()
-                  // in the API route) is 409 (Conflict) then show an error
-                  // message
-                  if (response.status === 409) {
-                    setErrorMessage('Something went wrong! Please try again');
-                  } else {
-                    setErrorMessage('Something went wrong! Please try again');
-                  }
-                }
-              }}
-            >
-              <label htmlFor="name">
-                Name of storage item (required):
-                <input
-                  type="text"
-                  id="name"
-                  value={storageItemName}
-                  placeholder="e.g. brown box"
-                  maxLength={50}
-                  required
-                  onChange={(e) => setStorageItemName(e.currentTarget.value)}
-                />
-              </label>
-              <br />
-              <label htmlFor="location">
-                Location of storage item:
-                <input
-                  type="text"
-                  id="location"
-                  value={storageItemLocation}
-                  placeholder=".e.g. basement"
-                  maxLength={50}
-                  onChange={(e) =>
-                    setStorageItemLocation(e.currentTarget.value)
-                  }
-                />
-              </label>
-              <br />
-              <button css={formButtonStyles}>Add storage item</button>
-              <button css={formButtonStyles} onClick={() => router.reload()}>
-                Reset
-              </button>
-            </form>
-            <p>{errorMessage}</p>
-          </div> */}
-          <br />
         </main>
       </Layout>
     </div>

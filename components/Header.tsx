@@ -18,6 +18,10 @@ const headerLinksStylesLogout = css`
   padding: 5px;
   margin: 0 10px;
   height: 60px;
+
+  & li {
+    padding-right: 20px;
+  }
 `;
 
 const headerLinksStylesLogin = css`
