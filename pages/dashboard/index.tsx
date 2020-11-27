@@ -138,6 +138,7 @@ const formButtonStyles = css`
   box-shadow: 0px 4px 4px 0px #000000 25%;
 `;
 
+//icon trashcan
 const deleteButtonStyles = css`
   background-color: #f3f38e;
   box-shadow: none;
@@ -149,6 +150,7 @@ const deleteButtonStyles = css`
   }
 `;
 
+//icon box
 const openButtonStyles = css`
   margin-top: 5px;
   cursor: pointer;
@@ -157,6 +159,17 @@ const openButtonStyles = css`
     height: 40px;
     width: 40px;
   }
+`;
+
+const messageStyle = css`
+  background-color: #e6e6e6;
+  color: #645e49;
+  margin: 10px;
+  padding-left: 12px;
+  padding-right: 12px;
+  border: none;
+  border-radius: 15px;
+  box-shadow: -13px -9px 5px -6px rgba(135, 142, 138, 0.25);
 `;
 
 type Props = {
@@ -303,7 +316,7 @@ is found in getServerSideProps, the user will be redirected to the login page! *
                     Reset
                   </button>
                 </form>
-                <p>{errorMessage}</p>
+                <p css={messageStyle}>{errorMessage}</p>
               </div>
             </div>
 

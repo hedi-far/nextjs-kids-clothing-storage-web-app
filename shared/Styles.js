@@ -71,6 +71,39 @@ export const globalStyles = (
         border-style: none;
       }
 
+      textarea {
+        margin: 5px;
+        border-radius: 15px;
+        padding: 5px;
+        border-style: none;
+      }
+
+      select {
+        margin: 5px;
+        border-radius: 15px;
+        padding: 5px;
+        border-style: none;
+      }
+
+      th,
+      td {
+        width: 100%;
+        padding: 10px;
+        text-align: center;
+      }
+
+      td {
+        border-top: 0.2px solid #645e49;
+        border-bottom: 0.2px solid #645e49;
+      }
+
+      tr {
+        text-align: center;
+      }
+
+      table {
+      }
+
       /* input [type='text'] {
         border-radius: 10%;
         margin: 5px;
