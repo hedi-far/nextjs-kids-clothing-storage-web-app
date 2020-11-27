@@ -13,13 +13,20 @@ const landingPageStyles = css`
   grid-template-columns: 50% 50%;
 `;
 
-const landingPageImage = css``;
-
 const paragraphStyles = css`
   margin-top: 80px;
   width: 700px;
   height: auto;
   /* background-color: blue; */
+  font-size: 18px;
+  line-height: 2;
+`;
+
+const bulletPointsStyles = css`
+  font-size: 18px;
+  font-weight: bold;
+  list-style: disc;
+  margin-left: 25px;
 `;
 
 const landingPageButton = css`
@@ -42,25 +49,26 @@ export default function Home(props: Props) {
           <div>
             <h1>Welcome to Neatify!</h1>
             <p css={paragraphStyles}>
-              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-              nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-              erat, sed diam voluptua. At vero eos et accusam et justo duo
-              dolores et ea rebum. Stet clita kasd gubergren, no sea takimata
-              sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit
-              amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-              invidunt ut labore et dolore magna aliquyam erat, sed diam
-              voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-              Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
-              dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing
-              elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
-              magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
-              justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
-              takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor
-              sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
-              tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-              voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-              Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
-              dolor sit amet.
+              Neatify! is an easy and efficient way to manage the clothes your
+              kids have grown out of, but should be kept for later reuse!
+              <ul css={bulletPointsStyles}>
+                <li>
+                  {' '}
+                  Create your own database and save information on the storage
+                  unit you are using, its location and the clothing items inside
+                  of it!
+                </li>
+                <li>Add notes to each clothing item!</li>
+                <li>
+                  Search across all your storage items by clothing type, size,
+                  season and more!
+                </li>
+                <li>
+                  Put together your own printable list to easily find the
+                  clothing items in your home!
+                </li>
+              </ul>
+              Neatify! is completely free. I hope, you enjoy it!
             </p>
             {props.loggedIn ? null : (
               <Link href="/register">
@@ -71,7 +79,6 @@ export default function Home(props: Props) {
             )}{' '}
           </div>
           <img
-            css={landingPageImage}
             src="/img/landing-page-img.svg"
             alt="parents putting clothes away "
             width="800px"

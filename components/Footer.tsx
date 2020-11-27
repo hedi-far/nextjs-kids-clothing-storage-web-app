@@ -3,13 +3,16 @@ import { css } from '@emotion/react';
 // import type {} from '@emotion/react/types/css-prop';
 
 const footerStyles = css`
+  padding: 50px;
   display: grid;
   justify-content: space-between;
   border-radius: 10px;
   background-color: #e6e6e6;
-  height: 100%;
+  /* height: 100%; */
   grid-template-columns: 1fr 3fr 1fr;
   grid-gap: 500px;
+  position: relative;
+  bottom: 0;
 `;
 
 const creditStyles = css`
@@ -51,13 +54,43 @@ export default function Footer() {
       />
       <ul css={creditStyles}>
         <li>This website was created by Hedwig Farthofer, Vienna, 2020,</li>
-        <li>Icons made by www.flaticon.com.</li>
-        <li>Images from https://undraw.co/.</li>
+        <li>
+          Icons made by
+          <Link href="https://www.flaticon.com/authors/freepik">
+            <a> Freepik </a>
+          </Link>
+          from
+          <Link href="https://www.flaticon.com/">
+            <a> www.flaticon.com</a>
+          </Link>
+        </li>
+        <li>
+          Images from{' '}
+          <Link href="https://undraw.co/"> https://undraw.co/ </Link>.
+        </li>
       </ul>
       <ul css={linkStyles}>
-        <li>GitHub</li>
-        <li>LinkedIn</li>
-        <li>Twitter</li>
+        <li>
+          <Link href="https://github.com/hedi-far">
+            <a>
+              <img src="/icons/github.svg" alt="GitHub logo" />
+            </a>
+          </Link>
+        </li>
+        <li>
+          <Link href="https://www.linkedin.com/in/hedwig-farthofer/">
+            <a>
+              <img src="/icons/linkedIn.svg" alt="LinkedIn logo" />
+            </a>
+          </Link>
+        </li>
+        <li>
+          <Link href="https://twitter.com/Hedi12947458">
+            <a>
+              <img src="/icons/twitter.svg" alt="Twitter logo" />
+            </a>
+          </Link>
+        </li>
       </ul>
     </footer>
   );

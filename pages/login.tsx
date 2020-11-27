@@ -8,6 +8,34 @@ import { GetServerSidePropsContext } from 'next';
 import { isSessionTokenValid } from '../util/auth';
 import { css } from '@emotion/react';
 
+const loginStyles = css`
+  margin: 150px;
+  line-height: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const formButtonStyles = css`
+  background-color: white;
+  color: #645e49;
+  height: 30px;
+  width: 120px;
+  margin: 10px;
+  border: none;
+`;
+
+const messageStyle = css`
+  background-color: #e6e6e6;
+  color: #645e49;
+  margin: 10px;
+  padding-left: 12px;
+  padding-right: 12px;
+  border: none;
+  border-radius: 15px;
+  box-shadow: -13px -9px 5px -6px rgba(135, 142, 138, 0.25);
+`;
+
 type Props = { loggedIn: boolean; redirectDestination: string };
 
 export default function Login(props: Props) {
@@ -15,35 +43,6 @@ export default function Login(props: Props) {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
-
-  const loginStyles = css`
-    margin: 150px;
-    line-height: 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  `;
-
-  const formButtonStyles = css`
-    background-color: white;
-    color: #645e49;
-    height: 30px;
-    width: 120px;
-    margin: 10px;
-    border: none;
-    box-shadow: 0px 4px 4px 0px #000000 25%;
-  `;
-
-  const messageStyle = css`
-    background-color: #e6e6e6;
-    color: #645e49;
-    margin: 10px;
-    padding-left: 12px;
-    padding-right: 12px;
-    border: none;
-    border-radius: 10%;
-    box-shadow: 0px 4px 4px 0px #000000 25%;
-  `;
 
   return (
     <Layout loggedIn={props.loggedIn}>

@@ -5,6 +5,34 @@ import { useState } from 'react';
 import Layout from '../components/Layout';
 import { css } from '@emotion/react';
 
+const registerStyles = css`
+  margin: 150px;
+  line-height: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const formButtonStyles = css`
+  background-color: white;
+  color: #645e49;
+  height: 30px;
+  width: 120px;
+  margin: 10px;
+  border: none;
+`;
+
+const messageStyle = css`
+  background-color: #e6e6e6;
+  color: #645e49;
+  margin: 10px;
+  padding-left: 12px;
+  padding-right: 12px;
+  border: none;
+  border-radius: 15px;
+  box-shadow: -13px -9px 5px -6px rgba(135, 142, 138, 0.25);
+`;
+
 type Props = { token: string };
 
 export default function Register(props: Props) {
@@ -13,35 +41,6 @@ export default function Register(props: Props) {
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
 
-  const registerStyles = css`
-    margin: 150px;
-    line-height: 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  `;
-
-  const formButtonStyles = css`
-    background-color: white;
-    color: #645e49;
-    height: 30px;
-    width: 120px;
-    margin: 10px;
-    border: none;
-    box-shadow: 0px 4px 4px 0px #000000 25%;
-  `;
-
-  const messageStyle = css`
-    background-color: #e6e6e6;
-    color: #645e49;
-    margin: 10px;
-    padding-left: 12px;
-    padding-right: 12px;
-    border: none;
-    border-radius: 10%;
-    box-shadow: 0px 4px 4px 0px #000000 25%;
-  `;
-
   return (
     <div>
       <Layout>
@@ -49,7 +48,7 @@ export default function Register(props: Props) {
           <title>Register</title>
         </Head>
         <main css={registerStyles}>
-          <h1>Register here</h1>
+          <h1>Register</h1>
           <ul>
             <form
               onSubmit={async (e) => {
@@ -70,8 +69,10 @@ export default function Register(props: Props) {
                 const { success } = await response.json();
 
                 if (success) {
+                  setUsername('');
+                  setPassword('');
                   setErrorMessage(
-                    'You have been registered successfully! Please login now!',
+                    'You have been registered successfully! Please proceed to login!',
                   );
                 } else {
                   // If the response status code (set using response.status()
@@ -85,7 +86,6 @@ export default function Register(props: Props) {
                 }
               }}
             >
-              <br />
               <label htmlFor="username">
                 Username
                 <input

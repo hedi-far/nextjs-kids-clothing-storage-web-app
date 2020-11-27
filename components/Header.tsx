@@ -3,38 +3,33 @@ import { css } from '@emotion/react';
 import type {} from '@emotion/react/types/css-prop';
 
 const headerStyles = css`
-  justify-content: space-between;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   border-radius: 10px;
-  background-color: #645e49;
-  color: #fff;
+  background-color: #fff;
+  color: #645e49;
   height: 100%;
 `;
 
 const headerLinksStylesLogout = css`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-wrap: wrap;
+  padding: 5px;
   margin: 0 10px;
   height: 60px;
 `;
 
 const headerLinksStylesLogin = css`
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
   align-items: center;
   margin: 0 10px;
   height: 60px;
 
-  @media (max-width: 800px) {
-    flex-direction: column;
-    color: #645e49;
+  & li {
+    padding-right: 20px;
   }
-`;
-
-const whiteLogoStyles = css`
-  padding-top: 10px;
-  padding-right: 1050px;
-  margin-bottom: 5px;
 `;
 
 type Props = {
@@ -46,16 +41,14 @@ export default function Header(props: Props) {
     <header css={headerStyles}>
       {props.loggedIn ? (
         <ul css={headerLinksStylesLogout}>
-          <li>
+          {/* <li>
             {' '}
             <img
               css={whiteLogoStyles}
               src="/logo_white.svg"
               alt="Neatify! logo"
-              width="90px"
-              height="50px"
             />
-          </li>
+          </li> */}
 
           <li>
             <Link href="/">
@@ -91,16 +84,16 @@ export default function Header(props: Props) {
         </ul>
       ) : (
         <ul css={headerLinksStylesLogin}>
-          <li>
+          {/* <li>
             {' '}
             <img
               css={whiteLogoStyles}
               src="/logo_white.svg"
               alt="Neatify! logo"
-              width="90px"
-              height="50px"
+              // width="90px"
+              // height="50px"
             />
-          </li>
+          </li> */}
 
           <li>
             <Link href="/">

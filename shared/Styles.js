@@ -42,10 +42,12 @@ export const globalStyles = (
         cursor: pointer;
         height: 50px;
         width: 150px;
-        border-radius: 10%;
+        border-radius: 15px;
+        border-style: none;
         color: white;
         background-color: #645e49;
         font-size: 16px;
+        box-shadow: -13px -9px 5px -6px rgba(135, 142, 138, 0.25);
       }
 
       button:hover {
@@ -57,15 +59,22 @@ export const globalStyles = (
       form {
         background-color: #fff2be;
         border-radius: 10%;
-        box-shadow: 0 px 10px rgba(0, 0, 0, 0.2);
+        box-shadow: -13px -9px 5px -6px rgba(135, 142, 138, 0.25);
         padding: 20px;
         margin: 10px;
       }
 
       input {
+        margin: 5px;
+        border-radius: 15px;
+        padding: 5px;
+        border-style: none;
+      }
+
+      /* input [type='text'] {
         border-radius: 10%;
         margin: 5px;
-      }
+      } */
 
       //XL
       h1 {

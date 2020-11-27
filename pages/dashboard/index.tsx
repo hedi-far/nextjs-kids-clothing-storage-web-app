@@ -55,16 +55,22 @@ const sideBarLinkStyles = css`
   justify-content: space-around;
   background-color: #e6e6e6;
   border-radius: 10%;
+  box-shadow: -13px -9px 5px -6px rgba(135, 142, 138, 0.25);
 `;
 
 //area around yellow boxes
 const storageItemsAreaStyles = css`
   grid-area: 2 / 3 / 3 / 4;
   /* background-color: blue; */
-  height: 560px;
+  height: 680px;
   overflow: auto;
+`;
+
+//ul
+const storageItemsAreaStyles2 = css`
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
 `;
 
 //yellow box
@@ -80,6 +86,7 @@ const storageItemStyles = css`
   display: flex;
   justify-content: space-around;
   flex-direction: column;
+  box-shadow: -13px -9px 5px -6px rgba(135, 142, 138, 0.25);
 `;
 
 //light pink box
@@ -91,6 +98,7 @@ const addStorageItemStyles = css`
   align-items: center;
   margin-top: 40px;
 `;
+
 const formButtonStyles = css`
   background-color: white;
   color: #645e49;
@@ -100,6 +108,7 @@ const formButtonStyles = css`
   border: none;
   box-shadow: 0px 4px 4px 0px #000000 25%;
 `;
+
 type Props = {
   // loggedIn: boolean;
   user: User;
@@ -223,7 +232,7 @@ export default function Dashboard(props: Props) {
 
           <h2 css={storageItemsHeadingStyles}>My storage units</h2>
           <div css={storageItemsAreaStyles}>
-            <ul>
+            <ul css={storageItemsAreaStyles2}>
               {props.storageItems.map((storageItem: StorageItem) => {
                 return (
                   <li css={storageItemStyles} key={storageItem.id}>
