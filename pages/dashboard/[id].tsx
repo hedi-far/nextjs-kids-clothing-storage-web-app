@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import nextCookies from 'next-cookies';
 import Cookies from 'js-cookie';
+import { css } from '@emotion/react';
 import Layout from '../../components/Layout';
 import AddToListButton from '../../components/AddToListButton';
 import {
@@ -27,7 +28,6 @@ import {
   getClothingItemSeasons,
   getClothingItemGender,
 } from '../../util/database';
-import { css } from '@emotion/react';
 
 const storageItemPageStyles = css`
   display: grid;
@@ -52,13 +52,12 @@ const storageItemHeading = css`
 
 //go back icon
 const backButtonStyles = css`
-  background-color: blue;
-  margin-top: 5px;
+  /* background-color: blue; */
+  margin-top: 105px;
   cursor: pointer;
   & img {
-    float: right;
-    height: 40px;
-    width: 40px;
+    height: 30px;
+    width: 30px;
   }
 `;
 
@@ -136,7 +135,7 @@ const listOfClothingItemsStyles = css`
 
   overflow: auto;
   & img {
-    height: 400px;
+    height: 320px;
     margin-bottom: 25px;
   }
 `;
@@ -233,18 +232,20 @@ export default function Search(props: Props) {
             <title>{storageItemName}</title>
           </Head>
           <main css={storageItemPageStyles}>
-            <h1 css={storageItemHeading}>
-              <img src="/icons/box.svg" alt="box" />
-              {storageItemName}
-            </h1>
-            {/* <h2>
-              <Link href="/dashboard">
-                <a css={backButtonStyles}>
-                  <img src="/icons/backward.svg" alt="delete button" />
-                  Back to dashboard!
-                </a>
-              </Link>{' '}
-            </h2> */}
+            <div css={storageItemHeading}>
+              <h1>
+                <img src="/icons/box.svg" alt="box" />
+                {storageItemName}
+              </h1>
+              <h2 css={backButtonStyles}>
+                <Link href="/dashboard">
+                  <a>
+                    <img src="/icons/backward.svg" alt="arrow backwards" />
+                    Back to dashboard!
+                  </a>
+                </Link>{' '}
+              </h2>
+            </div>
 
             <div css={storageItemDetailStyles}>
               <ul>
@@ -586,10 +587,20 @@ export default function Search(props: Props) {
           <title>{storageItemName}</title>
         </Head>
         <main css={storageItemPageStyles}>
-          <h1 css={storageItemHeading}>
-            <img src="/icons/box.svg" alt="box" />
-            {storageItemName}
-          </h1>
+          <div css={storageItemHeading}>
+            <h1>
+              <img src="/icons/box.svg" alt="box" />
+              {storageItemName}
+            </h1>
+            <h2 css={backButtonStyles}>
+              <Link href="/dashboard">
+                <a>
+                  <img src="/icons/backward.svg" alt="delete button" />
+                  Back to dashboard!
+                </a>
+              </Link>{' '}
+            </h2>
+          </div>
           <div css={storageItemDetailStyles}>
             <ul>
               <li>

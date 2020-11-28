@@ -102,6 +102,7 @@ export const globalStyles = (
       }
 
       table {
+        border-collapse: collapse;
       }
 
       /* input [type='text'] {
