@@ -43,7 +43,7 @@ export default function Home(props: Props) {
     <div>
       <Layout loggedIn={props.loggedIn}>
         <Head>
-          <title>Welcome!</title>
+          <title>N! Welcome!</title>
         </Head>
         <main css={landingPageStyles}>
           <div>

@@ -229,7 +229,7 @@ export default function Search(props: Props) {
         is found in getServerSideProps, the user will be redirected to the login page! */}
         <Layout loggedIn={true}>
           <Head>
-            <title>{storageItemName}</title>
+            <title>N! {storageItemName}</title>
           </Head>
           <main css={storageItemPageStyles}>
             <div css={storageItemHeading}>

@@ -160,7 +160,7 @@ export default function Search(props: Props) {
   const [errorMessage, setErrorMessage] = useState('');
   const [myList, setMyList] = useState(props.myList);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [clothesFilter, setClothesFilter] = useState({});
+  const [clothesFilter, setClothesFilter] = useState({} as Filter);
   const [searchNotes, setSearchNotes] = useState('');
 
   //When filter button is clicked:
@@ -220,7 +220,7 @@ export default function Search(props: Props) {
       is found in getServerSideProps, the user will be redirected to the login page! */}
         <Layout loggedIn={true}>
           <Head>
-            <title>Neatify! Search</title>
+            <title>N! Search</title>
           </Head>
           <main css={searchPageStyles}>
             <div css={searchHeadingStyles}>
@@ -368,15 +368,15 @@ export default function Search(props: Props) {
                 </p>
               </form>
 
-              {/* <h2 css={currentFilterArea}>
-              Current search:
-              <span>{clothesFilter.clothingItemsType}</span>
-              <span> {clothesFilter.size}</span>
-              <span>{clothesFilter.color}</span>
-              <span> {clothesFilter.season}</span>
-              <span> {clothesFilter.gender}</span>
-              <span> {searchNotes}</span>
-            </h2>*/}
+              <h2 css={currentFilterArea}>
+                Current search:
+                <span>{clothesFilter.clothingItemsType}</span>
+                <span> {clothesFilter.size}</span>
+                <span>{clothesFilter.color}</span>
+                <span> {clothesFilter.season}</span>
+                <span> {clothesFilter.gender}</span>
+                <span> {searchNotes}</span>
+              </h2>
             </div>
             <h2>{errorMessage}</h2>
             <div css={resultsListStyles}>
@@ -594,7 +594,7 @@ export default function Search(props: Props) {
                 </p>
               </form>
 
-              {/* <h2 css={currentFilterArea}>
+              <h2 css={currentFilterArea}>
                 Current search:
                 <span>{clothesFilter.clothingItemsType}</span>
                 <span> {clothesFilter.size}</span>
@@ -602,7 +602,7 @@ export default function Search(props: Props) {
                 <span> {clothesFilter.season}</span>
                 <span> {clothesFilter.gender}</span>
                 <span> {searchNotes}</span>
-              </h2> */}
+              </h2>
             </div>
             <h2 css={noResultsAreaStyles}>
               {errorMessage}
@@ -820,16 +820,15 @@ export default function Search(props: Props) {
                   </button>
                 </p>
               </form>
-
-              {/* <h2 css={currentFilterArea}>
-            Current search:
-            <span>{clothesFilter.clothingItemsType}</span>
-            <span> {clothesFilter.size}</span>
-            <span>{clothesFilter.color}</span>
-            <span> {clothesFilter.season}</span>
-            <span> {clothesFilter.gender}</span>
-            <span> {searchNotes}</span>
-          </h2>*/}
+              <h2 css={currentFilterArea}>
+                Current search:
+                <span>{clothesFilter.clothingItemsType}</span>
+                <span> {clothesFilter.size}</span>
+                <span>{clothesFilter.color}</span>
+                <span> {clothesFilter.season}</span>
+                <span> {clothesFilter.gender}</span>
+                <span> {searchNotes}</span>
+              </h2>
             </div>
             <h2>{errorMessage}</h2>
             <div css={resultsListStyles}>

@@ -24,6 +24,17 @@ export const globalStyles = (
           Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
           Helvetica Neue, sans-serif;
         font-size: 16px;
+
+        /* print styles */
+        @media print {
+          body {
+            margin: 0;
+            color: #000;
+            background-color: #fff;
+
+          }
+
+          
       }
 
       a {

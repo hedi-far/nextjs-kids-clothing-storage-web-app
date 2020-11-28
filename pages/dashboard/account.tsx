@@ -44,7 +44,7 @@ export default function Account(props: Props) {
   return (
     <Layout loggedIn={props.loggedIn}>
       <Head>
-        <title>Account</title>
+        <title>N! Account</title>
       </Head>
       <main css={accountStyles}>
         <ul>

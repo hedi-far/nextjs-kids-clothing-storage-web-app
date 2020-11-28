@@ -32,7 +32,7 @@ export default function SeeYouSoon(props: Props) {
     <div>
       <Layout loggedIn={props.loggedIn}>
         <Head>
-          <title>See you soon!</title>
+          <title>N! See you soon!</title>
         </Head>
         <main css={seeYouSoonPageStyles}>
           <h1 css={seeYouSoonHeadingStyles}>

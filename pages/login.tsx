@@ -47,7 +47,7 @@ export default function Login(props: Props) {
   return (
     <Layout loggedIn={props.loggedIn}>
       <Head>
-        <title>Login</title>
+        <title>N! Login</title>
       </Head>
       <main css={loginStyles}>
         <h1>Login</h1>

@@ -45,7 +45,7 @@ export default function Register(props: Props) {
     <div>
       <Layout>
         <Head>
-          <title>Register</title>
+          <title>N! Register</title>
         </Head>
         <main css={registerStyles}>
           <h1>Register</h1>

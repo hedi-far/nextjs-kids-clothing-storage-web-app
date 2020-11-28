@@ -80,7 +80,7 @@ export default function Footer() {
         <li>
           <Link href="https://www.linkedin.com/in/hedwig-farthofer/">
             <a>
-              <img src="/icons/linkedIn.svg" alt="LinkedIn logo" />
+              <img src="/icons/linkedin.svg" alt="LinkedIn logo" />
             </a>
           </Link>
         </li>

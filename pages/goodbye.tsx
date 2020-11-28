@@ -41,7 +41,7 @@ export default function Goodbye(props: Props) {
     <div>
       <Layout loggedIn={props.loggedIn}>
         <Head>
-          <title>Goodbye!</title>
+          <title>N! Goodbye!</title>
         </Head>
         <main css={goodByePageStyles}>
           <h1 css={goodByeHeadingStyles}>

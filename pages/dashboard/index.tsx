@@ -194,7 +194,7 @@ export default function Dashboard(props: Props) {
 is found in getServerSideProps, the user will be redirected to the login page! */}
         <Layout loggedIn={true}>
           <Head>
-            <title>Dashboard</title>
+            <title>N! Dashboard</title>
           </Head>
           <main css={dashboardStyles}>
             <h1 css={headingStyles}>My dashboard</h1>
