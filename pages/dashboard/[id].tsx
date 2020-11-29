@@ -132,7 +132,7 @@ const listOfClothingItemsStyles = css`
   margin-top: -45px;
   height: 680px;
   /* background-color: grey; */
-
+  margin-bottom: 100px;
   overflow: auto;
   & img {
     height: 320px;

@@ -164,6 +164,7 @@ export default function Search(props: Props) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [clothesFilter, setClothesFilter] = useState({} as Filter);
   const [searchNotes, setSearchNotes] = useState('');
+  const [displaySearchNotes, setDisplaySearchNotes] = useState('');
 
   //When filter button is clicked:
   const handleFilter = (e: React.FormEvent) => {
@@ -205,6 +206,8 @@ export default function Search(props: Props) {
     const newSearchNotes = new RegExp(searchNotes, 'i');
 
     const filteredClothingItems = searchInNotes(newSearchNotes, clothingItems);
+
+    setDisplaySearchNotes(searchNotes);
 
     setClothingItems(filteredClothingItems);
 
@@ -376,7 +379,7 @@ export default function Search(props: Props) {
                 <span>{clothesFilter.color}</span>
                 <span> {clothesFilter.season}</span>
                 <span> {clothesFilter.gender}</span>
-                <span> {searchNotes}</span>
+                <span> {displaySearchNotes}</span>
               </h2>
             </div>
             <h2>{errorMessage}</h2>
@@ -602,7 +605,7 @@ export default function Search(props: Props) {
                 <span>{clothesFilter.color}</span>
                 <span> {clothesFilter.season}</span>
                 <span> {clothesFilter.gender}</span>
-                <span> {searchNotes}</span>
+                <span> {displaySearchNotes}</span>
               </h2>
             </div>
             <h2 css={noResultsAreaStyles}>
@@ -828,7 +831,7 @@ export default function Search(props: Props) {
                 <span>{clothesFilter.color}</span>
                 <span> {clothesFilter.season}</span>
                 <span> {clothesFilter.gender}</span>
-                <span> {searchNotes}</span>
+                <span> {displaySearchNotes}</span>
               </h2>
             </div>
             <h2>{errorMessage}</h2>

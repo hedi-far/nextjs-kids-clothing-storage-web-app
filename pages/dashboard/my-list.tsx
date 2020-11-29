@@ -31,6 +31,7 @@ const myListAreaStyles = css`
   /* grid-area: 2 / 1 / 3 / 2;
   margin-top: -110px;*/
   margin-left: 400px;
+
   img {
     height: 400px;
     width: 400px;
@@ -56,6 +57,7 @@ const deleteButtonStyles = css`
 const myListPageButtonAreaStyles = css`
   /* grid-area: 3 / 1 / 4 / 2; */
   padding: 15px;
+  margin-bottom: 200px;
 `;
 
 //go back icon
