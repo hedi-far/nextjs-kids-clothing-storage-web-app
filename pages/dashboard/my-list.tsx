@@ -10,13 +10,13 @@ import { ClothingItemDetail } from '../../util/types';
 import { handleDeleteFromList } from '../../util/my-list';
 
 const myListPageStyles = css`
-  display: grid;
+  /* display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 0.5fr 1fr 1fr;
+  grid-template-rows: 0.5fr 1fr 1fr; */
 `;
 
 const myListPageHeadingStyles = css`
-  grid-area: 1 / 1 / 2 / 2;
+  /* grid-area: 1 / 1 / 2 / 2;  */
   height: 40px;
   margin-top: 40px;
   img {
@@ -28,9 +28,9 @@ const myListPageHeadingStyles = css`
 `;
 
 const myListAreaStyles = css`
-  grid-area: 2 / 1 / 3 / 2;
-  margin-top: -110px;
-  margin-left: 500px;
+  /* grid-area: 2 / 1 / 3 / 2;
+  margin-top: -110px;*/
+  margin-left: 400px;
   img {
     height: 400px;
     width: 400px;
@@ -48,13 +48,13 @@ const deleteButtonStyles = css`
   box-shadow: none;
   margin-top: 15px;
   & img {
-    height: 30px;
-    width: 30px;
+    height: 30px !important;
+    width: 30px !important;
   }
 `;
 
 const myListPageButtonAreaStyles = css`
-  grid-area: 3 / 1 / 4 / 2;
+  /* grid-area: 3 / 1 / 4 / 2; */
   padding: 15px;
 `;
 

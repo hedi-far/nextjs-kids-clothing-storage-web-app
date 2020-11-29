@@ -34,7 +34,7 @@ export default function MyListPage(props: Props) {
       <div css={printStyles}>
         <Layout loggedIn={props.loggedIn}>
           <Head>
-            <title>N! Print </title>
+            <title>My List {currentDate} </title>
           </Head>
           <main>
             <h1>My Neatify! List</h1>
