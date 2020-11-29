@@ -18,7 +18,24 @@ It has:
 - a my-list page, where a list of clothing items can be created
 - a print-my-list page, which is a printable version of the my-list page including the current date and checkboxes next to each clothing item on the list.
 
+Landing page
 ![Landing Page](/screenshots/landing-page-screenshot.jpg)
+
+Dashboard
+![Empty dashboard](/screenshots/dashboard-empty-screenshot.jpg)
+![Dashboard with storage unit](/screenshots/dashboard-screenshot.jpg)
+
+Storage unit page
+![Empty storage unit](/screenshots/storage-unit-empty-screenshot.jpg)
+![Storage unit with clothing items](/screenshots/storage-unit-screenshot.jpg)
+
+Search page
+![Search with no results](/screenshots/search-no-results-screenshot.jpg)
+![Search with results](/screenshots/search-with-results-screenshot.jpg)
+
+My List page
+![My list page](/screenshots/my-list-screenshot.jpg)
+![My list printable](/screenshots/print-my-list-screenshot.jpg)
 
 ## This web app was built with the following technologies:
 
@@ -47,7 +64,7 @@ The database scheme was planned with SQLDBM as well as DB Fiddle.
 
 ![SQLDBM](/screenshots/db-scheme-screenshot.png)
 
-The project planned with GitHub Projects and Agantty.
+The project planned with GitHub Projects and Agantty (not in the picture).
 
 ![GitHub Projects](/screenshots/github-projects-screenshot.jpg)
 
