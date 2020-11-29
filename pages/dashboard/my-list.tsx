@@ -12,7 +12,7 @@ import { handleDeleteFromList } from '../../util/my-list';
 const myListPageStyles = css`
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 0.5fr 1fr 1fr;
 `;
 
 const myListPageHeadingStyles = css`
@@ -72,8 +72,6 @@ type Props = { loggedIn: boolean; myList: ClothingItemDetail[] };
 
 export default function MyListPage(props: Props) {
   const [myList, setMyList] = useState(props.myList);
-
-  console.log(props.myList.length);
 
   //when list is empty
   if (props.myList.length === 0) {

@@ -32,7 +32,7 @@ import { getFilterResults, searchInNotes } from '../../util/get-search-results';
 const searchPageStyles = css`
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 0.5fr 1fr 1fr 1fr;
 `;
 
 const searchHeadingStyles = css`
@@ -212,7 +212,6 @@ export default function Search(props: Props) {
   };
 
   //when no search, display entire list of clothing items
-
   if (Object.entries(clothesFilter).length === 0 && searchNotes === '') {
     return (
       <div>

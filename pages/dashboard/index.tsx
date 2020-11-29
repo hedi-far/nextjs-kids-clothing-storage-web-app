@@ -185,8 +185,6 @@ export default function Dashboard(props: Props) {
 
   const router = useRouter();
 
-  console.log(props.storageItems);
-
   if (props.storageItems.length === 0) {
     return (
       <div>
