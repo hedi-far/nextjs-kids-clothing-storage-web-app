@@ -30,14 +30,15 @@ import {
 import { getFilterResults, searchInNotes } from '../../util/get-search-results';
 
 const searchPageStyles = css`
-  display: grid;
+  /* display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 0.5fr 1fr 1fr 1fr;
+  grid-template-rows: 0.5fr 1fr 1fr 1fr; */
 `;
 
 const searchHeadingStyles = css`
-  grid-area: 1 / 1 / 2 / 2;
-  height: 40px;
+  /* grid-area: 1 / 1 / 2 / 2; */
+  /* background-color: blue; */
+  height: 100px;
   margin-top: 40px;
   img {
     height: 60px;
@@ -48,7 +49,7 @@ const searchHeadingStyles = css`
 `;
 
 const searchFormStyles = css`
-  grid-area: 2 / 1 / 3 / 2;
+  /* grid-area: 2 / 1 / 3 / 2; */
   & form {
     margin-top: 20px;
     display: flex;
@@ -115,8 +116,9 @@ const formButtonStyles = css`
 `;
 
 const resultsListStyles = css`
-  grid-area: 3 / 1 / 4 / 2;
+  /* grid-area: 3 / 1 / 4 / 2; */
   text-align: center;
+  margin-bottom: 100px;
   table {
     width: 50%;
     margin-left: 500px;
@@ -125,9 +127,9 @@ const resultsListStyles = css`
 `;
 
 const noResultsAreaStyles = css`
-  grid-area: 3 / 1 / 4 / 2;
+  /* grid-area: 3 / 1 / 4 / 2; */
   margin-left: 500px;
-  margin-top: -100px;
+  margin-bottom: 100px;
   img {
     height: 400px;
     width: 400px;
