@@ -18,7 +18,7 @@ It has:
 - a my-list page, where a list of clothing items can be created
 - a print-my-list page, which is a printable version of the my-list page including the current date and checkboxes next to each clothing item on the list.
 
-![Landing Page](public\screenshots\landing-page-screenshot.jpg)
+![Landing Page](/screenshots/landing-page-screenshot.jpg)
 
 ## This web app was built with the following technologies:
 
@@ -45,16 +45,16 @@ The web app has been deployed on Heroku.
 
 The database scheme was planned with SQLDBM as well as DB Fiddle.
 
-![SQLDBM](public\screenshots\db-scheme-screenshot.png)
+![SQLDBM](/screenshots/db-scheme-screenshot.png)
 
 The project planned with GitHub Projects and Agantty.
 
-![GitHub Projects](public\screenshots\github-projects-screenshot.jpg)
+![GitHub Projects](/screenshots/github-projects-screenshot.jpg)
 
 The design of the website including layout, colors, fonts and icons was planned with Figma.
 
-![Figma](public\screenshots\figma-layout-design-screenshot.jpg)
-![Figma](public\screenshots\figma-layout-design-screenshot.jpg)
+![Figma](/screenshots/figma-layout-design-screenshot.jpg)
+![Figma](/screenshots/figma-layout-design-screenshot.jpg)
 
 ## Idea
 
