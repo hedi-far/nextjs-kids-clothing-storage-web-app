@@ -29,27 +29,19 @@ import {
 } from '../../util/types';
 import { getFilterResults, searchInNotes } from '../../util/get-search-results';
 
-const searchPageStyles = css`
-  /* display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 0.5fr 1fr 1fr 1fr; */
-`;
+const searchPageStyles = css``;
 
 const searchHeadingStyles = css`
-  /* grid-area: 1 / 1 / 2 / 2; */
-  /* background-color: blue; */
   height: 100px;
   margin-top: 40px;
   img {
     height: 60px;
     width: 60px;
     margin-right: 5px;
-    /* background-color: blue; */
   }
 `;
 
 const searchFormStyles = css`
-  /* grid-area: 2 / 1 / 3 / 2; */
   & form {
     margin-top: 20px;
     display: flex;
@@ -57,9 +49,6 @@ const searchFormStyles = css`
     flex: wrap;
     border-radius: 15px;
   }
-  /* display: grid;
-  grid-template-columns: 1fr 1.3fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr; */
 `;
 
 const currentFilterArea = css`
@@ -81,30 +70,6 @@ const currentFilterArea = css`
   }
 `;
 
-// const searchExplanationStyles = css`
-//   grid-area: 1 / 1 / 2 / 2;
-// `;
-
-// const searchFilterStyles = css`
-//   grid-area: 2 / 1 / 3 / 2;
-// `;
-
-// const filterButtonAreaStyles = css`
-//   grid-area: 2 / 2 / 3 / 3;
-// `;
-
-// const searchNotesStyles = css`
-//   grid-area: 3 / 1 / 4 / 2;
-// `;
-
-// const searchNotesButtonAreaStyles = css`
-//   grid-area: notes-buttons;
-// `;
-
-// const messageAreaStyles = css`
-//   grid-area: 4 / 1 / 5 / 2;
-// `;
-
 const formButtonStyles = css`
   background-color: white;
   color: #645e49;
@@ -116,7 +81,6 @@ const formButtonStyles = css`
 `;
 
 const resultsListStyles = css`
-  /* grid-area: 3 / 1 / 4 / 2; */
   text-align: center;
   margin-bottom: 100px;
   table {
@@ -127,7 +91,6 @@ const resultsListStyles = css`
 `;
 
 const noResultsAreaStyles = css`
-  /* grid-area: 3 / 1 / 4 / 2; */
   margin-left: 500px;
   margin-bottom: 100px;
   img {
@@ -161,7 +124,6 @@ export default function Search(props: Props) {
   const [clothingItems, setClothingItems] = useState(props.clothingItems || []);
   const [errorMessage, setErrorMessage] = useState('');
   const [myList, setMyList] = useState(props.myList);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [clothesFilter, setClothesFilter] = useState({} as Filter);
   const [searchNotes, setSearchNotes] = useState('');
   const [displaySearchNotes, setDisplaySearchNotes] = useState('');
@@ -439,7 +401,7 @@ export default function Search(props: Props) {
         </Layout>
       </div>
     );
-    //when user is searching, but there are no results
+    //when user was searching, but there are no results
   } else if (
     (Object.entries(clothesFilter).length > 0 && clothingItems.length === 0) ||
     (searchNotes && clothingItems.length === 0)
@@ -612,59 +574,6 @@ export default function Search(props: Props) {
               {errorMessage}
               <img src="/img/no-results-img.svg" alt="woman searching list" />
             </h2>
-
-            {/* <div css={resultsListStyles}>
-              {/* complete list by logged-in user */}
-            {/* <h2>Your search results</h2>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Color</th>
-                    <th>Size</th>
-                    <th>Season</th>
-                    <th>Gender</th>
-                    <th>Notes</th>
-                    <th>Storage unit</th>
-                    <th />
-                    <th />
-                    <th />
-                  </tr>
-                </thead>
-
-                {clothingItems.map((clothingItem: ClothingItemDetail) => {
-                  return (
-                    <tbody key={clothingItem.id}>
-                      <tr>
-                        {/* <td>{clothingItem.id}</td> */}
-            {/* <td>{clothingItem.clothingItemsType}</td>
-                        <td>{clothingItem.color}</td>
-                        <td>{clothingItem.size}</td>
-                        <td>{clothingItem.season}</td>
-                        <td>{clothingItem.gender}</td>
-                        <td>{clothingItem.notes}</td>
-                        <td>
-                          <Link
-                            href={`/dashboard/${clothingItem.storageItemId}`}
-                          >
-                            <a>{clothingItem.storageItemName}</a>
-                          </Link>
-                        </td>
-                        <td>
-                          <AddToListButton
-                            myList={myList}
-                            setMyList={setMyList}
-                            clothingItem={clothingItem}
-                            clothingItemId={clothingItem.id}
-                          />
-                        </td>
-                      </tr>
-                    </tbody>
-                  );
-                })}
-              </table> */}
-            {/* </div>  */}
-            {/* }} */}
           </main>
         </Layout>
       </div>
@@ -836,7 +745,6 @@ export default function Search(props: Props) {
             </div>
             <h2>{errorMessage}</h2>
             <div css={resultsListStyles}>
-              {/* complete list by logged-in user */}
               <h2>Your search results</h2>
               <table>
                 <thead>
@@ -858,7 +766,6 @@ export default function Search(props: Props) {
                   return (
                     <tbody key={clothingItem.id}>
                       <tr>
-                        {/* <td>{clothingItem.id}</td> */}
                         <td>{clothingItem.clothingItemsType}</td>
                         <td>{clothingItem.color}</td>
                         <td>{clothingItem.size}</td>
@@ -886,7 +793,6 @@ export default function Search(props: Props) {
                 })}
               </table>
             </div>
-            {/* }} */}
           </main>
         </Layout>
       </div>

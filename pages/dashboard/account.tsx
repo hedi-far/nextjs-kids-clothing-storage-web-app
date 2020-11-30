@@ -3,11 +3,11 @@ import Layout from '../../components/Layout';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import nextCookies from 'next-cookies';
+import { css } from '@emotion/react';
 import { User } from '../../util/types';
 import { getUserBySessionToken } from '../../util/database';
 import { GetServerSidePropsContext } from 'next';
 import { isSessionTokenValid } from '../../util/auth';
-import { css } from '@emotion/react';
 
 type Props = { loggedIn: boolean; user: User };
 
@@ -23,7 +23,6 @@ const accountStyles = css`
   flex-direction: column;
   align-items: center;
   background-color: #e6e6e6;
-  //#E5FFBE light green?
   box-shadow: -13px -9px 5px -6px rgba(135, 142, 138, 0.25);
 `;
 
@@ -38,7 +37,6 @@ const formButtonStyles = css`
 `;
 
 export default function Account(props: Props) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
   return (
@@ -51,6 +49,7 @@ export default function Account(props: Props) {
           <h1>My account</h1>
           <h2>User-Id: {props.user.id}</h2>
           <h2>Username: {props.user.username}</h2>
+          {errorMessage}
           <button
             css={formButtonStyles}
             onClick={async () => {

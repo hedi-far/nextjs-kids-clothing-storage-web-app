@@ -39,20 +39,17 @@ const storageItemPageStyles = css`
 //Name of storageItem as heading
 const storageItemHeading = css`
   grid-area: 1 / 1 / 2 / 2;
-  /* background-color: blue; */
   height: 40px;
   margin-top: 40px;
   img {
     height: 60px;
     width: 60px;
     margin-right: 5px;
-    /* background-color: blue; */
   }
 `;
 
 //go back icon
 const backButtonStyles = css`
-  /* background-color: blue; */
   margin-top: 105px;
   cursor: pointer;
   & img {
@@ -60,33 +57,6 @@ const backButtonStyles = css`
     width: 30px;
   }
 `;
-
-/* const sideBarStyles = css`
-  grid-area: 2 / 1 / 3 / 2;
-  height: 200px;
-  /* background-color: green; */
-/* margin-top: -100px;
-`; */
-
-/* //grey box
-const sideBarLinkStyles = css`
-  font-size: 18px;
-  height: 170px;
-  width: 300px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  background-color: #e6e6e6;
-  border-radius: 15px;
-  box-shadow: -13px -9px 5px -6px rgba(135, 142, 138, 0.25);
-  img {
-    height: 30px;
-    width: 30px;
-    margin-right: 5px;
-    /* background-color: blue; */
-/* }
-`; */
 
 //yellow card
 const storageItemDetailStyles = css`
@@ -107,7 +77,6 @@ const storageItemDetailStyles = css`
     height: 30px;
     width: 30px;
     float: right;
-    /* background-color: blue; */
   }
 `;
 
@@ -131,7 +100,6 @@ const listOfClothingItemsStyles = css`
   grid-area: 2 / 2 / 4 / 3;
   margin-top: -45px;
   height: 680px;
-  /* background-color: grey; */
   margin-bottom: 100px;
   overflow: auto;
   & img {
@@ -147,9 +115,7 @@ const listOfClothingItemsHeadingStyles = css`
 
 //light pink box
 const addNewClothingItemStyles = css`
-  /* grid-area: 3 / 1 / 4 / 2; */
   grid-area: 2 / 1 / 3 / 2;
-  /* background-color: blue; */
   margin-top: -50px;
   line-height: 50px;
   display: flex;
@@ -160,7 +126,6 @@ const addNewClothingItemStyles = css`
     height: 30px;
     width: 30px;
     margin-right: 5px;
-    /* background-color: blue; */
   }
 `;
 
@@ -222,6 +187,7 @@ export default function Search(props: Props) {
     Cookies.set('myList', myList);
   }, [myList]);
 
+  //if no clothing items have been added to storage item yet
   if (props.clothingItems.length === 0) {
     return (
       <div>
@@ -577,7 +543,7 @@ export default function Search(props: Props) {
         </Layout>
       </div>
     );
-  }
+  } //if storage items have been added
   return (
     <div>
       {/* loggedIn is set to true by default, bc if no session token

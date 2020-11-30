@@ -26,7 +26,8 @@ type Props = { loggedIn: boolean; myList: ClothingItemDetail[] };
 export default function MyListPage(props: Props) {
   const currentDate = new Date().toDateString();
 
-  //when list is empty
+  //if list is empty - returns null; user cannot access, because
+  //link is not displayed on my-list page when list is empty
   if (props.myList.length === 0) {
     return null;
   } else {
@@ -83,7 +84,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if (!(await isSessionTokenValid(token))) {
     return {
       redirect: {
-        destination: '/login?returnTo=/dashboard/my-list',
+        destination: '/login?returnTo=/dashboard/print-my-list',
         permanent: false,
       },
     };

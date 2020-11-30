@@ -45,15 +45,6 @@ export default function Header(props: Props) {
     <header css={headerStyles}>
       {props.loggedIn ? (
         <ul css={headerLinksStylesLogout}>
-          {/* <li>
-            {' '}
-            <img
-              css={whiteLogoStyles}
-              src="/logo_white.svg"
-              alt="Neatify! logo"
-            />
-          </li> */}
-
           <li>
             <Link href="/">
               <a>Home</a>
@@ -84,17 +75,6 @@ export default function Header(props: Props) {
         </ul>
       ) : (
         <ul css={headerLinksStylesLogin}>
-          {/* <li>
-            {' '}
-            <img
-              css={whiteLogoStyles}
-              src="/logo_white.svg"
-              alt="Neatify! logo"
-              // width="90px"
-              // height="50px"
-            />
-          </li> */}
-
           <li>
             <Link href="/">
               <a>Home</a>

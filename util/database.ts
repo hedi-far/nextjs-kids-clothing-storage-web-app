@@ -33,7 +33,6 @@ const sql =
 // const sql = postgres();
 
 //User-related
-
 export async function registerUser(username: string, passwordHash: string) {
   const users = await sql<User[]>`
     INSERT INTO users
@@ -89,7 +88,6 @@ export async function deleteUserByUserId(userId: number) {
 }
 
 //Session-related
-
 export async function getSessionByToken(token: string) {
   const sessions = await sql<Session[]>`
     SELECT * FROM sessions WHERE token = ${token};
@@ -124,7 +122,6 @@ export async function deleteSessionByToken(token: string | undefined) {
 }
 
 // storage_items
-
 export async function insertStorageItem(
   storageItemName: string,
   userId: number,

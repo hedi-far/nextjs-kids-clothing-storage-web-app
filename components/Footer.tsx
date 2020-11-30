@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { css } from '@emotion/react';
-// import type {} from '@emotion/react/types/css-prop';
 
 const footerStyles = css`
   padding: 50px;
@@ -8,7 +7,6 @@ const footerStyles = css`
   justify-content: space-between;
   border-radius: 10px;
   background-color: #e6e6e6;
-  /* height: 100%; */
   grid-template-columns: 1fr 3fr 1fr;
   grid-gap: 500px;
   position: relative;
@@ -20,7 +18,6 @@ const creditStyles = css`
   flex-direction: column;
   justify-content: flex-end;
   justify-content: space-between;
-  /* background-color: red; */
   color: black;
 `;
 
@@ -31,7 +28,6 @@ const linkStyles = css`
   justify-content: flex-end;
   justify-content: space-around;
   color: black;
-  /* background-color: red; */
 `;
 
 const darkLogoStyles = css`

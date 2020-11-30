@@ -4,14 +4,13 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { GetServerSidePropsContext } from 'next';
 import nextCookies from 'next-cookies';
-
+import { css } from '@emotion/react';
 import Layout from '../../components/Layout';
 import { User, StorageItem } from '../../util/types';
 import {
   getStorageItemsByUserId,
   getUserBySessionToken,
 } from '../../util/database';
-import { css } from '@emotion/react';
 
 const dashboardStyles = css`
   display: grid;
@@ -23,7 +22,6 @@ const dashboardStyles = css`
 //My dashboard
 const headingStyles = css`
   grid-area: 1 / 1 / 2 / 2;
-  /* background-color: pink; */
   height: 40px;
   margin-top: 40px;
 `;
@@ -31,21 +29,18 @@ const headingStyles = css`
 //My storageItems
 const storageItemsHeadingStyles = css`
   grid-area: 1 / 3 / 2 / 4;
-  /* background-color: red; */
   height: 40px;
   margin-top: 100px;
   img {
     height: 30px;
     width: 30px;
     margin-right: 5px;
-    /* background-color: blue; */
   }
 `;
 
 //area around grey box
 const sideBarStyles = css`
   grid-area: 2 / 1 / 3 / 2;
-  /* background-color: green; */
   height: 200px;
 `;
 
@@ -65,14 +60,12 @@ const sideBarLinkStyles = css`
     height: 30px;
     width: 30px;
     margin-right: 5px;
-    /* background-color: blue; */
   }
 `;
 
 //area around yellow boxes
 const storageItemsAreaStyles = css`
   grid-area: 2 / 3 / 3 / 4;
-  /* background-color: blue; */
   height: 680px;
   overflow: auto;
 
@@ -88,13 +81,6 @@ const storageItemsAreaStyles = css`
   }
 `;
 
-// //ul
-// const storageItemsAreaStyles2 = css`
-//   display: flex;
-//   flex-wrap: wrap;
-//   justify-content: space-around;
-// `;
-
 //yellow box
 const storageItemStyles = css`
   background-color: #f3f38e;
@@ -102,7 +88,6 @@ const storageItemStyles = css`
   width: 300px;
   margin: 10px;
   padding: 30px;
-  /* flex-shrink: 4; */
   border-radius: 10%;
   font-size: 24px;
   display: flex;
@@ -113,7 +98,6 @@ const storageItemStyles = css`
 
 //light pink box
 const addStorageItemStyles = css`
-  /* background-color: blue; */
   line-height: 50px;
   display: flex;
   flex-direction: column;
@@ -124,7 +108,6 @@ const addStorageItemStyles = css`
     height: 30px;
     width: 30px;
     margin-right: 5px;
-    /* background-color: blue; */
   }
 `;
 
@@ -185,6 +168,7 @@ export default function Dashboard(props: Props) {
 
   const router = useRouter();
 
+  //if no storage items have been added by user yet
   if (props.storageItems.length === 0) {
     return (
       <div>
@@ -337,6 +321,7 @@ is found in getServerSideProps, the user will be redirected to the login page! *
       </div>
     );
   }
+  //if storage items have been added by user
   return (
     <div>
       {/* loggedIn is set to true by default, bc if no session token
@@ -510,40 +495,6 @@ is found in getServerSideProps, the user will be redirected to the login page! *
                         <img src="/icons/box.svg" alt="open button" />
                       </a>
                     </Link>
-                    {/* <button
-                      onClick={async () => {
-                        const answer = window.confirm(`Really delete?`);
-
-                        if (answer === true) {
-                          // Send the data to the
-                          // API route
-                          const id = storageItem.id;
-
-                          const response = await fetch(`../api/dashboard`, {
-                            method: 'DELETE',
-                            headers: {
-                              'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                              storageItemId: id,
-                            }),
-                          });
-
-                          const { success } = await response.json();
-
-                          if (success) {
-                            // Redirect so same page
-                            router.push(`/dashboard/`);
-                          } else {
-                            setErrorMessage('Failed!');
-                          }
-                        }
-                      }}
-                    >
-                      <a>
-                        <img src="/icons/trash.svg" alt="trash can" />
-                      </a>
-                    </button> */}
                   </li>
                 );
               })}

@@ -9,27 +9,19 @@ import { isSessionTokenValid } from '../../util/auth';
 import { ClothingItemDetail } from '../../util/types';
 import { handleDeleteFromList } from '../../util/my-list';
 
-const myListPageStyles = css`
-  /* display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 0.5fr 1fr 1fr; */
-`;
+const myListPageStyles = css``;
 
 const myListPageHeadingStyles = css`
-  /* grid-area: 1 / 1 / 2 / 2;  */
   height: 40px;
   margin-top: 40px;
   img {
     height: 60px;
     width: 60px;
     margin-right: 5px;
-    /* background-color: blue; */
   }
 `;
 
 const myListAreaStyles = css`
-  /* grid-area: 2 / 1 / 3 / 2;
-  margin-top: -110px;*/
   margin-left: 400px;
 
   img {
@@ -55,7 +47,6 @@ const deleteButtonStyles = css`
 `;
 
 const myListPageButtonAreaStyles = css`
-  /* grid-area: 3 / 1 / 4 / 2; */
   padding: 15px;
   margin-bottom: 200px;
 `;
@@ -75,7 +66,7 @@ type Props = { loggedIn: boolean; myList: ClothingItemDetail[] };
 export default function MyListPage(props: Props) {
   const [myList, setMyList] = useState(props.myList);
 
-  //when list is empty
+  //if list is empty
   if (props.myList.length === 0) {
     return (
       <div>
@@ -94,36 +85,6 @@ export default function MyListPage(props: Props) {
                 Your list is empty!{' '}
                 <img src="/img/empty-list-img.svg" alt="empty list" />{' '}
               </h1>
-              {/* <table>
-                {props.myList.map((listItem: ClothingItemDetail) => {
-                  return (
-                    <tbody key={listItem.id}>
-                      <tr key={listItem.id}>
-                        <td>{listItem.clothingItemsType}</td>
-                        <td>{listItem.color}</td>
-                        <td>{listItem.size}</td>
-                        <td>{listItem.season}</td>
-                        <td>{listItem.gender}</td>
-                        <td>{listItem.notes}</td>
-                        <td>{listItem.storageItemName}</td>
-                        <td>{listItem.storageItemLocation}</td>
-                        <td>
-                          {' '}
-                          <button
-                            onClick={() =>
-                              setMyList(
-                                handleDeleteFromList(myList, listItem.id),
-                              )
-                            }
-                          >
-                            Delete from List
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  );
-                })}
-              </table> */}
               <div css={myListPageButtonAreaStyles}>
                 <h2 css={backButtonStyles}>
                   <Link href="/dashboard">
@@ -133,14 +94,13 @@ export default function MyListPage(props: Props) {
                     </a>
                   </Link>
                 </h2>
-                {/* <button onClick={window.print}>Print</button> */}
               </div>
             </div>
           </main>
         </Layout>
       </div>
     );
-    //when list is not empty
+    //if list is not empty
   } else {
     return (
       <div>
@@ -194,7 +154,6 @@ export default function MyListPage(props: Props) {
                 })}
               </table>
               <div css={myListPageButtonAreaStyles}>
-                {/* <button onClick={window.print}>Print</button> */}
                 <Link href="/dashboard/print-my-list">
                   <button>
                     <a>Printable Version</a>
