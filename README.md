@@ -60,8 +60,6 @@ My List page - printable version
 - cookie
 - Argon2
 - Csrf
-- Jest
-- Cypress.io
 
 ## Deployment
 
